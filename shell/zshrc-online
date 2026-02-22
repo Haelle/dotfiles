@@ -1,0 +1,99 @@
+# ~/.zshrc - ZSH configuration (online mode, with Oh My ZSH)
+
+# --- Oh My ZSH ---
+export ZSH="$HOME/.oh-my-zsh"
+
+# Theme: disabled when using Starship
+ZSH_THEME=""
+
+# Plugins
+plugins=(
+    # Utilities
+    command-not-found
+    common-aliases
+    sudo
+    encode64
+    jsontools
+    dirhistory
+    web-search
+
+    # System
+    systemd
+    debian
+
+    # Git
+    gitignore
+
+    # Containers & cloud
+    docker
+    docker-compose
+    kubectl
+    aws
+    terraform
+
+    # Languages & runtimes
+    asdf
+    nvm
+    rbenv
+    ruby
+    bundler
+    gem
+    rails
+    python
+    pip
+
+    # Tools
+    direnv
+    dotenv
+    fzf
+    tmux
+    vscode
+    postgres
+    ansible
+
+    # Custom (cloned into $ZSH_CUSTOM/plugins/)
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+)
+
+# Disable auto-update prompt (manage updates manually)
+DISABLE_AUTO_UPDATE="true"
+
+source "$ZSH/oh-my-zsh.sh"
+
+# --- History (extend OMZ defaults) ---
+HISTSIZE=50000
+SAVEHIST=50000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_IGNORE_SPACE
+
+# --- Options ---
+setopt AUTO_CD
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+setopt CORRECT
+setopt INTERACTIVE_COMMENTS
+
+# --- FZF ---
+if command -v fzf &>/dev/null; then
+    export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+    if command -v fd &>/dev/null; then
+        export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+    elif command -v fdfind &>/dev/null; then
+        export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+    fi
+fi
+
+# --- Aliases and functions ---
+[[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
+[[ -f "$HOME/.functions" ]] && source "$HOME/.functions"
+
+# --- Local overrides ---
+[[ -f "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+# --- Starship prompt ---
+if command -v starship &>/dev/null; then
+    eval "$(starship init zsh)"
+fi
