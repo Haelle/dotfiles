@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+#
+# install-offline - Installation des dotfiles
+#
+# Usage: ./bin/install-offline [--dry-run]
+#
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Charger les libs
+source "$SCRIPT_DIR/lib/common.sh"
+source "$SCRIPT_DIR/lib/deps.sh"
+source "$SCRIPT_DIR/lib/tmux.sh"
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Installation des dotfiles.
+
+Options:
+    --dry-run    Affiche les actions sans les exécuter
+    -h, --help   Affiche cette aide
+
+EOF
+    exit 0
+}
+
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --dry-run)
+                DRY_RUN=true
+                shift
+                ;;
+            -h|--help)
+                usage
+                ;;
+            *)
+                log_error "Option inconnue: $1"
+                usage
+                ;;
+        esac
+    done
+}
+
+main() {
+    parse_args "$@"
+
+    log_header "Installation des dotfiles"
+
+    if [[ "$DRY_RUN" == true ]]; then
+        log_warning "Mode dry-run activé - aucune modification ne sera effectuée"
+        echo ""
+    fi
+
+    log_info "Dossier dotfiles: $DOTFILES_DIR"
+    log_info "Dossier backup: $BACKUP_DIR"
+    echo ""
+
+    # Installation
+    install_deps
+    install_tmux
+
+    echo ""
+    if [[ "$DRY_RUN" == true ]]; then
+        log_warning "Dry-run terminé. Relancez sans --dry-run pour appliquer."
+    else
+        log_success "Installation terminée!"
+    fi
+}
+
+main "$@"
