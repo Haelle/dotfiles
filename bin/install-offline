@@ -12,6 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Charger les libs
 source "$SCRIPT_DIR/lib/common.sh"
 source "$SCRIPT_DIR/lib/deps.sh"
+source "$SCRIPT_DIR/lib/ssh.sh"
 source "$SCRIPT_DIR/lib/tmux.sh"
 
 usage() {
@@ -62,6 +63,7 @@ main() {
 
     # Installation
     install_deps
+    install_ssh
     install_tmux
 
     echo ""
