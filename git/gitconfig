@@ -1,0 +1,59 @@
+[user]
+  name =
+  email =
+  signingkey = ~/.ssh/id_ed25519.pub
+[color]
+  ui = true
+[alias]
+  aa = add --all
+  r  = rebase
+  au = add -u
+  st = status
+  d  = diff -w
+  br = branch
+  ca = commit --amend
+  ci = commit --verbose
+  fix = commit --amend --no-edit
+  boyscout = commit -m "Boyscout"
+  bs = commit -m "Boyscout"
+  co = checkout
+  pf = push --force-with-lease
+  lg = log --pretty=format:'%C(bold)–%Creset %C(red bold)%h%d%Creset | %C(green)%an%Creset | %C(magenta)%cr%Creset | %C(cyan)%s%Creset'
+  lgr = log --pretty=format:'%s'
+  lgp = log -p
+  lgn = log --name-only
+  lgs = log --format='%G? %C(green)%GS%Creset %C(red)%h%Creset %s' -n 10
+  report-csv = "log --format='\"%cd\",\"%cn\",\"%s\"' --date=short --no-merges"
+  ds = diff --staged
+[pull]
+  rebase = true
+[difftool]
+  prompt = false
+[diff]
+  algorithm = patience
+  tool = vimdiff
+[merge]
+  tool = vimdiff
+[credential]
+  helper = cache
+[core]
+  autocrlf = input
+  editor = vim
+  whitespace = -trailing-space,-indent-with-non-tab,-tab-in-indent
+  quotepath = off
+[commit]
+  gpgsign = true
+[tag]
+  forceSignAnnotated = true
+  gpgsign = true
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[diff "ansible-vault"]
+  textconv = ansible-vault view
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  allowedSignersFile = /home/alexis/.config/git/allowed_signers
