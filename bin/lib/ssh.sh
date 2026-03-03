@@ -8,11 +8,6 @@ install_ssh() {
     local target="$HOME/.ssh/config"
     local sockets_dir="$HOME/.ssh/sockets"
 
-    if [[ ! -f "$source" ]]; then
-        log_error "Fichier source introuvable: $source"
-        return 1
-    fi
-
     # Créer le dossier .ssh si nécessaire
     if [[ ! -d "$HOME/.ssh" ]]; then
         if [[ "$DRY_RUN" == true ]]; then

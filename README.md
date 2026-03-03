@@ -5,7 +5,7 @@ Configuration personnelle pour environnement de développement (Ubuntu & Arch/Ca
 ## Installation
 
 ```bash
-./bin/install-offline
+./bin/install
 ```
 
 ## Mode dry-run
@@ -48,6 +48,41 @@ Configuration avec signature SSH des commits.
  | `git lgs` | Log avec statut des signatures  |
  | `git pf`  | `push --force-with-lease`       |
  | `git ds`  | `diff --staged`                 |
+
+## Fish Shell
+
+Shell moderne avec autosuggestions et completions natives.
+
+### Post-installation
+
+```bash
+fish                 # Entrer dans Fish
+tide configure       # Configurer le prompt Tide
+chsh -s $(which fish) # Définir Fish comme shell par défaut
+```
+
+### Plugins installés
+
+- **Tide** - Prompt équivalent à Powerlevel10k
+- **fzf.fish** - Intégration fzf (Ctrl-R historique, Ctrl-T fichiers)
+- **direnv** - Variables d'environnement par dossier
+
+### Aliases
+
+ | Alias     | Commande                                |
+ | --------- | ----------------------------            |
+ | `v`       | `nvim (fzf)` - ouvrir fichier avec fzf  |
+ | `g`       | `git status` (ou `git <cmd>` avec args) |
+ | `jwt`     | Décoder un token JWT                    |
+
+### Raccourcis clavier
+
+ | Raccourci  | Description                     |
+ | ---------- | ------------------------------- |
+ | `Esc Esc`  | Préfixer la commande avec sudo  |
+ | `Ctrl-R`   | Recherche dans l'historique     |
+ | `Ctrl-T`   | Recherche de fichiers           |
+ | `Alt-C`    | cd dans un dossier              |
 
 ## Cheatsheet tmux
 
