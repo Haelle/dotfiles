@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #
 # install-offline - Installation des dotfiles
-#
-# Usage: ./bin/install-offline [--dry-run]
 
 set -euo pipefail
 
