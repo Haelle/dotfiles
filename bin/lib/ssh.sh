@@ -33,4 +33,6 @@ install_ssh() {
     if [[ "$DRY_RUN" != true ]]; then
         chmod 600 "$target"
     fi
+
+    echo '# vim: set ft=sshconfig:' >> $target.local
 }

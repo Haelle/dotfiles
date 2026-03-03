@@ -1,5 +1,6 @@
 # SSH Client Configuration
 # Global defaults
+Include ~/.ssh/config.local
 
 Host *
     UserKnownHostsFile ~/.ssh/known_hosts

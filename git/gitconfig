@@ -1,7 +1,5 @@
-[user]
-  name =
-  email =
-  signingkey = ~/.ssh/id_ed25519.pub
+[include]
+  path = ~/.gitconfig.local
 [color]
   ui = true
 [alias]
@@ -56,4 +54,5 @@
 [gpg]
   format = ssh
 [gpg "ssh"]
-  allowedSignersFile = /home/alexis/.config/git/allowed_signers
+  # echo "mail@example.com $(cat ~/.ssh/id_ed25519.pub)" >> ~/.config/git/allowed_signers
+  allowedSignersFile = ~/.config/git/allowed_signers

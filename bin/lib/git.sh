@@ -8,4 +8,6 @@ install_git() {
     local target="$HOME/.gitconfig"
 
     create_symlink "$source" "$target" "gitconfig"
+
+    echo '# vim: set ft=gitconfig:' >> $target.local
 }

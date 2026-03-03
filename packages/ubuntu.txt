@@ -3,4 +3,6 @@ curl
 direnv
 fish
 htop
+qemu-system
+virt-manager
 xclip
