@@ -1,5 +1,8 @@
 # Fish Shell Configuration
 
+# Désactiver le message d'accueil
+set -g fish_greeting
+
 # Paths
 fish_add_path ~/.local/bin
 

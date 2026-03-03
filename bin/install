@@ -13,20 +13,33 @@ source "$SCRIPT_DIR/lib/fish.sh"
 source "$SCRIPT_DIR/lib/git.sh"
 source "$SCRIPT_DIR/lib/ssh.sh"
 source "$SCRIPT_DIR/lib/tmux.sh"
+source "$SCRIPT_DIR/lib/neovim.sh"
+
+MODULES=()
 
 usage() {
     cat <<EOF
-Usage: $(basename "$0") [OPTIONS]
+Usage: $(basename "$0") [OPTIONS] [MODULES...]
 
 Installation des dotfiles.
+
+Modules disponibles: fish, git, ssh, tmux, neovim
+Sans module spécifié, tout est installé.
 
 Options:
     --dry-run    Affiche les actions sans les exécuter
     -h, --help   Affiche cette aide
 
+Exemples:
+    $(basename "$0") neovim          Installe uniquement NeoVim
+    $(basename "$0") fish tmux       Installe Fish et Tmux
+    $(basename "$0") --dry-run git   Dry-run pour Git uniquement
+
 EOF
     exit 0
 }
+
+ALL_MODULES=(fish git ssh tmux neovim)
 
 parse_args() {
     while [[ $# -gt 0 ]]; do
@@ -38,12 +51,28 @@ parse_args() {
             -h|--help)
                 usage
                 ;;
+            fish|git|ssh|tmux|neovim)
+                MODULES+=("$1")
+                shift
+                ;;
             *)
                 log_error "Option inconnue: $1"
                 usage
                 ;;
         esac
     done
+
+    if [[ ${#MODULES[@]} -eq 0 ]]; then
+        MODULES=("${ALL_MODULES[@]}")
+    fi
+}
+
+should_install() {
+    local module="$1"
+    for m in "${MODULES[@]}"; do
+        [[ "$m" == "$module" ]] && return 0
+    done
+    return 1
 }
 
 main() {
@@ -58,14 +87,16 @@ main() {
 
     log_info "Dossier dotfiles: $DOTFILES_DIR"
     log_info "Dossier backup: $BACKUP_DIR"
+    log_info "Modules: ${MODULES[*]}"
     echo ""
 
     # Installation
     install_deps
-    install_fish
-    install_git
-    install_ssh
-    install_tmux
+    should_install fish   && install_fish
+    should_install git    && install_git
+    should_install ssh    && install_ssh
+    should_install tmux   && install_tmux
+    should_install neovim && install_neovim
 
     echo ""
     if [[ "$DRY_RUN" == true ]]; then

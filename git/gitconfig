@@ -36,7 +36,6 @@
   helper = cache
 [core]
   autocrlf = input
-  editor = vim
   whitespace = -trailing-space,-indent-with-non-tab,-tab-in-indent
   quotepath = off
 [commit]

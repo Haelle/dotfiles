@@ -1,8 +1,14 @@
 btop
 curl
 direnv
+fd
 fish
+gcc
 htop
+make
 qemu-full
+ripgrep
+tree-sitter-cli
+unzip
 virt-manager
 xclip
