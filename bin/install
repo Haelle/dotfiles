@@ -4,16 +4,14 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 # Charger les libs
-source "$SCRIPT_DIR/lib/common.sh"
-source "$SCRIPT_DIR/lib/deps.sh"
-source "$SCRIPT_DIR/lib/fish.sh"
-source "$SCRIPT_DIR/lib/git.sh"
-source "$SCRIPT_DIR/lib/ssh.sh"
-source "$SCRIPT_DIR/lib/tmux.sh"
-source "$SCRIPT_DIR/lib/neovim.sh"
+source "./lib/common.sh"
+source "./lib/deps.sh"
+source "./lib/fish.sh"
+source "./lib/git.sh"
+source "./lib/ssh.sh"
+source "./lib/tmux.sh"
+source "./lib/neovim.sh"
 
 MODULES=()
 
