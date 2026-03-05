@@ -80,7 +80,8 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 
 | Raccourci | Description                    |
 | --------- | ------------------------------ |
-| `Esc Esc` | Préfixer la commande avec sudo |
+| `Alt-Up`  | Remonter au dossier parent     |
+| `Alt-S`   | Préfixer la commande avec sudo |
 | `Ctrl-R`  | Recherche dans l'historique    |
 | `Ctrl-T`  | Recherche de fichiers          |
 | `Alt-C`   | cd dans un dossier             |
