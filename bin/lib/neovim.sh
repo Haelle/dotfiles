@@ -52,6 +52,30 @@ install_neovim() {
         git clone git@github.com:Haelle/kickstart.nvim.git "$nvim_config" && log_success "kickstart.nvim cloné dans $nvim_config" || log_warning "Clone kickstart.nvim échoué"
     fi
 
+    # Installation quadlet-lsp (LSP pour fichiers Podman Quadlet)
+    if command -v quadlet-lsp &>/dev/null; then
+        log_info "quadlet-lsp déjà installé"
+    elif [[ "$DRY_RUN" == true ]]; then
+        log_dry "Installation de quadlet-lsp depuis GitHub releases"
+    else
+        log_info "Installation de quadlet-lsp..."
+        local ql_version ql_tmp
+        ql_version=$(curl -s https://api.github.com/repos/onlyati/quadlet-lsp/releases/latest | grep -Po '"tag_name": "\K[^"]+')
+        ql_tmp=$(mktemp -d)
+        if command -v apt &>/dev/null; then
+            curl -fsSL "https://github.com/onlyati/quadlet-lsp/releases/download/${ql_version}/quadlet-lsp_${ql_version#v}_linux_amd64.deb" -o "$ql_tmp/quadlet-lsp.deb" \
+                && sudo dpkg -i "$ql_tmp/quadlet-lsp.deb" \
+                && log_success "quadlet-lsp installé via .deb" \
+                || log_warning "Installation quadlet-lsp échouée"
+        elif command -v pacman &>/dev/null; then
+            curl -fsSL "https://github.com/onlyati/quadlet-lsp/releases/download/${ql_version}/quadlet-lsp-${ql_version#v}-linux-amd64.tar.gz" -o "$ql_tmp/quadlet-lsp.tar.gz" \
+                && sudo tar -xzf "$ql_tmp/quadlet-lsp.tar.gz" -C /usr/local/bin/ \
+                && log_success "quadlet-lsp installé dans /usr/local/bin" \
+                || log_warning "Installation quadlet-lsp échouée"
+        fi
+        rm -rf "$ql_tmp"
+    fi
+
     # Installation NeoVim via asdf
     local tool_versions="$HOME/.tool-versions"
     if [[ "$DRY_RUN" == true ]]; then
