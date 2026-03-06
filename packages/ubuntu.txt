@@ -8,6 +8,7 @@ htop
 make
 qemu-system
 ripgrep
+spellcheck
 unzip
 virt-manager
 xclip

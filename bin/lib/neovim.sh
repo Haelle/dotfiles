@@ -22,27 +22,6 @@ install_neovim() {
         fi
     fi
 
-    # Installation nvm + Node.js 20 (requis par certains LSP/plugins)
-    local NVM_DIR="$HOME/.nvm"
-    if [[ "$DRY_RUN" == true ]]; then
-        log_dry "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash (si nvm absent)"
-        log_dry "nvm install 20"
-    else
-        if [[ ! -d "$NVM_DIR" ]]; then
-            log_info "Installation de nvm..."
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && log_success "nvm installé" || { log_warning "Installation nvm échouée"; }
-        fi
-        # Charger nvm dans le shell courant
-        export NVM_DIR
-        [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-        if ! nvm ls 20 &>/dev/null; then
-            log_info "Installation de Node.js 20 via nvm..."
-            nvm install 20 && log_success "Node.js 20 installé" || log_warning "Installation Node.js 20 échouée"
-        else
-            log_info "Node.js 20 déjà installé"
-        fi
-    fi
-
     # Installation asdf si absent
     if [[ "$DRY_RUN" == true ]]; then
         log_dry "git clone https://github.com/asdf-vm/asdf.git ~/.asdf (si asdf absent)"
@@ -97,8 +76,27 @@ install_neovim() {
         rm -rf "$ql_tmp"
     fi
 
-    # Installation NeoVim via asdf
+    # Installation de Node:latest via asdf
     local tool_versions="$HOME/.tool-versions"
+    if [[ "$DRY_RUN" == true ]]; then
+        log_dry "asdf plugin add nodejs"
+        log_dry "asdf install nodejs lts"
+        log_dry "Ajout de NodeJS lts dans $tool_versions"
+        log_dry "asdf reshim nodejs"
+    else    
+        log_info "Installation de NodeJS via asdf..."
+        asdf plugin add nodejs || true
+        asdf install nodejs lts && log_success "NodeJS lts installé via asdf" || { log_warning "Installation NodeJS via asdf échouée"; return; }
+        if ! grep -q "^nodejs " "$tool_versions" 2>/dev/null; then
+            echo "nodejs lts" >> "$tool_versions"
+            log_success "nodejs lts ajouté dans $tool_versions"
+        else
+            log_info "nodejs déjà présent dans $tool_versions"
+        fi
+        asdf reshim nodejs
+    fi
+
+    # Installation NeoVim via asdf
     if [[ "$DRY_RUN" == true ]]; then
         log_dry "asdf plugin add neovim"
         log_dry "asdf install neovim stable"

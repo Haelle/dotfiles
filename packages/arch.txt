@@ -8,6 +8,7 @@ htop
 make
 qemu-full
 ripgrep
+spellcheck
 tree-sitter-cli
 unzip
 virt-manager

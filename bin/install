@@ -4,6 +4,8 @@
 
 set -euo pipefail
 
+# SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Charger les libs
 source "./lib/common.sh"
 source "./lib/deps.sh"
