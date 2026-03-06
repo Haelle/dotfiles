@@ -5,7 +5,7 @@ Configuration personnelle pour environnement de développement (Ubuntu & Arch/Ca
 ## Installation
 
 ```bash
-./bin/install
+./install
 ```
 
 ## Mode dry-run
@@ -13,7 +13,7 @@ Configuration personnelle pour environnement de développement (Ubuntu & Arch/Ca
 Pour visualiser les changements sans les appliquer :
 
 ```bash
-./bin/install-offline --dry-run
+./install --dry-run
 ```
 
 ## Backups

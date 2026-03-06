@@ -8,24 +8,9 @@ install_ssh() {
     local target="$HOME/.ssh/config"
     local sockets_dir="$HOME/.ssh/sockets"
 
-    # Créer le dossier .ssh si nécessaire
-    if [[ ! -d "$HOME/.ssh" ]]; then
-        if [[ "$DRY_RUN" == true ]]; then
-            log_dry "mkdir -p $HOME/.ssh && chmod 700 $HOME/.ssh"
-        else
-            mkdir -p "$HOME/.ssh"
-            chmod 700 "$HOME/.ssh"
-        fi
-    fi
-
-    # Créer le dossier sockets pour le multiplexing
-    if [[ ! -d "$sockets_dir" ]]; then
-        if [[ "$DRY_RUN" == true ]]; then
-            log_dry "mkdir -p $sockets_dir"
-        else
-            mkdir -p "$sockets_dir"
-        fi
-    fi
+    # Créer les dossiers nécessaires
+    mkdir -p "$HOME/.ssh" "$sockets_dir"
+    chmod 700 "$HOME/.ssh"
 
     create_symlink "$source" "$target" "ssh/config"
 
@@ -34,5 +19,5 @@ install_ssh() {
         chmod 600 "$target"
     fi
 
-    echo '# vim: set ft=sshconfig:' >> $target.local
+    grep -q 'vim:.*ft=sshconfig' "$target.local" 2>/dev/null || echo '# vim: set ft=sshconfig:' >> "$target.local"
 }

@@ -9,5 +9,5 @@ install_git() {
 
     create_symlink "$source" "$target" "gitconfig"
 
-    echo '# vim: set ft=gitconfig:' >> $target.local
+    grep -q 'vim:.*ft=gitconfig' "$target.local" 2>/dev/null || echo '# vim: set ft=gitconfig:' >> "$target.local"
 }
