@@ -22,6 +22,27 @@ install_neovim() {
         fi
     fi
 
+    # Installation nvm + Node.js 20 (requis par certains LSP/plugins)
+    local NVM_DIR="$HOME/.nvm"
+    if [[ "$DRY_RUN" == true ]]; then
+        log_dry "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash (si nvm absent)"
+        log_dry "nvm install 20"
+    else
+        if [[ ! -d "$NVM_DIR" ]]; then
+            log_info "Installation de nvm..."
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && log_success "nvm installé" || { log_warning "Installation nvm échouée"; }
+        fi
+        # Charger nvm dans le shell courant
+        export NVM_DIR
+        [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+        if ! nvm ls 20 &>/dev/null; then
+            log_info "Installation de Node.js 20 via nvm..."
+            nvm install 20 && log_success "Node.js 20 installé" || log_warning "Installation Node.js 20 échouée"
+        else
+            log_info "Node.js 20 déjà installé"
+        fi
+    fi
+
     # Installation asdf si absent
     if [[ "$DRY_RUN" == true ]]; then
         log_dry "git clone https://github.com/asdf-vm/asdf.git ~/.asdf (si asdf absent)"
