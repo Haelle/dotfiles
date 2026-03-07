@@ -156,3 +156,14 @@ tar xzf fish.tar.gz -C ~/.config/
 ```
 
 P.S: les dépendances sont `fish`, `fzf`, `git`, `jq`, `tree` et `direnv`. Elles sont installées si `./install git (et/ou) tmux (et/ou) ssh` ont été installés.
+
+### NeoVim offline
+
+Le script `./install-neovim-offline` installe NeoVim via apt avec une config vanilla (sans plugins, 100% offline). Il reprend les options, keymaps et autocommands de kickstart.nvim sans nécessiter internet.
+
+```bash
+./install-neovim-offline
+./install-neovim-offline --dry-run
+```
+
+La config est symlinquée depuis `nvim-offline/` vers `~/.config/nvim`.

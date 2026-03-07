@@ -1,0 +1,46 @@
+#!/bin/env bash
+#
+# install-neovim-offline - Installation de NeoVim offline (config vanilla, sans plugins)
+
+set -euo pipefail
+
+source "./lib/common.sh"
+
+install_neovim_offline() {
+    log_header "NeoVim (offline)"
+
+    # Installer neovim via apt
+    if [[ "$DRY_RUN" == true ]]; then
+        log_dry "sudo apt install -y neovim"
+    else
+        log_info "Installation de neovim via apt..."
+        sudo apt install -y neovim && log_success "neovim installé" || { log_warning "Installation neovim échouée"; return; }
+    fi
+
+    local nvim_config="$HOME/.config/nvim"
+
+    if [[ -e "$nvim_config" ]]; then
+        backup_file "$nvim_config" "$BACKUP_DIR/nvim"
+    fi
+
+    create_symlink "$DOTFILES_DIR/nvim-offline" "$nvim_config" "nvim"
+}
+
+main() {
+    if [[ "${1:-}" == "--dry-run" ]]; then
+        DRY_RUN=true
+        log_warning "Mode dry-run activé - aucune modification ne sera effectuée"
+        echo ""
+    fi
+
+    install_neovim_offline
+
+    echo ""
+    if [[ "$DRY_RUN" == true ]]; then
+        log_warning "Dry-run terminé. Relancez sans --dry-run pour appliquer."
+    else
+        log_success "Installation terminée!"
+    fi
+}
+
+main "$@"
