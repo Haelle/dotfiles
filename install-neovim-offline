@@ -11,10 +11,10 @@ install_neovim_offline() {
 
     # Installer neovim via apt
     if [[ "$DRY_RUN" == true ]]; then
-        log_dry "sudo apt install -y neovim"
+        log_dry "sudo apt install -y neovim fzf ripgrep"
     else
         log_info "Installation de neovim via apt..."
-        sudo apt install -y neovim && log_success "neovim installé" || { log_warning "Installation neovim échouée"; return; }
+        sudo apt install -y neovim fzf ripgrep && log_success "neovim, fzf, ripgrep installés" || { log_warning "Installation échouée"; return; }
     fi
 
     local nvim_config="$HOME/.config/nvim"
