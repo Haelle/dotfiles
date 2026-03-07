@@ -27,9 +27,7 @@ vim.o.confirm = true
 vim.o.expandtab = true
 vim.o.shiftwidth = 2
 vim.o.tabstop = 2
-vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus'
-end)
+vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 
 -- Use ripgrep for :grep
 vim.o.grepprg = 'rg --vimgrep --smart-case'
@@ -77,16 +75,13 @@ vim.keymap.set('n', '<leader>sk', function()
   vim.cmd 'startinsert'
 end, { desc = 'Search keymaps' })
 
-
--- Go to references: grep word under cursor via fzf
-vim.keymap.set('n', 'gr', function()
-  local word = vim.fn.expand '<cword>'
-  if word == '' then return end
+-- Grep via rg + fzf, then jump to selected result
+local function fzf_grep(query)
   local tmpfile = vim.fn.tempname()
 
   vim.cmd 'botright new'
   local buf = vim.api.nvim_get_current_buf()
-  vim.fn.termopen('rg --vimgrep --smart-case ' .. vim.fn.shellescape(word) .. ' | fzf > ' .. vim.fn.shellescape(tmpfile), {
+  vim.fn.termopen('rg --vimgrep --smart-case ' .. vim.fn.shellescape(query) .. ' | fzf > ' .. vim.fn.shellescape(tmpfile), {
     on_exit = function(_, code)
       vim.api.nvim_buf_delete(buf, { force = true })
       if code == 0 then
@@ -103,15 +98,18 @@ vim.keymap.set('n', 'gr', function()
     end,
   })
   vim.cmd 'startinsert'
+end
+
+-- Go to references: grep word under cursor
+vim.keymap.set('n', 'gr', function()
+  local word = vim.fn.expand '<cword>'
+  if word ~= '' then fzf_grep(word) end
 end, { desc = 'Go to references' })
 
--- Search: grep in cwd (like Telescope <leader>sg)
+-- Search: grep with prompt
 vim.keymap.set('n', '<leader>sg', function()
   vim.ui.input({ prompt = 'Grep > ' }, function(input)
-    if input and input ~= '' then
-      vim.cmd('silent! grep! ' .. vim.fn.shellescape(input))
-      vim.cmd 'copen'
-    end
+    if input and input ~= '' then fzf_grep(input) end
   end)
 end, { desc = 'Search by grep' })
 
@@ -151,9 +149,7 @@ vim.keymap.set('n', '<leader>sf', function()
       vim.api.nvim_buf_delete(buf, { force = true })
       if code == 0 then
         local result = vim.fn.readfile(tmpfile)
-        if #result > 0 and result[1] ~= '' then
-          vim.cmd('edit ' .. vim.fn.fnameescape(result[1]))
-        end
+        if #result > 0 and result[1] ~= '' then vim.cmd('edit ' .. vim.fn.fnameescape(result[1])) end
       end
       vim.fn.delete(tmpfile)
     end,
@@ -170,18 +166,10 @@ vim.keymap.set('n', '<C-w><S-Right>', '<C-w>L', { desc = 'Move split right' })
 -- Autocompletion (buffer words)
 vim.o.completeopt = 'menuone,noselect'
 vim.keymap.set('i', '<C-Space>', '<C-x><C-n>', { desc = 'Complete buffer words' })
-vim.keymap.set('i', '<Tab>', function()
-  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
-end, { expr = true, desc = 'Next completion item' })
-vim.keymap.set('i', '<S-Tab>', function()
-  return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
-end, { expr = true, desc = 'Previous completion item' })
-vim.keymap.set('i', '<Right>', function()
-  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Right>'
-end, { expr = true, desc = 'Next completion item' })
-vim.keymap.set('i', '<Left>', function()
-  return vim.fn.pumvisible() == 1 and '<C-p>' or '<Left>'
-end, { expr = true, desc = 'Previous completion item' })
+vim.keymap.set('i', '<Tab>', function() return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>' end, { expr = true, desc = 'Next completion item' })
+vim.keymap.set('i', '<S-Tab>', function() return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>' end, { expr = true, desc = 'Previous completion item' })
+vim.keymap.set('i', '<Right>', function() return vim.fn.pumvisible() == 1 and '<C-n>' or '<Right>' end, { expr = true, desc = 'Next completion item' })
+vim.keymap.set('i', '<Left>', function() return vim.fn.pumvisible() == 1 and '<C-p>' or '<Left>' end, { expr = true, desc = 'Previous completion item' })
 
 -- Diagnostics
 vim.diagnostic.config {
@@ -200,9 +188,7 @@ vim.diagnostic.config {
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking text',
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+  callback = function() vim.highlight.on_yank() end,
 })
 
 -- Restore cursor position
@@ -212,9 +198,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   callback = function(args)
     local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
     local line_count = vim.api.nvim_buf_line_count(args.buf)
-    if mark[1] > 0 and mark[1] <= line_count then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
+    if mark[1] > 0 and mark[1] <= line_count then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
   end,
 })
 
