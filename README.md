@@ -135,7 +135,7 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 
 ## Offline install
 
-Pour `git`, `tmux`, `ssh` pas de dépendances offline, on peut donc cloner et faire : 
+Pour `git`, `tmux`, `ssh` pas de dépendances offline, on peut donc cloner et faire :
 
 ```bash
 ./install git tmux ssh
@@ -159,7 +159,8 @@ P.S: les dépendances sont `fish`, `fzf`, `git`, `jq`, `tree` et `direnv`. Elles
 
 ### NeoVim offline
 
-Le script `./install-neovim-offline` installe NeoVim via apt avec une config vanilla (sans plugins, 100% offline). Il reprend les options, keymaps et autocommands de kickstart.nvim sans nécessiter internet.
+Le script `./install-neovim-offline` installe neovim, fzf et ripgrep via apt avec une config simple. Il reprend une partie des options, keymaps et autocommands de kickstart.nvim sans nécessiter internet.
+Il n'est pas aussi simple d'avoir un mode offline comme Fish car il y a trop de dépendances système et Mason & cie auto installe pleins de choses en background.
 
 ```bash
 ./install-neovim-offline
@@ -167,3 +168,51 @@ Le script `./install-neovim-offline` installe NeoVim via apt avec une config van
 ```
 
 La config est symlinquée depuis `nvim-offline/` vers `~/.config/nvim`.
+
+#### Options
+
+- Leader : `Space`
+- Indentation : 2 espaces (expandtab)
+- Numéros de ligne, cursorline, scrolloff 10
+- Recherche smartcase, highlight search (Esc pour clear)
+- Undo persistant, clipboard système
+- Caractères invisibles affichés (tab, trailing spaces, nbsp)
+
+#### Keymaps
+
+- quick save
+
+| Raccourci          | Description                                |
+| ------------------ | ------------------------------------------ |
+| \<Space\>sn        | Ouvrir la config neovim (vsplit)           |
+| \<Space\>sk        | Recherche dans les keymaps (fzf)           |
+| u                  | undo                                       |
+| \<C-r\>            | redo                                       |
+| \<Space\>sg        | Grep récursif (ripgrep + quickfix)         |
+| \<Space\>sf        | Recherche de fichiers (rg + fzf)           |
+| \<C-Space\>        | Autocomplétion (mots du buffer)            |
+| \<Tab\>/<S-Tab\>   | Naviguer dans le menu de complétion        |
+| \<Left\>/<Right\>  | Naviguer dans le menu de complétion        |
+| \<C-y\>            | [Y]es, accept selection in completion mode |
+| \<Esc\>            | Clear search highlight                     |
+| \<C-w\>Arrows      | Navigation entre splits                    |
+| \<C-w\><S-Arrows\> | Déplacer les splits                        |
+| \<Esc\><Esc\>      | Quitter le mode terminal                   |
+| gr                 | [G]o to [R]eferences (rg + fzf)            |
+| gd                 | [G]o to [D]efinition (fichier ouvert)      |
+| gf                 | [G]o to [F]ile                             |
+| \<C-o\>            | previous file                              |
+| Tab                | next file                                  |
+| \<Space\>st        | Recherche des TODO/FIXME/HACK/NOTE (fzf)   |
+
+#### Autocommands
+
+- Highlight on yank
+- Restauration de la position du curseur
+
+#### Filetype detection
+
+- `docker-compose.yml/yaml` (et variantes)
+- `.gitlab-ci.yml`
+- `values*.yml/yaml` (Helm)
+- `*.mdx` → markdown

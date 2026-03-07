@@ -40,7 +40,7 @@ vim.cmd.colorscheme 'slate'
 
 -- Keymaps
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic quickfix list' })
+vim.keymap.set('n', '<leader>sn', '<cmd>vsplit $MYVIMRC<CR>', { desc = 'Open neovim config' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Split navigation with Ctrl+hjkl
@@ -48,6 +48,62 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left spli
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower split' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper split' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right split' })
+
+-- Search: keymaps via fzf (only custom keymaps with descriptions)
+vim.keymap.set('n', '<leader>sk', function()
+  local tmpfile = vim.fn.tempname()
+  local srcfile = vim.fn.tempname()
+
+  local lines = {}
+  for _, mode in ipairs { 'n', 'i', 'v', 't' } do
+    for _, km in ipairs(vim.api.nvim_get_keymap(mode)) do
+      if km.desc and km.desc ~= '' and not km.desc:match '^Nvim builtin' then
+        local lhs = km.lhs:gsub(' ', '<Space>')
+        table.insert(lines, string.format('[%s] %-20s %s', mode, lhs, km.desc))
+      end
+    end
+  end
+  vim.fn.writefile(lines, srcfile)
+
+  vim.cmd 'botright new'
+  local buf = vim.api.nvim_get_current_buf()
+  vim.fn.termopen('cat ' .. vim.fn.shellescape(srcfile) .. ' | fzf > ' .. vim.fn.shellescape(tmpfile), {
+    on_exit = function(_, _)
+      vim.api.nvim_buf_delete(buf, { force = true })
+      vim.fn.delete(srcfile)
+      vim.fn.delete(tmpfile)
+    end,
+  })
+  vim.cmd 'startinsert'
+end, { desc = 'Search keymaps' })
+
+
+-- Go to references: grep word under cursor via fzf
+vim.keymap.set('n', 'gr', function()
+  local word = vim.fn.expand '<cword>'
+  if word == '' then return end
+  local tmpfile = vim.fn.tempname()
+
+  vim.cmd 'botright new'
+  local buf = vim.api.nvim_get_current_buf()
+  vim.fn.termopen('rg --vimgrep --smart-case ' .. vim.fn.shellescape(word) .. ' | fzf > ' .. vim.fn.shellescape(tmpfile), {
+    on_exit = function(_, code)
+      vim.api.nvim_buf_delete(buf, { force = true })
+      if code == 0 then
+        local result = vim.fn.readfile(tmpfile)
+        if #result > 0 and result[1] ~= '' then
+          local file, line, col = result[1]:match '^(.+):(%d+):(%d+):'
+          if file then
+            vim.cmd('edit +' .. line .. ' ' .. vim.fn.fnameescape(file))
+            pcall(vim.api.nvim_win_set_cursor, 0, { tonumber(line), tonumber(col) - 1 })
+          end
+        end
+      end
+      vim.fn.delete(tmpfile)
+    end,
+  })
+  vim.cmd 'startinsert'
+end, { desc = 'Go to references' })
 
 -- Search: grep in cwd (like Telescope <leader>sg)
 vim.keymap.set('n', '<leader>sg', function()
@@ -58,6 +114,31 @@ vim.keymap.set('n', '<leader>sg', function()
     end
   end)
 end, { desc = 'Search by grep' })
+
+-- Search: TODOs in cwd
+vim.keymap.set('n', '<leader>st', function()
+  local tmpfile = vim.fn.tempname()
+
+  vim.cmd 'botright new'
+  local buf = vim.api.nvim_get_current_buf()
+  vim.fn.termopen('rg --vimgrep "TODO|FIXME|HACK|NOTE" | fzf > ' .. vim.fn.shellescape(tmpfile), {
+    on_exit = function(_, code)
+      vim.api.nvim_buf_delete(buf, { force = true })
+      if code == 0 then
+        local result = vim.fn.readfile(tmpfile)
+        if #result > 0 and result[1] ~= '' then
+          local file, line, col = result[1]:match '^(.+):(%d+):(%d+):'
+          if file then
+            vim.cmd('edit +' .. line .. ' ' .. vim.fn.fnameescape(file))
+            pcall(vim.api.nvim_win_set_cursor, 0, { tonumber(line), tonumber(col) - 1 })
+          end
+        end
+      end
+      vim.fn.delete(tmpfile)
+    end,
+  })
+  vim.cmd 'startinsert'
+end, { desc = 'Search TODOs' })
 
 -- Search: find files in cwd (like Telescope <leader>sf)
 vim.keymap.set('n', '<leader>sf', function()
