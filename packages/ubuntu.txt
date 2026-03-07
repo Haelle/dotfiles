@@ -3,12 +3,16 @@ curl
 direnv
 fd-find
 fish
+fzf
+git
+jq
 gcc
 htop
 make
 qemu-system
 ripgrep
 shellcheck
+tree
 unzip
 virt-manager
 xclip

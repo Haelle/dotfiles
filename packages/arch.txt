@@ -3,6 +3,9 @@ curl
 direnv
 fd
 fish
+fzf
+git
+jq
 gcc
 htop
 make
@@ -10,6 +13,7 @@ qemu-full
 ripgrep
 shellcheck
 tree-sitter-cli
+tree
 unzip
 virt-manager
 xclip
