@@ -22,16 +22,20 @@ install_neovim() {
         fi
     fi
 
-    # Installation asdf si absent
+    # Installation asdf (binaire Go) si absent
     if [[ "$DRY_RUN" == true ]]; then
-        log_dry "git clone https://github.com/asdf-vm/asdf.git ~/.asdf (si asdf absent)"
+        log_dry "Installation de asdf depuis GitHub releases"
     else
-        if [[ ! -d "$HOME/.asdf" ]]; then
+        if ! command -v asdf &>/dev/null; then
             log_info "Installation de asdf..."
-            git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.16.7 && log_success "asdf installé" || { log_warning "Installation asdf échouée"; }
+            local asdf_version
+            asdf_version=$(curl -s https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep -Po '"tag_name": "\K[^"]+')
+            curl -fsSL "https://github.com/asdf-vm/asdf/releases/download/${asdf_version}/asdf-${asdf_version}-linux-amd64.tar.gz" \
+                | sudo tar -xz -C /usr/local/bin/ \
+                && log_success "asdf ${asdf_version} installé" \
+                || { log_warning "Installation asdf échouée"; }
         fi
-        # Charger asdf dans le shell courant
-        source "$HOME/.asdf/asdf.sh" 2>/dev/null || true
+        export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:/usr/local/bin:$PATH"
     fi
 
     # Backup de ~/.config/nvim si existant
@@ -74,6 +78,11 @@ install_neovim() {
                 || log_warning "Installation quadlet-lsp échouée"
         fi
         rm -rf "$ql_tmp"
+
+        # kickstart.nvim attend /usr/bin/quadlet-lsp
+        if [[ ! -e /usr/bin/quadlet-lsp ]]; then
+            sudo ln -s /usr/local/bin/quadlet-lsp /usr/bin/quadlet-lsp
+        fi
     fi
 
     # Installation de Node:latest via asdf

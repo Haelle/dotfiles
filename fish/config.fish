@@ -7,9 +7,7 @@ set -g fish_greeting
 fish_add_path ~/.local/bin
 
 # asdf version manager
-if test -f ~/.asdf/asdf.fish
-    source ~/.asdf/asdf.fish
-end
+fish_add_path ~/.asdf/shims
 
 # direnv hook
 if command -q direnv
