@@ -132,3 +132,27 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 | Molette souris     | Scroller dans l'historique |
 | `Ctrl-B PgUp-PgDn` | Scroller dans l'historique |
 | Surligner          | Copie                      |
+
+## Offline install
+
+Pour `git`, `tmux`, `ssh` pas de dépendances offline, on peut donc cloner et faire : 
+
+```bash
+./install git tmux ssh
+```
+
+### Déploiement offline de Fish
+
+Par contre Fish a besoin d'internet mais une installation locale peut être exportée car ça ne nécessite aucune dépendances qui ne soit dans un dépôt Debian/Ubuntu. Sur la machine source :
+
+```bash
+cp -rL ~/.config/fish /tmp/fish && tar czf fish.tar.gz -C /tmp fish && rm -rf /tmp/fish
+```
+
+Sur la machine cible :
+
+```bash
+tar xzf fish.tar.gz -C ~/.config/
+```
+
+P.S: les dépendances sont `fish`, `fzf`, `git`, `jq`, `tree` et `direnv`. Elles sont installées si `./install git (et/ou) tmux (et/ou) ssh` ont été installés.
