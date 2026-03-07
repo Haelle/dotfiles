@@ -1,0 +1,3 @@
+# TODO
+
+Couleur indicateur statut (NORMAL, INSERT...) pas visible...

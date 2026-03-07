@@ -6,9 +6,35 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Options
+vim.o.termguicolors = true
 vim.o.number = true
 vim.o.mouse = 'a'
 vim.o.showmode = false
+vim.o.laststatus = 2
+vim.o.statusline = '%{%v:lua.Statusline()%}'
+
+function Statusline()
+  local modes = {
+    n = { '  NORMAL ', 'StatusNormal' },
+    i = { '  INSERT ', 'StatusInsert' },
+    v = { '  VISUAL ', 'StatusVisual' },
+    V = { '  V-LINE ', 'StatusVisual' },
+    ['\22'] = { '  V-BLOCK ', 'StatusVisual' },
+    c = { '  COMMAND ', 'StatusCommand' },
+    t = { '  TERMINAL ', 'StatusTerminal' },
+    R = { '  REPLACE ', 'StatusReplace' },
+  }
+  local mode = vim.fn.mode()
+  local m = modes[mode] or { '  ' .. mode .. ' ', 'StatusNormal' }
+  return '%#' .. m[2] .. '#' .. m[1] .. '%#StatusLine# %f %m%r%= %l:%c  %p%% '
+end
+
+vim.api.nvim_set_hl(0, 'StatusNormal', { fg = '#1e1e2e', bg = '#89b4fa', ctermfg = 0, ctermbg = 12, bold = true })
+vim.api.nvim_set_hl(0, 'StatusInsert', { fg = '#1e1e2e', bg = '#a6e3a1', ctermfg = 0, ctermbg = 10, bold = true })
+vim.api.nvim_set_hl(0, 'StatusVisual', { fg = '#1e1e2e', bg = '#cba6f7', ctermfg = 0, ctermbg = 13, bold = true })
+vim.api.nvim_set_hl(0, 'StatusCommand', { fg = '#1e1e2e', bg = '#fab387', ctermfg = 0, ctermbg = 11, bold = true })
+vim.api.nvim_set_hl(0, 'StatusTerminal', { fg = '#1e1e2e', bg = '#94e2d5', ctermfg = 0, ctermbg = 14, bold = true })
+vim.api.nvim_set_hl(0, 'StatusReplace', { fg = '#1e1e2e', bg = '#f38ba8', ctermfg = 0, ctermbg = 9, bold = true })
 vim.o.breakindent = true
 vim.o.undofile = true
 vim.o.ignorecase = true
