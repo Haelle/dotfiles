@@ -24,6 +24,9 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
@@ -82,6 +85,22 @@ vim.keymap.set('n', '<C-w><S-Up>', '<C-w>K', { desc = 'Move split up' })
 vim.keymap.set('n', '<C-w><S-Down>', '<C-w>J', { desc = 'Move split down' })
 vim.keymap.set('n', '<C-w><S-Left>', '<C-w>H', { desc = 'Move split left' })
 vim.keymap.set('n', '<C-w><S-Right>', '<C-w>L', { desc = 'Move split right' })
+
+-- Autocompletion (buffer words)
+vim.o.completeopt = 'menuone,noselect'
+vim.keymap.set('i', '<C-Space>', '<C-x><C-n>', { desc = 'Complete buffer words' })
+vim.keymap.set('i', '<Tab>', function()
+  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
+end, { expr = true, desc = 'Next completion item' })
+vim.keymap.set('i', '<S-Tab>', function()
+  return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
+end, { expr = true, desc = 'Previous completion item' })
+vim.keymap.set('i', '<Right>', function()
+  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Right>'
+end, { expr = true, desc = 'Next completion item' })
+vim.keymap.set('i', '<Left>', function()
+  return vim.fn.pumvisible() == 1 and '<C-p>' or '<Left>'
+end, { expr = true, desc = 'Previous completion item' })
 
 -- Diagnostics
 vim.diagnostic.config {
