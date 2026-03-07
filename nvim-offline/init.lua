@@ -38,6 +38,8 @@ vim.cmd.colorscheme 'slate'
 
 -- Keymaps
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
+vim.keymap.set('n', '<C-s>', '<cmd>w<CR>', { desc = 'Quick save file [N]ormal mode' })
+vim.keymap.set('i', '<C-s>', '<cmd>w<CR>', { desc = 'Quick save file [I]nsert mode' })
 vim.keymap.set('n', '<leader>sn', '<cmd>vsplit $MYVIMRC<CR>', { desc = 'Open neovim config' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -76,6 +78,7 @@ vim.keymap.set('n', '<leader>sk', function()
 end, { desc = 'Search keymaps' })
 
 -- Grep via rg + fzf, then jump to selected result
+-- utility function for Go to Reference and Search Grep
 local function fzf_grep(query)
   local tmpfile = vim.fn.tempname()
 

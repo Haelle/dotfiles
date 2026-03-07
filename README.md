@@ -188,6 +188,7 @@ La config est symlinquée depuis `nvim-offline/` vers `~/.config/nvim`.
 | \<Space\>sk        | Recherche dans les keymaps (fzf)           |
 | u                  | undo                                       |
 | \<C-r\>            | redo                                       |
+| \<C-s\>            | quick save file                            |
 | \<Space\>sg        | Grep récursif (ripgrep + quickfix)         |
 | \<Space\>sf        | Recherche de fichiers (rg + fzf)           |
 | \<C-Space\>        | Autocomplétion (mots du buffer)            |
