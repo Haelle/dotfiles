@@ -182,29 +182,29 @@ La config est symlinquée depuis `nvim-offline/` vers `~/.config/nvim`.
 
 - quick save
 
-| Raccourci          | Description                                |
-| ------------------ | ------------------------------------------ |
-| \<Space\>sn        | Ouvrir la config neovim (vsplit)           |
-| \<Space\>sk        | Recherche dans les keymaps (fzf)           |
-| u                  | undo                                       |
-| \<C-r\>            | redo                                       |
-| \<C-s\>            | quick save file                            |
-| \<Space\>sg        | Grep récursif (ripgrep + quickfix)         |
-| \<Space\>sf        | Recherche de fichiers (rg + fzf)           |
-| \<C-Space\>        | Autocomplétion (mots du buffer)            |
-| \<Tab\>/<S-Tab\>   | Naviguer dans le menu de complétion        |
-| \<Left\>/<Right\>  | Naviguer dans le menu de complétion        |
-| \<C-y\>            | [Y]es, accept selection in completion mode |
-| \<Esc\>            | Clear search highlight                     |
-| \<C-w\>Arrows      | Navigation entre splits                    |
-| \<C-w\><S-Arrows\> | Déplacer les splits                        |
-| \<Esc\><Esc\>      | Quitter le mode terminal                   |
-| gr                 | [G]o to [R]eferences (rg + fzf)            |
-| gd                 | [G]o to [D]efinition (fichier ouvert)      |
-| gf                 | [G]o to [F]ile                             |
-| \<C-o\>            | previous file                              |
-| Tab                | next file                                  |
-| \<Space\>st        | Recherche des TODO/FIXME/HACK/NOTE (fzf)   |
+| Raccourci          | Description                                           |
+| ------------------ | ----------------------------------------------------- |
+| \<Space\>sn        | [S]earch [N]eovim config neovim (vsplit)              |
+| \<Space\>sk        | [S]earch [K]eymaps (fzf)                              |
+| u                  | [U]ndo                                                |
+| \<C-r\>            | [R]edo                                                |
+| \<C-s\>            | quick [S]ave file                                     |
+| \<Space\>sg        | [S]earch with [G]rep (récursif) w/ ripgrep + quickfix |
+| \<Space\>sf        | [S]earch [F]ile by name (rg + fzf)                    |
+| \<C-Space\>        | Autocomplétion (mots du buffer)                       |
+| \<Tab\>/<S-Tab\>   | Naviguer dans le menu de complétion                   |
+| \<Left\>/<Right\>  | Naviguer dans le menu de complétion                   |
+| \<C-y\>            | [Y]es, accept selection in completion mode            |
+| \<Esc\>            | Clear search highlight                                |
+| \<C-w\>Arrows      | Navigation entre splits                               |
+| \<C-w\><S-Arrows\> | Déplacer les splits                                   |
+| \<Esc\><Esc\>      | Quitter le mode terminal                              |
+| gr                 | [G]o to [R]eferences (rg + fzf)                       |
+| gd                 | [G]o to [D]efinition (fichier ouvert)                 |
+| gf                 | [G]o to [F]ile                                        |
+| \<C-o\>            | previous opened file                                  |
+| Tab                | next opened file                                      |
+| \<Space\>st        | [S]earch [T]ODO/FIXME/HACK/NOTE (fzf)                 |
 
 #### Autocommands
 
