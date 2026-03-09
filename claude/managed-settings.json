@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-command.sh"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "enabledPlugins": {
+    "dsfr-skill@dsfr-skill": true,
+  },
+  "extraKnownMarketplaces": {
+    "dsfr-skill": {
+      "source": {
+        "source": "github",
+        "repo": "numerique-gouv/dsfr-skill"
+      }
+    }
+  },
+  "permissions": {
+    "deny": [
+      "Read(**.env)",
+      "Read(**.env.*)",
+      "Read(**/*token*)",
+      "Read(**/*TOKEN*)",
+      "Read(**master.key)",
+      "Read(**sandbox.key)",
+      "Read(**staging.key)",
+      "Read(**production.key)"
+    ]
+  }
+}

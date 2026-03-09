@@ -14,6 +14,7 @@ source "./lib/git.sh"
 source "./lib/ssh.sh"
 source "./lib/tmux.sh"
 source "./lib/neovim.sh"
+source "./lib/claude.sh"
 
 MODULES=()
 
@@ -23,7 +24,7 @@ Usage: $(basename "$0") [OPTIONS] [MODULES...]
 
 Installation des dotfiles.
 
-Modules disponibles: fish, git, ssh, tmux, neovim
+Modules disponibles: fish, git, ssh, tmux, neovim, claude
 Sans module spécifié, tout est installé.
 
 Options:
@@ -39,7 +40,7 @@ EOF
     exit 0
 }
 
-ALL_MODULES=(fish git ssh tmux neovim)
+ALL_MODULES=(fish git ssh tmux neovim claude)
 
 parse_args() {
     while [[ $# -gt 0 ]]; do
@@ -51,7 +52,7 @@ parse_args() {
             -h|--help)
                 usage
                 ;;
-            fish|git|ssh|tmux|neovim)
+            fish|git|ssh|tmux|neovim|claude)
                 MODULES+=("$1")
                 shift
                 ;;
@@ -97,6 +98,7 @@ main() {
     should_install ssh    && install_ssh
     should_install tmux   && install_tmux
     should_install neovim && install_neovim
+    should_install claude && install_claude
 
     echo ""
     if [[ "$DRY_RUN" == true ]]; then
