@@ -47,6 +47,7 @@ alias dps 'sudo docker ps --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status
 alias pps 'podman ps --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}\t{{.Image}}"'
 
 # Updates
-alias update-dotfiles 'git -C ~/Projects/dotfiles pull origin master'
+set -g __dotfiles_dir (realpath (status filename) | path dirname | path dirname | path dirname)
+alias update-dotfiles "git -C $__dotfiles_dir pull origin master"
 alias update-nvim 'git -C ~/.config/nvim pull origin master'
 alias update-all 'update-dotfiles; and update-nvim'
