@@ -15,4 +15,4 @@ shellcheck
 tree
 unzip
 virt-manager
-xclip
+wl-clipboard

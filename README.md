@@ -130,11 +130,13 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 
 ### Scroll / Copie
 
-| Méthode            | Description                |
-| ------------------ | -------------------------- |
-| Molette souris     | Scroller dans l'historique |
-| `Ctrl-B PgUp-PgDn` | Scroller dans l'historique |
-| Surligner          | Copie                      |
+| Méthode             | Description                                              |
+| ------------------- | -------------------------------------------------------- |
+| Molette souris      | Scroller dans l'historique                               |
+| `Ctrl-B PgUp-PgDn` | Scroller dans l'historique                               |
+| Clic gauche + drag  | Sélectionner et copier dans le clipboard au relâchement  |
+| `Ctrl-B ]`          | Coller depuis le buffer tmux                             |
+| `Ctrl-Shift-V`      | Coller depuis le clipboard système (raccourci terminal)  |
 
 ## Offline install
 
