@@ -45,3 +45,8 @@ alias scu-restart 'systemctl --user restart'
 # Docker / Podman
 alias dps 'sudo docker ps --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}\t{{.Image}}"'
 alias pps 'podman ps --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}\t{{.Image}}"'
+
+# Updates
+alias update-dotfiles 'git -C ~/Projects/dotfiles pull origin master'
+alias update-nvim 'git -C ~/.config/nvim pull origin master'
+alias update-all 'update-dotfiles; and update-nvim'

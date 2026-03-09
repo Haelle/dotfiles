@@ -73,8 +73,11 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 | Alias | Commande                                |
 | ----- | --------------------------------------- |
 | `v`   | `nvim (fzf)` - ouvrir fichier avec fzf  |
-| `g`   | `git status` (ou `git <cmd>` avec args) |
-| `jwt` | Décoder un token JWT                    |
+| `g`              | `git status` (ou `git <cmd>` avec args)      |
+| `jwt`            | Décoder un token JWT                          |
+| `update-dotfiles` | Pull origin master des dotfiles (depuis n'importe où) |
+| `update-nvim`    | Pull origin master de la config NeoVim        |
+| `update-all`     | Met à jour dotfiles + NeoVim                  |
 
 ### Raccourcis clavier
 
