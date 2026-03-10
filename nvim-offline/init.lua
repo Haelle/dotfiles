@@ -29,12 +29,6 @@ function Statusline()
   return '%#' .. m[2] .. '#' .. m[1] .. '%#StatusLine# %f %m%r%= %l:%c  %p%% '
 end
 
-vim.api.nvim_set_hl(0, 'StatusNormal', { fg = '#1e1e2e', bg = '#89b4fa', ctermfg = 0, ctermbg = 12, bold = true })
-vim.api.nvim_set_hl(0, 'StatusInsert', { fg = '#1e1e2e', bg = '#a6e3a1', ctermfg = 0, ctermbg = 10, bold = true })
-vim.api.nvim_set_hl(0, 'StatusVisual', { fg = '#1e1e2e', bg = '#cba6f7', ctermfg = 0, ctermbg = 13, bold = true })
-vim.api.nvim_set_hl(0, 'StatusCommand', { fg = '#1e1e2e', bg = '#fab387', ctermfg = 0, ctermbg = 11, bold = true })
-vim.api.nvim_set_hl(0, 'StatusTerminal', { fg = '#1e1e2e', bg = '#94e2d5', ctermfg = 0, ctermbg = 14, bold = true })
-vim.api.nvim_set_hl(0, 'StatusReplace', { fg = '#1e1e2e', bg = '#f38ba8', ctermfg = 0, ctermbg = 9, bold = true })
 vim.o.breakindent = true
 vim.o.undofile = true
 vim.o.ignorecase = true
@@ -61,6 +55,14 @@ vim.o.grepformat = '%f:%l:%c:%m'
 
 -- Colorscheme
 vim.cmd.colorscheme 'slate'
+
+-- Statusline highlights (after colorscheme to avoid being overwritten)
+vim.api.nvim_set_hl(0, 'StatusNormal', { fg = '#1e1e2e', bg = '#89b4fa', ctermfg = 0, ctermbg = 12, bold = true })
+vim.api.nvim_set_hl(0, 'StatusInsert', { fg = '#1e1e2e', bg = '#a6e3a1', ctermfg = 0, ctermbg = 10, bold = true })
+vim.api.nvim_set_hl(0, 'StatusVisual', { fg = '#1e1e2e', bg = '#cba6f7', ctermfg = 0, ctermbg = 13, bold = true })
+vim.api.nvim_set_hl(0, 'StatusCommand', { fg = '#1e1e2e', bg = '#fab387', ctermfg = 0, ctermbg = 11, bold = true })
+vim.api.nvim_set_hl(0, 'StatusTerminal', { fg = '#1e1e2e', bg = '#94e2d5', ctermfg = 0, ctermbg = 14, bold = true })
+vim.api.nvim_set_hl(0, 'StatusReplace', { fg = '#1e1e2e', bg = '#f38ba8', ctermfg = 0, ctermbg = 9, bold = true })
 
 -- Keymaps
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
@@ -210,6 +212,47 @@ vim.diagnostic.config {
   virtual_lines = false,
   jump = { float = true },
 }
+
+-- Toggle comment (gcc for line, gc for visual selection)
+local function toggle_comment(line, cs)
+  local prefix, suffix = cs:match '^(.-)%%s(.-)$'
+  prefix, suffix = vim.trim(prefix), vim.trim(suffix)
+  local pat = '^(%s*)' .. vim.pesc(prefix) .. ' ?(.*)'
+  if suffix ~= '' then pat = '^(%s*)' .. vim.pesc(prefix) .. ' ?(.*)%s?' .. vim.pesc(suffix) end
+  local indent, rest = line:match(pat)
+  if indent then
+    return indent .. rest
+  else
+    local ws, content = line:match '^(%s*)(.*)'
+    if suffix ~= '' then
+      return ws .. prefix .. ' ' .. content .. ' ' .. suffix
+    else
+      return ws .. prefix .. ' ' .. content
+    end
+  end
+end
+
+vim.keymap.set('n', 'gcc', function()
+  local cs = vim.bo.commentstring
+  if cs == '' or not cs:find '%%s' then return end
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
+  vim.api.nvim_buf_set_lines(0, row - 1, row, false, { toggle_comment(line, cs) })
+end, { desc = 'Toggle comment line' })
+
+vim.keymap.set('v', 'gc', function()
+  local cs = vim.bo.commentstring
+  if cs == '' or not cs:find '%%s' then return end
+  local start = vim.fn.line 'v'
+  local finish = vim.fn.line '.'
+  if start > finish then start, finish = finish, start end
+  local lines = vim.api.nvim_buf_get_lines(0, start - 1, finish, false)
+  for i, line in ipairs(lines) do
+    lines[i] = toggle_comment(line, cs)
+  end
+  vim.api.nvim_buf_set_lines(0, start - 1, finish, false, lines)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
+end, { desc = 'Toggle comment selection' })
 
 -- Autocommands
 

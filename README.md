@@ -210,6 +210,8 @@ La config est symlinquée depuis `nvim-offline/` vers `~/.config/nvim`.
 | \<C-o\>            | previous opened file                                  |
 | Tab                | next opened file                                      |
 | \<Space\>st        | [S]earch [T]ODO/FIXME/HACK/NOTE (fzf)                 |
+| gcc                | Toggle comment ligne                                  |
+| gc                 | Toggle comment sélection (visual)                     |
 
 #### Autocommands
 
