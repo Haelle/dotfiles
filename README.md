@@ -20,7 +20,7 @@ Pour visualiser les changements sans les appliquer :
 
 Lors de l'installation, les fichiers existants sont sauvegardés dans :
 
-```
+```bash
 ~/.dotfiles/backup_YYYYMMDD_HHMMSS/
 ```
 
@@ -54,7 +54,7 @@ Configuration avec signature SSH des commits.
 
 Shell moderne avec autosuggestions et completions natives.
 
-### Post-installation
+### Post-installation Fish
 
 ```bash
 fish                 # Entrer dans Fish
@@ -70,14 +70,14 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 
 ### Aliases
 
-| Alias | Commande                                |
-| ----- | --------------------------------------- |
-| `v`   | `nvim (fzf)` - ouvrir fichier avec fzf  |
-| `g`              | `git status` (ou `git <cmd>` avec args)      |
-| `jwt`            | Décoder un token JWT                          |
+| Alias             | Commande                                              |
+| ----------------- | ----------------------------------------------------- |
+| `v`               | `nvim (fzf)` - ouvrir fichier avec fzf                |
+| `g`               | `git status` (ou `git <cmd>` avec args)               |
+| `jwt`             | Décoder un token JWT                                  |
 | `update-dotfiles` | Pull origin master des dotfiles (depuis n'importe où) |
-| `update-nvim`    | Pull origin master de la config NeoVim        |
-| `update-all`     | Met à jour dotfiles + NeoVim                  |
+| `update-nvim`     | Pull origin master de la config NeoVim                |
+| `update-all`      | Met à jour dotfiles + NeoVim                          |
 
 ### Raccourcis clavier
 
@@ -130,13 +130,13 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 
 ### Scroll / Copie
 
-| Méthode             | Description                                              |
-| ------------------- | -------------------------------------------------------- |
-| Molette souris      | Scroller dans l'historique                               |
-| `Ctrl-B PgUp-PgDn` | Scroller dans l'historique                               |
-| Clic gauche + drag  | Sélectionner et copier dans le clipboard au relâchement  |
-| `Ctrl-B ]`          | Coller depuis le buffer tmux                             |
-| `Ctrl-Shift-V`      | Coller depuis le clipboard système (raccourci terminal)  |
+| Méthode            | Description                                             |
+| ------------------ | ------------------------------------------------------- |
+| Molette souris     | Scroller dans l'historique                              |
+| `Ctrl-B PgUp-PgDn` | Scroller dans l'historique                              |
+| Clic gauche + drag | Sélectionner et copier dans le clipboard au relâchement |
+| `Ctrl-B ]`         | Coller depuis le buffer tmux                            |
+| `Ctrl-Shift-V`     | Coller depuis le clipboard système (raccourci terminal) |
 
 ## ngrok
 
