@@ -158,6 +158,31 @@ ngrok config add-authtoken <TOKEN>  # Token depuis https://dashboard.ngrok.com
 | -------------- | -------------------- |
 | `ngrok tcp 22` | Tunnel TCP (ex: SSH) |
 
+## Claude Code
+
+Assistant IA en ligne de commande.
+
+```bash
+./install claude
+```
+
+### Ce qui est installé
+
+- **Claude Code** via le script officiel (si pas déjà présent)
+- **CLAUDE.md global** — instructions personnalisées (langue, style de code, git, sécurité)
+- **Skills** — collection de skills spécialisés (React, Python, DevOps, SQL, etc.)
+- **Commands** — commandes custom (`/bugfix`, `/plan`, `/pr-review`, `/fix-latest-build`, etc.)
+- **Settings** — configuration gérée (plugins LSP, statusline, permissions)
+- **Statusline** — script custom affichant modèle, usage quotidien, répertoire et branche git
+
+### Sécurité
+
+Les fichiers sensibles sont bloqués en lecture par les settings :
+
+- `.env`, `.env.*`
+- `*token*`, `*TOKEN*`
+- `master.key`, `sandbox.key`, `staging.key`, `production.key`
+
 ## Offline install
 
 Pour `git`, `tmux`, `ssh` pas de dépendances offline, on peut donc cloner et faire :
