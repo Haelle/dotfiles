@@ -138,6 +138,26 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 | `Ctrl-B ]`          | Coller depuis le buffer tmux                             |
 | `Ctrl-Shift-V`      | Coller depuis le clipboard système (raccourci terminal)  |
 
+## ngrok
+
+Tunnel sécurisé pour exposer un port local sur internet.
+
+```bash
+./install ngrok
+```
+
+### Post-installation ngrok
+
+```bash
+ngrok config add-authtoken <TOKEN>  # Token depuis https://dashboard.ngrok.com
+```
+
+### Utilisation
+
+| Commande       | Description          |
+| -------------- | -------------------- |
+| `ngrok tcp 22` | Tunnel TCP (ex: SSH) |
+
 ## Offline install
 
 Pour `git`, `tmux`, `ssh` pas de dépendances offline, on peut donc cloner et faire :
