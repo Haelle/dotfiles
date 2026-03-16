@@ -10,6 +10,7 @@
 - Privilégie la simplicité et la lisibilité
 - Pas de sur-ingénierie : résous le problème actuel, pas les problèmes hypothétiques
 - Préfère les modifications minimales et ciblées
+- Ces principes s'appliquent à tout code produit : applicatif, scripts, configuration, infrastructure
 
 ## Git
 
