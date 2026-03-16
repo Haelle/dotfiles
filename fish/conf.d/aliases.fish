@@ -15,7 +15,6 @@ alias rubofix 'bundle exec rubocop -A'
 # Unix utilities
 alias tree 'tree -C -L 3'
 alias grep 'grep --color=auto'
-alias lsn 'ls -lahF --color=auto'
 alias ll 'ls -lhF --color=auto'
 
 # SSL/SSH
