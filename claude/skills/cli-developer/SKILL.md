@@ -6,7 +6,7 @@ metadata:
   author: https://github.com/Jeffallan
   version: "1.1.0"
   domain: devops
-  triggers: CLI, command-line, terminal app, argument parsing, shell completion, interactive prompt, progress bar, commander, click, typer, cobra
+  triggers: CLI, command-line, terminal app, argument parsing, shell completion, interactive prompt, progress bar, commander, click, typer, cobra, script, scripting, bash, bin
   role: specialist
   scope: implementation
   output-format: code
@@ -27,13 +27,13 @@ metadata:
 
 Load detailed guidance based on context:
 
-| Topic | Reference | Load When |
-|-------|-----------|-----------|
+| Topic           | Reference                       | Load When                                |
+| --------------- | ------------------------------- | ---------------------------------------- |
 | Design Patterns | `references/design-patterns.md` | Subcommands, flags, config, architecture |
-| Node.js CLIs | `references/node-cli.md` | commander, yargs, inquirer, chalk |
-| Python CLIs | `references/python-cli.md` | click, typer, argparse, rich |
-| Go CLIs | `references/go-cli.md` | cobra, viper, bubbletea |
-| UX Patterns | `references/ux-patterns.md` | Progress bars, colors, help text |
+| Node.js CLIs    | `references/node-cli.md`        | commander, yargs, inquirer, chalk        |
+| Python CLIs     | `references/python-cli.md`      | click, typer, argparse, rich             |
+| Go CLIs         | `references/go-cli.md`          | cobra, viper, bubbletea                  |
+| UX Patterns     | `references/ux-patterns.md`     | Progress bars, colors, help text         |
 
 ## Quick-Start Example
 
@@ -42,17 +42,14 @@ Load detailed guidance based on context:
 ```js
 #!/usr/bin/env node
 // npm install commander
-const { program } = require('commander');
+const { program } = require("commander");
+
+program.name("mytool").description("Example CLI").version("1.0.0");
 
 program
-  .name('mytool')
-  .description('Example CLI')
-  .version('1.0.0');
-
-program
-  .command('greet <name>')
-  .description('Greet a user')
-  .option('-l, --loud', 'uppercase the greeting')
+  .command("greet <name>")
+  .description("Greet a user")
+  .option("-l, --loud", "uppercase the greeting")
   .action((name, opts) => {
     const msg = `Hello, ${name}!`;
     console.log(opts.loud ? msg.toUpperCase() : msg);
@@ -66,6 +63,7 @@ For Python (click/typer) and Go (cobra) quick-start examples, see `references/py
 ## Constraints
 
 ### MUST DO
+
 - Keep startup time under 50ms
 - Provide clear, actionable error messages
 - Support `--help` and `--version` flags
@@ -102,11 +100,13 @@ For Python (click/typer) and Go (cobra) quick-start examples, see `references/py
 ## Output Templates
 
 When implementing CLI features, provide:
+
 1. Command structure (main entry point, subcommands)
 2. Configuration handling (files, env vars, flags)
 3. Core implementation with error handling
 4. Shell completion scripts if applicable
 5. Brief explanation of UX decisions
+6. Add colors for user-facing output (use RED/GREEN/YELLOW/BLUE)
 
 ## Knowledge Reference
 

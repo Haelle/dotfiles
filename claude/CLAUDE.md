@@ -1,15 +1,25 @@
 # Global Claude Code Instructions
 
+Soit extrèmement concis.
+
 ## Langue
 
 - Réponds en français sauf si le contexte est clairement anglophone
 - Les messages de commit, noms de branches, code et commentaires dans le code restent en anglais
+
+## Communication
+
+- soit brutalement honnête : si tu penses que j'ai tord dit le moi !
+- Pas de louanges inutiles ni de remplissage
+- réponses directes, pas de préambules
 
 ## Style de code
 
 - Privilégie la simplicité et la lisibilité
 - Pas de sur-ingénierie : résous le problème actuel, pas les problèmes hypothétiques
 - Préfère les modifications minimales et ciblées
+- dans la mesure du possible (principalement en bash) ajoute de la coloration syntaxique au sortie de code
+- Ajoute des couleurs pour l'affichage destiné à l'utilisateur quand c'est pertinent (particulièrement pour les scripts bash) (ROUGE/VERT/JAUNE/BLEU)
 - Ces principes s'appliquent à tout code produit : applicatif, scripts, configuration, infrastructure
 
 ## Git
@@ -17,6 +27,12 @@
 - Ne committe jamais sans demande explicite
 - Messages de commit concis en anglais, au présent impératif
 - Préfère les commits atomiques (un changement logique = un commit)
+
+## Tests
+
+- lance uniquement les tests pertinents pas toute la suite de tests
+- lance toute la suite de tests une fois que tu penses avoir finit
+- utilise la TDD quand c'est pertinent, demande si nécessaire
 
 ## Sécurité
 
