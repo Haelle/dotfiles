@@ -245,7 +245,9 @@ vim.keymap.set('v', 'gc', function()
   if cs == '' or not cs:find '%%s' then return end
   local start = vim.fn.line 'v'
   local finish = vim.fn.line '.'
-  if start > finish then start, finish = finish, start end
+  if start > finish then
+    start, finish = finish, start
+  end
   local lines = vim.api.nvim_buf_get_lines(0, start - 1, finish, false)
   for i, line in ipairs(lines) do
     lines[i] = toggle_comment(line, cs)
