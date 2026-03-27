@@ -15,7 +15,8 @@ install_fish() {
         mkdir -p "$fish_target/conf.d"
         for file in "$fish_source/conf.d"/*.fish; do
             if [[ -f "$file" ]]; then
-                local filename=$(basename "$file")
+                local filename
+                filename=$(basename "$file")
                 create_symlink "$file" "$fish_target/conf.d/$filename" "fish/conf.d/$filename"
             fi
         done
@@ -26,7 +27,8 @@ install_fish() {
         mkdir -p "$fish_target/functions"
         for file in "$fish_source/functions"/*.fish; do
             if [[ -f "$file" ]]; then
-                local filename=$(basename "$file")
+                local filename
+                filename=$(basename "$file")
                 create_symlink "$file" "$fish_target/functions/$filename" "fish/functions/$filename"
             fi
         done

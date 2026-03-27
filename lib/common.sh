@@ -3,6 +3,7 @@
 
 # Configuration
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export DOTFILES_DIR
 BACKUP_DIR="$HOME/.dotfiles/backup_$(date +%Y%m%d_%H%M%S)"
 DRY_RUN=false
 

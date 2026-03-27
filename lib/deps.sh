@@ -33,8 +33,10 @@ install_deps() {
 
     # Installation réelle
     if command -v pacman &>/dev/null; then
+        # shellcheck disable=SC2046 # Word splitting intentionnel: un paquet par ligne
         sudo pacman -S --needed $(cat "$packages_file")
     elif command -v apt &>/dev/null; then
+        # shellcheck disable=SC2046
         sudo apt install -y $(cat "$packages_file")
     fi
 }
