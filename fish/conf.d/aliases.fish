@@ -42,7 +42,7 @@ alias scu-stop 'systemctl --user stop'
 alias scu-restart 'systemctl --user restart'
 
 # Docker / Podman
-alias dps 'sudo docker ps --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}\t{{.Image}}"'
+alias dps 'docker ps --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}\t{{.Image}}"'
 alias pps 'podman ps --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}\t{{.Image}}"'
 
 # Updates
