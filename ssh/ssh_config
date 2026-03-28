@@ -5,11 +5,11 @@ Include ~/.ssh/config.local
 Host *
     UserKnownHostsFile ~/.ssh/known_hosts
     IdentityFile ~/.ssh/id_ed25519
-
+    
     # Security
     PasswordAuthentication no
     PubkeyAuthentication yes
-    IdentitiesOnly yes
+    # IdentitiesOnly yes
     HashKnownHosts yes
 
     # Use strong algorithms only
