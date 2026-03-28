@@ -2,6 +2,12 @@
 
 Configuration personnelle pour environnement de développement (Ubuntu & Arch/CachyOS).
 
+## Quick Install
+
+```bash
+git clone https://github.com/Haelle/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ./install
+```
+
 ## Installation
 
 ```bash
@@ -164,6 +170,12 @@ Assistant IA en ligne de commande.
 
 ```bash
 ./install claude
+```
+
+### Configuration seule (Docker sandbox)
+
+```bash
+git clone https://github.com/Haelle/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ./install-claude-conf
 ```
 
 ### Ce qui est installé

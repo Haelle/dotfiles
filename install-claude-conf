@@ -1,0 +1,9 @@
+#!/bin/env bash
+set -euo pipefail
+
+source "./lib/common.sh"
+source "./lib/claude.sh"
+
+[[ "${1:-}" == "--dry-run" ]] && DRY_RUN=true
+
+install_claude_conf

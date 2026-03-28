@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 # Installation de la configuration Claude Code
 
-install_claude() {
-    log_header "Claude Code"
+install_claude_bin() {
+    log_header "Claude Code (binaire)"
 
-    # Installer Claude Code
     if command -v claude &>/dev/null; then
         log_info "Claude Code déjà installé"
     elif [[ "$DRY_RUN" == true ]]; then
@@ -13,6 +12,10 @@ install_claude() {
         log_info "Installation de Claude Code..."
         curl -fsSL https://claude.ai/install.sh | bash
     fi
+}
+
+install_claude_conf() {
+    log_header "Claude Code (configuration)"
 
     local claude_home="$HOME/.claude"
 
@@ -30,4 +33,9 @@ install_claude() {
 
     # Statusline
     create_symlink "$DOTFILES_DIR/claude/statusline-command.sh" "$claude_home/statusline-command.sh" "claude-statusline"
+}
+
+install_claude() {
+    install_claude_bin
+    install_claude_conf
 }
