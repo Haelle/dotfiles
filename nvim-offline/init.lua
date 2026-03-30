@@ -64,10 +64,25 @@ vim.api.nvim_set_hl(0, 'StatusCommand', { fg = '#1e1e2e', bg = '#fab387', ctermf
 vim.api.nvim_set_hl(0, 'StatusTerminal', { fg = '#1e1e2e', bg = '#94e2d5', ctermfg = 0, ctermbg = 14, bold = true })
 vim.api.nvim_set_hl(0, 'StatusReplace', { fg = '#1e1e2e', bg = '#f38ba8', ctermfg = 0, ctermbg = 9, bold = true })
 
+-- File explorer (netrw as sidebar tree)
+vim.g.netrw_banner = 1
+vim.g.netrw_liststyle = 3
+vim.g.netrw_winsize = 25
+vim.o.focusevents = false
+
 -- Keymaps
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = 'Clear search highlight' })
 vim.keymap.set('n', '<C-s>', '<cmd>w<CR>', { desc = 'Quick save file [N]ormal mode' })
 vim.keymap.set('i', '<C-s>', '<cmd>w<CR>', { desc = 'Quick save file [I]nsert mode' })
+vim.keymap.set('n', '\\', function()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == 'netrw' then
+      vim.api.nvim_win_close(win, true)
+      return
+    end
+  end
+  vim.cmd '20Lexplore'
+end, { desc = 'Toggle file explorer' })
 vim.keymap.set('n', '<leader>sn', '<cmd>vsplit $MYVIMRC<CR>', { desc = 'Open neovim config' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -131,11 +146,13 @@ local function fzf_grep(query)
   vim.cmd 'startinsert'
 end
 
--- Go to references: grep word under cursor
-vim.keymap.set('n', 'gr', function()
+-- Go to references / search word under cursor
+local function grep_cword()
   local word = vim.fn.expand '<cword>'
   if word ~= '' then fzf_grep(word) end
-end, { desc = 'Go to references' })
+end
+vim.keymap.set('n', 'gr', grep_cword, { desc = 'Go to references' })
+vim.keymap.set('n', '<leader>sw', grep_cword, { desc = 'Search word under cursor' })
 
 -- Search: grep with prompt
 vim.keymap.set('n', '<leader>sg', function()
@@ -255,6 +272,64 @@ vim.keymap.set('v', 'gc', function()
   vim.api.nvim_buf_set_lines(0, start - 1, finish, false, lines)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
 end, { desc = 'Toggle comment selection' })
+
+-- Git signs (added/modified/deleted lines in sign column)
+vim.fn.sign_define('GitAdded', { text = '+', texthl = 'GitAdded' })
+vim.fn.sign_define('GitChanged', { text = '~', texthl = 'GitChanged' })
+vim.fn.sign_define('GitDeleted', { text = '-', texthl = 'GitDeleted' })
+vim.api.nvim_set_hl(0, 'GitAdded', { fg = '#a6e3a1', ctermfg = 10 })
+vim.api.nvim_set_hl(0, 'GitChanged', { fg = '#89b4fa', ctermfg = 12 })
+vim.api.nvim_set_hl(0, 'GitDeleted', { fg = '#f38ba8', ctermfg = 9 })
+
+local function update_git_signs(buf)
+  buf = buf or vim.api.nvim_get_current_buf()
+  vim.fn.sign_unplace('gitsigns', { buffer = buf })
+  local filepath = vim.api.nvim_buf_get_name(buf)
+  if filepath == '' then return end
+
+  vim.fn.jobstart({ 'git', 'diff', '--no-color', '-U0', '--', filepath }, {
+    stdout_buffered = true,
+    on_stdout = function(_, data)
+      if not data then return end
+      local id = 1
+      for _, line in ipairs(data) do
+        -- Parse hunk headers: @@ -old,count +new,count @@
+        local new_start, new_count = line:match '^@@ %-%d+,?%d* %+(%d+),?(%d*) @@'
+        if new_start then
+          new_start = tonumber(new_start)
+          new_count = tonumber(new_count) or 1
+          -- Check if old side has 0 lines (pure addition) or new side has 0 lines (pure deletion)
+          local old_count = line:match '^@@ %-(%d+),?(%d*)'
+          old_count = tonumber(select(2, line:match '^@@ %-(%d+),?(%d*)')) or 1
+          if new_count == 0 then
+            -- Pure deletion: mark the line just before
+            local mark_line = math.max(1, new_start)
+            vim.fn.sign_place(id, 'gitsigns', 'GitDeleted', buf, { lnum = mark_line })
+            id = id + 1
+          elseif old_count == 0 then
+            -- Pure addition
+            for i = 0, new_count - 1 do
+              vim.fn.sign_place(id, 'gitsigns', 'GitAdded', buf, { lnum = new_start + i })
+              id = id + 1
+            end
+          else
+            -- Modification
+            for i = 0, new_count - 1 do
+              vim.fn.sign_place(id, 'gitsigns', 'GitChanged', buf, { lnum = new_start + i })
+              id = id + 1
+            end
+          end
+        end
+      end
+    end,
+  })
+end
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePost' }, {
+  desc = 'Update git diff signs',
+  group = vim.api.nvim_create_augroup('git-signs', { clear = true }),
+  callback = function(args) update_git_signs(args.buf) end,
+})
 
 -- Autocommands
 
