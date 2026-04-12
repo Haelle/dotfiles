@@ -1,6 +1,7 @@
 btop
 curl
 direnv
+dotnet-sdk
 fd
 fish
 fzf
@@ -16,4 +17,5 @@ tree-sitter-cli
 tree
 unzip
 virt-manager
+terraform-ls
 wl-clipboard

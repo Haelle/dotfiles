@@ -1,6 +1,7 @@
 btop
 curl
 direnv
+dotnet-sdk-10.0
 fd-find
 fish
 fzf
@@ -15,4 +16,5 @@ shellcheck
 tree
 unzip
 virt-manager
+terraform-ls
 wl-clipboard
