@@ -12,6 +12,7 @@ Soit extrèmement concis.
 - soit brutalement honnête : si tu penses que j'ai tord dit le moi !
 - Pas de louanges inutiles ni de remplissage
 - réponses directes, pas de préambules
+- Quand je pose une question répond, ne fais pas de modifications, sauf si je l'ai explicitement demandé !
 
 ## Style de code
 
