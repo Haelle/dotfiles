@@ -19,23 +19,50 @@ install_claude_conf() {
 
     local claude_home="$HOME/.claude"
 
-    # Skills (depuis Jeffallan/claude-skills)
-    create_symlink "$DOTFILES_DIR/claude/skills" "$claude_home/skills" "claude-skills"
-
     # Commands custom
     create_symlink "$DOTFILES_DIR/claude/commands" "$claude_home/commands" "claude-commands"
 
     # CLAUDE.md global
     create_symlink "$DOTFILES_DIR/claude/CLAUDE.md" "$claude_home/CLAUDE.md" "claude-md"
 
-    # Settings
-    create_symlink "$DOTFILES_DIR/claude/managed-settings.json" "$claude_home/managed-settings.json" "claude-settings"
+    # Settings (skills, plugins, LSP, permissions, statusline)
+    create_symlink "$DOTFILES_DIR/claude/settings.json" "$claude_home/settings.json" "claude-settings"
 
     # Statusline
     create_symlink "$DOTFILES_DIR/claude/statusline-command.sh" "$claude_home/statusline-command.sh" "claude-statusline"
 }
 
+install_claude_deps() {
+    log_header "Claude Code (dépendances)"
+
+    local npm_packages=(ccusage typescript-language-server typescript pyright bash-language-server yaml-language-server)
+
+    if [[ "$DRY_RUN" == true ]]; then
+        log_dry "npm install -g ${npm_packages[*]}"
+    else
+        log_info "Installation des paquets npm..."
+        npm install -g "${npm_packages[@]}"
+    fi
+
+    # lua-language-server (install depuis GitHub releases)
+    local luals_dir="$HOME/.local/lib/lua-language-server"
+    if command -v lua-language-server &>/dev/null || [[ -x "$luals_dir/bin/lua-language-server" ]]; then
+        log_info "lua-language-server déjà installé"
+    elif [[ "$DRY_RUN" == true ]]; then
+        log_dry "installer lua-language-server depuis GitHub releases"
+    else
+        local luals_version
+        luals_version=$(curl -sL https://api.github.com/repos/LuaLS/lua-language-server/releases/latest | jq -r '.tag_name')
+        log_info "Installation de lua-language-server ${luals_version}..."
+        mkdir -p "$luals_dir"
+        curl -sL "https://github.com/LuaLS/lua-language-server/releases/download/${luals_version}/lua-language-server-${luals_version}-linux-x64.tar.gz" \
+            | tar xz -C "$luals_dir"
+        ln -sf "$luals_dir/bin/lua-language-server" "$HOME/.local/bin/lua-language-server"
+    fi
+}
+
 install_claude() {
     install_claude_bin
+    install_claude_deps
     install_claude_conf
 }
