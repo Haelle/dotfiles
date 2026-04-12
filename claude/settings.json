@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-command.sh"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "csharp-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "bash-language-server@claude-code-lsps": true,
+    "terraform-ls@claude-code-lsps": true,
+    "yaml-language-server@claude-code-lsps": true,
+    "api-designer@fullstack-dev-skills": true,
+    "architecture-designer@fullstack-dev-skills": true,
+    "chaos-engineer@fullstack-dev-skills": true,
+    "cli-developer@fullstack-dev-skills": true,
+    "cloud-architect@fullstack-dev-skills": true,
+    "code-documenter@fullstack-dev-skills": true,
+    "code-reviewer@fullstack-dev-skills": true,
+    "csharp-developer@fullstack-dev-skills": true,
+    "database-optimizer@fullstack-dev-skills": true,
+    "debugging-wizard@fullstack-dev-skills": true,
+    "devops-engineer@fullstack-dev-skills": true,
+    "django-expert@fullstack-dev-skills": true,
+    "dotnet-core-expert@fullstack-dev-skills": true,
+    "fastapi-expert@fullstack-dev-skills": true,
+    "feature-forge@fullstack-dev-skills": true,
+    "fine-tuning-expert@fullstack-dev-skills": true,
+    "fullstack-guardian@fullstack-dev-skills": true,
+    "game-developer@fullstack-dev-skills": true,
+    "javascript-pro@fullstack-dev-skills": true,
+    "kubernetes-specialist@fullstack-dev-skills": true,
+    "legacy-modernizer@fullstack-dev-skills": true,
+    "mcp-developer@fullstack-dev-skills": true,
+    "microservices-architect@fullstack-dev-skills": true,
+    "monitoring-expert@fullstack-dev-skills": true,
+    "nextjs-developer@fullstack-dev-skills": true,
+    "pandas-pro@fullstack-dev-skills": true,
+    "playwright-expert@fullstack-dev-skills": true,
+    "postgres-pro@fullstack-dev-skills": true,
+    "prompt-engineer@fullstack-dev-skills": true,
+    "python-pro@fullstack-dev-skills": true,
+    "rails-expert@fullstack-dev-skills": true,
+    "secure-code-guardian@fullstack-dev-skills": true,
+    "security-reviewer@fullstack-dev-skills": true,
+    "sql-pro@fullstack-dev-skills": true,
+    "sre-engineer@fullstack-dev-skills": true,
+    "svelte-core-bestpractices@fullstack-dev-skills": true,
+    "terraform-engineer@fullstack-dev-skills": true,
+    "test-master@fullstack-dev-skills": true,
+    "the-fool@fullstack-dev-skills": true,
+    "typescript-pro@fullstack-dev-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "fullstack-dev-skills": {
+      "source": {
+        "source": "github",
+        "repo": "jeffallan/claude-skills"
+      }
+    },
+    "dsfr-skill": {
+      "source": {
+        "source": "github",
+        "repo": "numerique-gouv/dsfr-skill"
+      }
+    },
+    "claude-code-lsps": {
+      "source": {
+        "source": "github",
+        "repo": "boostvolt/claude-code-lsps"
+      }
+    }
+  },
+  "permissions": {
+    "deny": [
+      "Read(**.env)",
+      "Read(**.env.*)",
+      "Read(**/*token*)",
+      "Read(**/*TOKEN*)",
+      "Read(**master.key)",
+      "Read(**sandbox.key)",
+      "Read(**staging.key)",
+      "Read(**production.key)"
+    ]
+  }
+}
