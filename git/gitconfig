@@ -32,6 +32,7 @@
   tool = vimdiff
 [merge]
   tool = vimdiff
+  ff = only
 [credential]
   helper = cache
 [core]
