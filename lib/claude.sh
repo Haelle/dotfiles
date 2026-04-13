@@ -44,6 +44,18 @@ install_claude_deps() {
         npm install -g "${npm_packages[@]}"
     fi
 
+    # terraform-ls (AUR uniquement, installé via paru)
+    if command -v terraform-ls &>/dev/null; then
+        log_info "terraform-ls déjà installé"
+    elif ! command -v paru &>/dev/null; then
+        log_warning "paru non trouvé, impossible d'installer terraform-ls (AUR)"
+    elif [[ "$DRY_RUN" == true ]]; then
+        log_dry "paru -S terraform-ls"
+    else
+        log_info "Installation de terraform-ls depuis l'AUR..."
+        paru -S --noconfirm --skipreview terraform-ls
+    fi
+
     # lua-language-server (install depuis GitHub releases)
     local luals_dir="$HOME/.local/lib/lua-language-server"
     if command -v lua-language-server &>/dev/null || [[ -x "$luals_dir/bin/lua-language-server" ]]; then

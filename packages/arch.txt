@@ -17,5 +17,4 @@ tree-sitter-cli
 tree
 unzip
 virt-manager
-terraform-ls
 wl-clipboard
