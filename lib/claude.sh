@@ -56,6 +56,30 @@ install_claude_deps() {
         paru -S --noconfirm --skipreview terraform-ls
     fi
 
+    # OmniSharp C# LSP (install depuis GitHub releases, méthode Mason)
+    local omnisharp_dir="$HOME/.local/lib/omnisharp"
+    if [[ -f "$omnisharp_dir/OmniSharp.dll" ]]; then
+        log_info "OmniSharp déjà installé"
+    elif [[ "$DRY_RUN" == true ]]; then
+        log_dry "installer OmniSharp depuis GitHub releases"
+    else
+        local omnisharp_version
+        omnisharp_version=$(curl -sL https://api.github.com/repos/OmniSharp/omnisharp-roslyn/releases/latest | jq -r '.tag_name')
+        log_info "Installation de OmniSharp ${omnisharp_version}..."
+        mkdir -p "$omnisharp_dir"
+        local tmp_zip
+        tmp_zip=$(mktemp /tmp/omnisharp-XXXXXX.zip)
+        curl -sL -o "$tmp_zip" "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/${omnisharp_version}/omnisharp-linux-x64-net6.0.zip"
+        unzip -qo "$tmp_zip" -d "$omnisharp_dir"
+        rm "$tmp_zip"
+        # Wrapper script: lance via dotnet runtime (comme Mason)
+        cat > "$HOME/.local/bin/OmniSharp" <<WRAPPER
+#!/usr/bin/env bash
+exec dotnet "$omnisharp_dir/OmniSharp.dll" "\$@"
+WRAPPER
+        chmod +x "$HOME/.local/bin/OmniSharp"
+    fi
+
     # lua-language-server (install depuis GitHub releases)
     local luals_dir="$HOME/.local/lib/lua-language-server"
     if command -v lua-language-server &>/dev/null || [[ -x "$luals_dir/bin/lua-language-server" ]]; then
