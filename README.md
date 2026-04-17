@@ -209,15 +209,17 @@ Par contre Fish a besoin d'internet mais une installation locale peut être expo
 
 ```bash
 cp -rL ~/.config/fish /tmp/fish && tar czf fish.tar.gz -C /tmp fish && rm -rf /tmp/fish
+tar czf meslo-nerd.tar.gz -C ~/.local/share/fonts Meslo
 ```
 
 Sur la machine cible :
 
 ```bash
 tar xzf fish.tar.gz -C ~/.config/
+mkdir -p ~/.local/share/fonts && tar xzf meslo-nerd.tar.gz -C ~/.local/share/fonts/ && fc-cache -f ~/.local/share/fonts/Meslo
 ```
 
-P.S: les dépendances sont `fish`, `fzf`, `git`, `jq`, `tree` et `direnv`. Elles sont installées si `./install git (et/ou) tmux (et/ou) ssh` ont été installés.
+P.S: les dépendances sont `fish`, `fzf`, `git`, `jq`, `tree` et `direnv`. Elles sont installées si `./install git (et/ou) tmux (et/ou) ssh` ont été installés. La police MesloLGS Nerd Font est nécessaire pour le prompt Tide (icônes) : sur Arch elle vient du paquet `ttf-meslo-nerd`, sur Ubuntu l'export ci-dessus la transfère depuis `~/.local/share/fonts/Meslo`.
 
 ### NeoVim offline
 
