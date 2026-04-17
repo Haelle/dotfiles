@@ -39,4 +39,21 @@ install_deps() {
         # shellcheck disable=SC2046
         sudo apt install -y $(cat "$packages_file")
     fi
+
+    # Nerd Fonts (Meslo) - Ubuntu uniquement, Arch via pacman (ttf-meslo-nerd)
+    if command -v apt &>/dev/null && ! fc-list | grep -qi "meslo.*nerd"; then
+        if [[ "$DRY_RUN" == true ]]; then
+            log_dry "installer MesloLGS Nerd Font depuis GitHub releases"
+        else
+            log_info "Installation de MesloLGS Nerd Font..."
+            local font_dir="$HOME/.local/share/fonts/Meslo"
+            mkdir -p "$font_dir"
+            local nf_version
+            nf_version=$(curl -sL https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r '.tag_name')
+            curl -sL "https://github.com/ryanoasis/nerd-fonts/releases/download/${nf_version}/Meslo.tar.xz" \
+                | tar xJ -C "$font_dir"
+            fc-cache -f "$font_dir"
+            log_success "MesloLGS Nerd Font installée"
+        fi
+    fi
 }
