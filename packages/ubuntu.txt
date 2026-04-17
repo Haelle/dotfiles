@@ -16,5 +16,4 @@ shellcheck
 tree
 unzip
 virt-manager
-terraform-ls
 wl-clipboard

@@ -44,16 +44,31 @@ install_claude_deps() {
         npm install -g "${npm_packages[@]}"
     fi
 
-    # terraform-ls (AUR uniquement, installé via paru)
+    # terraform-ls
     if command -v terraform-ls &>/dev/null; then
         log_info "terraform-ls déjà installé"
-    elif ! command -v paru &>/dev/null; then
-        log_warning "paru non trouvé, impossible d'installer terraform-ls (AUR)"
-    elif [[ "$DRY_RUN" == true ]]; then
-        log_dry "paru -S terraform-ls"
+    elif command -v paru &>/dev/null; then
+        # Arch: AUR via paru
+        if [[ "$DRY_RUN" == true ]]; then
+            log_dry "paru -S terraform-ls"
+        else
+            log_info "Installation de terraform-ls depuis l'AUR..."
+            paru -S --noconfirm --skipreview terraform-ls
+        fi
+    elif command -v apt &>/dev/null; then
+        # Ubuntu/Debian: nécessite le dépôt HashiCorp
+        if [[ "$DRY_RUN" == true ]]; then
+            log_dry "ajout du dépôt HashiCorp + apt install terraform-ls"
+        else
+            log_info "Ajout du dépôt HashiCorp..."
+            curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+                | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null
+            sudo apt update -qq
+            sudo apt install -y terraform-ls
+        fi
     else
-        log_info "Installation de terraform-ls depuis l'AUR..."
-        paru -S --noconfirm --skipreview terraform-ls
+        log_warning "Impossible d'installer terraform-ls: ni paru ni apt disponible"
     fi
 
     # OmniSharp C# LSP (install depuis GitHub releases, méthode Mason)
