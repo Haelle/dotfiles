@@ -19,8 +19,7 @@ Soit extrèmement concis.
 - Privilégie la simplicité et la lisibilité
 - Pas de sur-ingénierie : résous le problème actuel, pas les problèmes hypothétiques
 - Préfère les modifications minimales et ciblées
-- dans la mesure du possible (principalement en bash) ajoute de la coloration syntaxique au sortie de code
-- Ajoute des couleurs pour l'affichage destiné à l'utilisateur quand c'est pertinent (particulièrement pour les scripts bash) (ROUGE/VERT/JAUNE/BLEU)
+- dans la mesure du possible et quand c'est pertinent (principalement en bash) ajoute de la coloration syntaxique au sortie de code (ROUGE/VERT/JAUNE/BLEU)
 - Ces principes s'appliquent à tout code produit : applicatif, scripts, configuration, infrastructure
 
 ## Git
@@ -42,6 +41,7 @@ Soit extrèmement concis.
 
 ## Workflow
 
+- vérifie toujours si un LSP est diposnible avant de travailler sur du code, s'il y en a un qui ne fonctionne pas arrête toi et dit le
 - Lis toujours le code existant avant de proposer des modifications
 - Utilise les outils dédiés (Read, Edit, Grep, Glob) plutôt que bash quand possible
 - Teste les changements quand un framework de test est disponible
