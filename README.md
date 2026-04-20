@@ -74,6 +74,16 @@ chsh -s $(which fish) # Définir Fish comme shell par défaut
 - **fzf.fish** - Intégration fzf (Ctrl-R historique, Ctrl-T fichiers)
 - **direnv** - Variables d'environnement par dossier
 
+### Configs locales non versionnées
+
+`fish/conf.d/load-local.fish` source automatiquement tous les `*.fish` de `~/.config/fish/local.d/` au démarrage. Idéal pour les secrets et configs spécifiques à une machine.
+
+```fish
+# ~/.config/fish/local.d/secrets.fish
+set -gx GITHUB_PERSONAL_ACCESS_TOKEN ghp_xxxxxxxxxxxx
+set -gx TFE_TOKEN xxxxxx
+```
+
 ### Aliases
 
 | Alias             | Commande                                              |
