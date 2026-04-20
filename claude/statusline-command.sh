@@ -46,6 +46,22 @@ format_tokens() {
   fi
 }
 
+# Extract current context usage from transcript
+transcript_path=$(echo "$input" | jq -r '.transcript_path // empty' 2>/dev/null)
+context_tokens=""
+context_pct=""
+if [[ -n "$transcript_path" && -f "$transcript_path" ]]; then
+  context_tokens=$(tac "$transcript_path" | jq -r 'select(.message.usage?) | .message.usage | (.input_tokens + (.cache_read_input_tokens // 0) + (.cache_creation_input_tokens // 0))' 2>/dev/null | head -n1)
+  if [[ "$context_tokens" =~ ^[0-9]+$ ]]; then
+    if [[ "$model_name" == *"1M"* || "$model_name" == *"1m"* ]]; then
+      max_context=1000000
+    else
+      max_context=200000
+    fi
+    context_pct=$(( context_tokens * 100 / max_context ))
+  fi
+fi
+
 # Get ccusage information (check if ccusage command exists)
 if command -v ccusage >/dev/null 2>&1; then
   TODAY_DATA=$(ccusage --json 2>/dev/null | jq --arg today "$(date +%Y-%m-%d)" '.daily[] | select(.date == $today)')
@@ -66,6 +82,16 @@ fi
 # Daily usage info (if available)
 if [[ -n "$TODAY_DATA" ]]; then
   printf '%s' " [Tokens ${TOTAL_TOKENS}k ($TOTAL_COST$)]"
+fi
+
+# Current context usage (yellow)
+if [[ -n "$context_tokens" && -n "$context_pct" ]]; then
+  formatted_ctx=$(format_tokens "$context_tokens")
+  if command -v tput >/dev/null 2>&1; then
+    printf ' %s[Contexte %s - %d%%]%s' "$(tput setaf 3)" "$formatted_ctx" "$context_pct" "$(tput sgr0)"
+  else
+    printf ' [Contexte %s - %d%%]' "$formatted_ctx" "$context_pct"
+  fi
 fi
 
 # Directory in clearer blue (bright blue)
