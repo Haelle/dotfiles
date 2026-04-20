@@ -22,21 +22,9 @@ install_neovim() {
         fi
     fi
 
-    # Installation asdf (binaire Go) si absent
-    if [[ "$DRY_RUN" == true ]]; then
-        log_dry "Installation de asdf depuis GitHub releases"
-    else
-        if ! command -v asdf &>/dev/null; then
-            log_info "Installation de asdf..."
-            local asdf_version
-            asdf_version=$(curl -s https://api.github.com/repos/asdf-vm/asdf/releases/latest | grep -Po '"tag_name": "\K[^"]+')
-            curl -fsSL "https://github.com/asdf-vm/asdf/releases/download/${asdf_version}/asdf-${asdf_version}-linux-amd64.tar.gz" \
-                | sudo tar -xz -C /usr/local/bin/ \
-                && log_success "asdf ${asdf_version} installé" \
-                || { log_warning "Installation asdf échouée"; }
-        fi
-        export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:/usr/local/bin:$PATH"
-    fi
+    # asdf + Node.js (factorisé dans lib/asdf.sh)
+    install_asdf_bin
+    install_node_via_asdf
 
     # Backup de ~/.config/nvim si existant
     if [[ -e "$nvim_config" ]]; then
@@ -85,27 +73,8 @@ install_neovim() {
         fi
     fi
 
-    # Installation de Node:latest via asdf
-    local tool_versions="$HOME/.tool-versions"
-    if [[ "$DRY_RUN" == true ]]; then
-        log_dry "asdf plugin add nodejs"
-        log_dry "asdf install nodejs lts"
-        log_dry "Ajout de NodeJS lts dans $tool_versions"
-        log_dry "asdf reshim nodejs"
-    else    
-        log_info "Installation de NodeJS via asdf..."
-        asdf plugin add nodejs || true
-        asdf install nodejs lts && log_success "NodeJS lts installé via asdf" || { log_warning "Installation NodeJS via asdf échouée"; return; }
-        if ! grep -q "^nodejs " "$tool_versions" 2>/dev/null; then
-            echo "nodejs lts" >> "$tool_versions"
-            log_success "nodejs lts ajouté dans $tool_versions"
-        else
-            log_info "nodejs déjà présent dans $tool_versions"
-        fi
-        asdf reshim nodejs
-    fi
-
     # Installation NeoVim via asdf
+    local tool_versions="$HOME/.tool-versions"
     if [[ "$DRY_RUN" == true ]]; then
         log_dry "asdf plugin add neovim"
         log_dry "asdf install neovim stable"

@@ -181,6 +181,7 @@ git clone https://github.com/Haelle/dotfiles.git ~/.dotfiles && cd ~/.dotfiles &
 ### Ce qui est installé
 
 - **Claude Code** via le script officiel (si pas déjà présent)
+- **asdf + Node.js** (cf. section asdf ci-dessous) — requis pour les LSPs npm et le MCP svelte
 - **CLAUDE.md global** — instructions personnalisées (langue, style de code, git, sécurité)
 - **Skills** — collection de skills spécialisés (React, Python, DevOps, SQL, etc.)
 - **Commands** — commandes custom (`/bugfix`, `/plan`, `/pr-review`, `/fix-latest-build`, etc.)
@@ -194,6 +195,22 @@ Les fichiers sensibles sont bloqués en lecture par les settings :
 - `.env`, `.env.*`
 - `*token*`, `*TOKEN*`
 - `master.key`, `sandbox.key`, `staging.key`, `production.key`
+
+## asdf
+
+Gestionnaire de runtimes (Node, NeoVim, etc.) — dépendance commune des modules `claude` et `neovim`.
+
+Le binaire asdf est installé dans `~/.local/bin/asdf` (téléchargé depuis GitHub releases) et la config fish (`fish/conf.d/asdf.fish`) ajoute `~/.asdf/shims` au PATH.
+
+### Versions épinglées
+
+Définies en haut de `lib/asdf.sh` pour rester synchrones entre les PC :
+
+| Variable       | Version actuelle | Usage                         |
+| -------------- | ---------------- | ----------------------------- |
+| `NODE_VERSION` | `24.14.0`        | LSPs npm (Claude), MCP svelte |
+
+Pour mettre à jour : éditer la variable puis relancer `./install claude` (ou `./install neovim`).
 
 ## Offline install
 

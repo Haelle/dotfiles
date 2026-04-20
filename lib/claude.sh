@@ -35,13 +35,19 @@ install_claude_conf() {
 install_claude_deps() {
     log_header "Claude Code (dépendances)"
 
+    # asdf + Node.js (factorisé dans lib/asdf.sh) — requis pour npm et MCP svelte
+    install_asdf_bin
+    install_node_via_asdf
+
     local npm_packages=(ccusage typescript-language-server typescript pyright bash-language-server yaml-language-server)
 
     if [[ "$DRY_RUN" == true ]]; then
         log_dry "npm install -g ${npm_packages[*]}"
-    else
+    elif command -v npm &>/dev/null; then
         log_info "Installation des paquets npm..."
         npm install -g "${npm_packages[@]}"
+    else
+        log_warning "npm introuvable, skip des paquets npm"
     fi
 
     # terraform-ls

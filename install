@@ -9,6 +9,7 @@ set -euo pipefail
 # Charger les libs
 source "./lib/common.sh"
 source "./lib/deps.sh"
+source "./lib/asdf.sh"
 source "./lib/fish.sh"
 source "./lib/git.sh"
 source "./lib/ssh.sh"
