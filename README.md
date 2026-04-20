@@ -310,3 +310,59 @@ La config est symlinquée depuis `nvim-offline/` vers `~/.config/nvim`.
 - `.gitlab-ci.yml`
 - `values*.yml/yaml` (Helm)
 - `*.mdx` → markdown
+
+## Simian Programmer Plugin (SPP)
+
+Plugin Claude Code qui force à garder la main sur le code pour ne pas perdre ses compétences. Idée : définir un % de commits humains à atteindre, sinon Claude passe en mode coaching au lieu d'écrire le code lui-même.
+
+Repo : <https://github.com/mlolson/claude-spp>
+
+### Installation SPP
+
+```bash
+# installe le CLI npm et le plugin Claude
+./install claude
+```
+
+### Activer sur un projet
+
+```bash
+cd /chemin/projet
+spp init
+```
+
+Crée la config locale (`.spp/` ou similaire) et démarre le suivi.
+
+### Commandes principales
+
+| Commande         | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| `spp init`       | Initialiser SPP dans le projet courant                       |
+| `spp stats`      | Afficher le ratio humain/Claude et les statistiques          |
+| `spp modes`      | Lister les modes disponibles                                 |
+| `spp mode [n]`   | Voir ou changer le mode (1-2)                                |
+| `spp drive`      | Toggle "drive mode" — tu codes, Claude se limite au coaching |
+| `spp settings`   | Voir/modifier la config (target %, window, tracking…)        |
+| `spp transcript` | Voir les transcripts live ou archivés                        |
+| `spp pause`      | Suspendre l'enforcement pendant 24h                          |
+| `spp resume`     | Reprendre l'enforcement                                      |
+| `spp reset`      | Reset du tracking au commit courant                          |
+| `/coach`         | (dans Claude Code) Coaching sur la session drive courante    |
+
+### Config typique
+
+`spp settings` expose notamment :
+
+- `targetPercentage` : part de commits humains visée (`10`, `25`, `50`, `100`)
+- `trackingMode` : `commits` ou `lines`
+- `statsWindow` : `oneDay`, `oneWeek`, `allTime`
+- `modeType` : ex. `weeklyGoal`
+
+SPP distingue les commits humains des commits Claude via le trailer `Co-Authored-By: Claude`. Sous la cible, Claude refuse d'écrire du code tant que le ratio n'est pas rattrapé.
+
+### Usage type (drive mode)
+
+1. `spp drive` — active le mode où Claude ne peut plus écrire de code.
+2. Code toi-même, pose des questions, demande des explications.
+3. À la fin de la session, `/coach` dans Claude pour obtenir un retour basé sur le transcript de la session.
+4. `spp drive` à nouveau pour désactiver.

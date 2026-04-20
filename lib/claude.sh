@@ -39,7 +39,7 @@ install_claude_deps() {
     install_asdf_bin
     install_node_via_asdf
 
-    local npm_packages=(ccusage typescript-language-server typescript pyright bash-language-server yaml-language-server)
+    local npm_packages=(ccusage claude-spp typescript-language-server typescript pyright bash-language-server yaml-language-server)
 
     if [[ "$DRY_RUN" == true ]]; then
         log_dry "npm install -g ${npm_packages[*]}"
