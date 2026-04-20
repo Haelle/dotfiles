@@ -41,6 +41,7 @@ Soit extrèmement concis.
 
 ## Workflow
 
+- avant d'explorer du code ou de proposer une analyse vérifie la liste des skills disponibles. Si une skill matche la tâche (description ou trigger keywords) invoque là !
 - vérifie toujours si un LSP est diposnible avant de travailler sur du code, s'il y en a un qui ne fonctionne pas arrête toi et dit le
 - Lis toujours le code existant avant de proposer des modifications
 - Utilise les outils dédiés (Read, Edit, Grep, Glob) plutôt que bash quand possible

@@ -1,81 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline-command.sh"
-  },
   "attribution": {
     "commit": "",
     "pr": ""
-  },
-  "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "csharp-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "bash-language-server@claude-code-lsps": true,
-    "terraform-ls@claude-code-lsps": true,
-    "yaml-language-server@claude-code-lsps": true,
-    "api-designer@fullstack-dev-skills": true,
-    "architecture-designer@fullstack-dev-skills": true,
-    "chaos-engineer@fullstack-dev-skills": true,
-    "cli-developer@fullstack-dev-skills": true,
-    "cloud-architect@fullstack-dev-skills": true,
-    "code-documenter@fullstack-dev-skills": true,
-    "code-reviewer@fullstack-dev-skills": true,
-    "csharp-developer@fullstack-dev-skills": true,
-    "database-optimizer@fullstack-dev-skills": true,
-    "debugging-wizard@fullstack-dev-skills": true,
-    "devops-engineer@fullstack-dev-skills": true,
-    "django-expert@fullstack-dev-skills": true,
-    "dotnet-core-expert@fullstack-dev-skills": true,
-    "fastapi-expert@fullstack-dev-skills": true,
-    "feature-forge@fullstack-dev-skills": true,
-    "fine-tuning-expert@fullstack-dev-skills": true,
-    "fullstack-guardian@fullstack-dev-skills": true,
-    "game-developer@fullstack-dev-skills": true,
-    "javascript-pro@fullstack-dev-skills": true,
-    "kubernetes-specialist@fullstack-dev-skills": true,
-    "legacy-modernizer@fullstack-dev-skills": true,
-    "mcp-developer@fullstack-dev-skills": true,
-    "microservices-architect@fullstack-dev-skills": true,
-    "monitoring-expert@fullstack-dev-skills": true,
-    "nextjs-developer@fullstack-dev-skills": true,
-    "pandas-pro@fullstack-dev-skills": true,
-    "playwright-expert@fullstack-dev-skills": true,
-    "postgres-pro@fullstack-dev-skills": true,
-    "prompt-engineer@fullstack-dev-skills": true,
-    "python-pro@fullstack-dev-skills": true,
-    "rails-expert@fullstack-dev-skills": true,
-    "secure-code-guardian@fullstack-dev-skills": true,
-    "security-reviewer@fullstack-dev-skills": true,
-    "sql-pro@fullstack-dev-skills": true,
-    "sre-engineer@fullstack-dev-skills": true,
-    "svelte-core-bestpractices@fullstack-dev-skills": true,
-    "terraform-engineer@fullstack-dev-skills": true,
-    "test-master@fullstack-dev-skills": true,
-    "the-fool@fullstack-dev-skills": true,
-    "typescript-pro@fullstack-dev-skills": true
-  },
-  "extraKnownMarketplaces": {
-    "fullstack-dev-skills": {
-      "source": {
-        "source": "github",
-        "repo": "jeffallan/claude-skills"
-      }
-    },
-    "dsfr-skill": {
-      "source": {
-        "source": "github",
-        "repo": "numerique-gouv/dsfr-skill"
-      }
-    },
-    "claude-code-lsps": {
-      "source": {
-        "source": "github",
-        "repo": "boostvolt/claude-code-lsps"
-      }
-    }
   },
   "permissions": {
     "deny": [
@@ -88,5 +15,78 @@
       "Read(**staging.key)",
       "Read(**production.key)"
     ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"Avant de répondre, vérifie la liste des skills disponibles dans le system-reminder. Si une skill matche la tâche (description ou trigger keywords), invoque-la systématiquement via le tool Skill avant de produire du code ou une analyse.\"}}'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "csharp-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "terraform@claude-plugins-official": true,
+    "bash-language-server@claude-code-lsps": true,
+    "terraform-ls@claude-code-lsps": true,
+    "yaml-language-server@claude-code-lsps": true,
+    "fullstack-dev-skills@fullstack-dev-skills": true,
+    "svelte@svelte": true,
+    "dsfr-skill@dsfr-skill": true,
+    "pixel-plugin@pixel-plugin": true,
+    "spp@claude-spp": true
+  },
+  "extraKnownMarketplaces": {
+    "fullstack-dev-skills": {
+      "source": {
+        "source": "github",
+        "repo": "jeffallan/claude-skills"
+      }
+    },
+    "svelte": {
+      "source": {
+        "source": "github",
+        "repo": "sveltejs/ai-tools"
+      }
+    },
+    "claude-code-lsps": {
+      "source": {
+        "source": "github",
+        "repo": "boostvolt/claude-code-lsps"
+      }
+    },
+    "dsfr-skill": {
+      "source": {
+        "source": "github",
+        "repo": "numerique-gouv/dsfr-skill"
+      }
+    },
+    "pixel-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "willibrandon/pixel-plugin"
+      }
+    },
+    "claude-spp": {
+      "source": {
+        "source": "github",
+        "repo": "mlolson/claude-spp"
+      }
+    }
   }
 }
