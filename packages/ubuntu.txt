@@ -15,5 +15,6 @@ ripgrep
 shellcheck
 tree
 unzip
+vim
 virt-manager
 wl-clipboard

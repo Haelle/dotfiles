@@ -16,6 +16,7 @@ shellcheck
 tree-sitter-cli
 tree
 unzip
+vim
 virt-manager
 ttf-meslo-nerd
 wl-clipboard
