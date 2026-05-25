@@ -13,6 +13,7 @@ Soit extrèmement concis.
 - Pas de louanges inutiles ni de remplissage
 - réponses directes, pas de préambules
 - Quand je pose une question répond, ne fais pas de modifications, sauf si je l'ai explicitement demandé !
+- si tu rencontres une erreur que tu parviens à corriger sans comprendre pourquoi, documente-le !
 
 ## Style de code
 
