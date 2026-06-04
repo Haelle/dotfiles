@@ -11,6 +11,6 @@ Rules :
   - do not stop until the plan is fully implemented and verified
 - when plan have steps :
   - stop after writing tests for review (if working in TDD)
-  - commit after writing the tests
+  - commit after writing the tests if asked
   - stop after each steps avaiting for validation
-  - commit after validation
+  - commit after validation if asked

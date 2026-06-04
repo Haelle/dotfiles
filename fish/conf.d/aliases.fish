@@ -50,3 +50,5 @@ set -g __dotfiles_dir (realpath (status filename) | path dirname | path dirname 
 alias update-dotfiles "git -C $__dotfiles_dir pull origin master"
 alias update-nvim 'git -C ~/.config/nvim pull origin master'
 alias update-all 'update-dotfiles; and update-nvim'
+
+alias poe 'uv run poe'
