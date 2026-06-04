@@ -22,6 +22,7 @@ Soit extrèmement concis.
 - Préfère les modifications minimales et ciblées
 - dans la mesure du possible et quand c'est pertinent (principalement en bash) ajoute de la coloration syntaxique au sortie de code (ROUGE/VERT/JAUNE/BLEU)
 - Ces principes s'appliquent à tout code produit : applicatif, scripts, configuration, infrastructure
+- En markdown, pas de retour à la ligne dur — une ligne par paragraphe
 
 ## Git
 
