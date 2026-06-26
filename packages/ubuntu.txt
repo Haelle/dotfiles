@@ -13,6 +13,7 @@ make
 qemu-system
 ripgrep
 shellcheck
+silversearcher-ag
 tree
 unzip
 vim

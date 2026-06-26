@@ -13,6 +13,7 @@ make
 qemu-full
 ripgrep
 shellcheck
+silversearcher-ag
 tree-sitter-cli
 tree
 unzip
