@@ -40,7 +40,28 @@ Configuration sécurisée avec :
 
 ## Git
 
-Configuration avec signature SSH des commits.
+Configuration avec signature SSH des commits. Générer la clef :
+
+```sh
+ssh-keygen -t ed25519
+```
+
+L'ajouter dans le `~/.gitconfig.local` :
+
+```gitconfig
+[user]
+  email = email@example.com
+  signingkey = ~/.ssh/id_ed25519.pub
+
+# vim: set ft=gitconfig:
+```
+
+La référencer dans les signataires autorisés :
+
+```bash
+mkdir -p ~/.config/git
+echo "mail@example.com" $(cat ~/.ssh/id_ed25519.pub)" >> ~/.config/git/allowed_signers
+```
 
 ### Alias utiles
 
