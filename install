@@ -17,6 +17,7 @@ source "./lib/tmux.sh"
 source "./lib/neovim.sh"
 source "./lib/claude.sh"
 source "./lib/ngrok.sh"
+source "./lib/firefox.sh"
 
 MODULES=()
 
@@ -26,7 +27,7 @@ Usage: $(basename "$0") [OPTIONS] [MODULES...]
 
 Installation des dotfiles.
 
-Modules disponibles: fish, git, ssh, tmux, neovim, claude, ngrok
+Modules disponibles: fish, git, ssh, tmux, neovim, claude, ngrok, firefox
 Sans module spécifié, tout est installé.
 
 Options:
@@ -42,7 +43,7 @@ EOF
     exit 0
 }
 
-ALL_MODULES=(fish git ssh tmux neovim claude ngrok)
+ALL_MODULES=(fish git ssh tmux neovim claude ngrok firefox)
 
 parse_args() {
     while [[ $# -gt 0 ]]; do
@@ -54,7 +55,7 @@ parse_args() {
             -h|--help)
                 usage
                 ;;
-            fish|git|ssh|tmux|neovim|claude|ngrok)
+            fish|git|ssh|tmux|neovim|claude|ngrok|firefox)
                 MODULES+=("$1")
                 shift
                 ;;
@@ -102,6 +103,7 @@ main() {
     should_install neovim && install_neovim
     should_install claude && install_claude
     should_install ngrok  && install_ngrok
+    should_install firefox && install_firefox
 
     echo ""
     if [[ "$DRY_RUN" == true ]]; then
