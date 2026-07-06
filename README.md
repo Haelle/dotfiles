@@ -256,7 +256,11 @@ Pour `git`, `tmux`, `ssh` pas de dépendances offline, on peut donc cloner et fa
 Par contre Fish a besoin d'internet mais une installation locale peut être exportée car ça ne nécessite aucune dépendances qui ne soit dans un dépôt Debian/Ubuntu. Sur la machine source :
 
 ```bash
-cp -rL ~/.config/fish /tmp/fish && tar czf fish.tar.gz -C /tmp fish && rm -rf /tmp/fish
+cp -rL ~/.config/fish /tmp/fish
+# Retirer le source de Rust/Cargo : non dispo dans les dépôts Debian, donc absent
+# en offline → sinon Fish lève une erreur "while sourcing ~/.cargo/env.fish" au démarrage.
+rm -f /tmp/fish/conf.d/rustup.fish
+tar czf fish.tar.gz -C /tmp fish && rm -rf /tmp/fish
 tar czf meslo-nerd.tar.gz -C ~/.local/share/fonts Meslo
 ```
 
@@ -265,6 +269,7 @@ Sur la machine cible :
 ```bash
 tar xzf fish.tar.gz -C ~/.config/
 mkdir -p ~/.local/share/fonts && tar xzf meslo-nerd.tar.gz -C ~/.local/share/fonts/ && fc-cache -f ~/.local/share/fonts/Meslo
+chsh -s $(which fish)
 ```
 
 P.S: les dépendances sont `fish`, `fzf`, `git`, `jq`, `tree` et `direnv`. Elles sont installées si `./install git (et/ou) tmux (et/ou) ssh` ont été installés. La police MesloLGS Nerd Font est nécessaire pour le prompt Tide (icônes) : sur Arch elle vient du paquet `ttf-meslo-nerd`, sur Ubuntu l'export ci-dessus la transfère depuis `~/.local/share/fonts/Meslo`.
