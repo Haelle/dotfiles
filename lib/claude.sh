@@ -80,6 +80,9 @@ install_claude_conf() {
 
     # Statusline
     create_symlink "$DOTFILES_DIR/claude/statusline-command.sh" "$claude_home/statusline-command.sh" "claude-statusline"
+
+    # Notification desktop (hook Notification -> notify-send)
+    create_symlink "$DOTFILES_DIR/claude/cc-notify.sh" "$claude_home/cc-notify.sh" "claude-cc-notify"
 }
 
 install_claude_deps() {
