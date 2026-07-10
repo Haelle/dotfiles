@@ -14,6 +14,53 @@ install_claude_bin() {
     fi
 }
 
+# Fusionne notre settings.json minimal dans le live (~/.claude/settings.json).
+# Sémantique jq `*` : merge récursif des objets, l'opérande de DROITE gagne
+# -> nos clés overrident le live ; les clés absentes de notre fichier (plugins
+# ajoutés par Claude, etc.) sont préservées. NB : pour les tableaux, `*` remplace
+# (nos hooks/permissions écrasent ceux du live), pas de concaténation.
+merge_claude_settings() {
+    local repo_settings="$DOTFILES_DIR/claude/settings.json"
+    local target="$HOME/.claude/settings.json"
+
+    if ! command -v jq &>/dev/null; then
+        log_warning "jq introuvable, impossible de fusionner settings.json (skip)"
+        return
+    fi
+
+    # Ancien install : settings.json était un symlink vers le dépôt. On le retire
+    # pour ne pas réécrire dans le repo à travers le lien.
+    if [[ -L "$target" ]]; then
+        if [[ "$DRY_RUN" == true ]]; then
+            log_dry "rm symlink obsolète: $target"
+        else
+            rm -f "$target"
+        fi
+    fi
+
+    if [[ "$DRY_RUN" == true ]]; then
+        log_dry "Merge jq: $repo_settings -> $target (nos clés prioritaires)"
+        return
+    fi
+
+    [[ -e "$target" ]] && backup_file "$target" "$BACKUP_DIR/claude-settings"
+
+    mkdir -p "$(dirname "$target")"
+    local live_tmp merged_tmp
+    live_tmp=$(mktemp)
+    merged_tmp=$(mktemp)
+    if [[ -f "$target" ]]; then cp "$target" "$live_tmp"; else echo '{}' > "$live_tmp"; fi
+
+    if jq -s '.[0] * .[1]' "$live_tmp" "$repo_settings" > "$merged_tmp"; then
+        mv "$merged_tmp" "$target"
+        log_success "settings.json fusionné (nos clés prioritaires): $target"
+    else
+        rm -f "$merged_tmp"
+        log_error "Échec du merge jq de settings.json"
+    fi
+    rm -f "$live_tmp"
+}
+
 install_claude_conf() {
     log_header "Claude Code (configuration)"
 
@@ -25,8 +72,11 @@ install_claude_conf() {
     # CLAUDE.md global
     create_symlink "$DOTFILES_DIR/claude/CLAUDE.md" "$claude_home/CLAUDE.md" "claude-md"
 
-    # Settings (skills, plugins, LSP, permissions, statusline)
-    create_symlink "$DOTFILES_DIR/claude/settings.json" "$claude_home/settings.json" "claude-settings"
+    # Settings : merge jq plutôt que symlink. Claude Code réécrit settings.json
+    # au runtime (plugins, marketplaces machine-specific) — un symlink polluait
+    # donc le dépôt. On ne track que le strict minimum et on le fusionne dans le
+    # live, nos clés étant prioritaires.
+    merge_claude_settings
 
     # Statusline
     create_symlink "$DOTFILES_DIR/claude/statusline-command.sh" "$claude_home/statusline-command.sh" "claude-statusline"

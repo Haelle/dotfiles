@@ -175,6 +175,26 @@ set -gx TFE_TOKEN xxxxxx
 | `Ctrl-B ]`         | Coller depuis le buffer tmux                            |
 | `Ctrl-Shift-V`     | Coller depuis le clipboard système (raccourci terminal) |
 
+## GNOME Terminal
+
+Profil par défaut personnalisé (thème TokyoNight Night, police `MesloLGS NF`). GNOME Terminal ne stocke rien dans un fichier : tout vit dans dconf, donc le profil est exporté dans `gnome-terminal/profile.dconf`.
+
+### Restaurer le profil
+
+```bash
+dconf load /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ < gnome-terminal/profile.dconf
+```
+
+`b1dcc9dd-…` est l'UUID du profil par défaut, identique sur toute installation GNOME : la commande écrase donc le profil existant sans en créer un nouveau. La police `MesloLGS NF` doit être présente (fournie par le module Fish / l'export offline plus bas).
+
+### Ré-exporter après modification
+
+Après avoir ajusté couleurs ou police dans les préférences GNOME Terminal :
+
+```bash
+dconf dump /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ > gnome-terminal/profile.dconf
+```
+
 ## ngrok
 
 Tunnel sécurisé pour exposer un port local sur internet.
