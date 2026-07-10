@@ -4,7 +4,6 @@
 # Versions épinglées (changer ici pour mettre à jour tous les PC)
 NODE_VERSION="24.14.0"
 
-ASDF_BIN="$HOME/.local/bin/asdf"
 ASDF_DATA_DIR="$HOME/.asdf"
 
 install_asdf_bin() {
@@ -51,7 +50,7 @@ install_node_via_asdf() {
 
     if ! command -v asdf &>/dev/null; then
         log_warning "asdf non disponible, skip de Node.js"
-        return 1
+        return 0
     fi
 
     if asdf list nodejs &>/dev/null; then
