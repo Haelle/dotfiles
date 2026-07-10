@@ -18,4 +18,7 @@ if [ -n "$TMUX_PANE" ]; then
     title="🪇 ${session_name:-Claude}"
 fi
 
-notify-send -u critical -a "Claude Code" "$title" "$message" 2>/dev/null || true
+# -h synchronous : une nouvelle notif remplace la précédente (même tag) au lieu de
+# s'empiler ; urgence par défaut -> auto-fermeture (pas de pile qui reste à l'écran).
+notify-send -a "Claude Code" -h string:x-canonical-private-synchronous:claude-code \
+    "$title" "$message" 2>/dev/null || true
