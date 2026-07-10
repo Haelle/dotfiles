@@ -23,6 +23,40 @@
           {
             "type": "command",
             "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"Avant de répondre, vérifie la liste des skills disponibles dans le system-reminder. Si une skill matche la tâche (description ou trigger keywords), invoque-la systématiquement via le tool Skill avant de produire du code ou une analyse.\"}}'"
+          },
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @cc_state running 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @cc_state running 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && [ \"$(tmux show -wv -t \"$TMUX_PANE\" @cc_state 2>/dev/null)\" != \"done\" ] && tmux set -w -t \"$TMUX_PANE\" @cc_state waiting 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @cc_state done 2>/dev/null || true"
           }
         ]
       }
@@ -33,41 +67,35 @@
     "command": "~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "csharp-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "terraform@claude-plugins-official": true,
     "bash-language-server@claude-code-lsps": true,
-    "terraform-ls@claude-code-lsps": true,
-    "yaml-language-server@claude-code-lsps": true,
-    "fullstack-dev-skills@fullstack-dev-skills": true,
-    "svelte@svelte": true,
+    "code-simplifier@claude-plugins-official": true,
+    "csharp-lsp@claude-plugins-official": true,
     "dsfr-skill@dsfr-skill": true,
+    "frontend-design@claude-plugins-official": true,
+    "fullstack-dev-skills@fullstack-dev-skills": true,
+    "github@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
     "pixel-plugin@pixel-plugin": true,
-    "spp@claude-spp": true
+    "pyright-lsp@claude-plugins-official": true,
+    "spp@claude-spp": true,
+    "superpowers@claude-plugins-official": true,
+    "svelte@svelte": true,
+    "terraform-ls@claude-code-lsps": true,
+    "terraform@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "yaml-language-server@claude-code-lsps": true
   },
   "extraKnownMarketplaces": {
-    "fullstack-dev-skills": {
-      "source": {
-        "source": "github",
-        "repo": "jeffallan/claude-skills"
-      }
-    },
-    "svelte": {
-      "source": {
-        "source": "github",
-        "repo": "sveltejs/ai-tools"
-      }
-    },
     "claude-code-lsps": {
       "source": {
         "source": "github",
         "repo": "boostvolt/claude-code-lsps"
+      }
+    },
+    "claude-spp": {
+      "source": {
+        "source": "github",
+        "repo": "mlolson/claude-spp"
       }
     },
     "dsfr-skill": {
@@ -76,17 +104,24 @@
         "repo": "numerique-gouv/dsfr-skill"
       }
     },
+    "fullstack-dev-skills": {
+      "source": {
+        "source": "github",
+        "repo": "jeffallan/claude-skills"
+      }
+    },
     "pixel-plugin": {
       "source": {
         "source": "github",
         "repo": "willibrandon/pixel-plugin"
       }
     },
-    "claude-spp": {
+    "svelte": {
       "source": {
         "source": "github",
-        "repo": "mlolson/claude-spp"
+        "repo": "sveltejs/ai-tools"
       }
     }
-  }
+  },
+  "tui": "fullscreen"
 }
