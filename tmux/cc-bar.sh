@@ -1,21 +1,17 @@
 #!/usr/bin/env bash
 # cc-bar.sh — rendu de status-left : liste toutes les sessions tmux sous forme de
 # pilules ARRONDIES (demi-cercles powerline), colorées selon l'état Claude agrégé
-# de chaque session (@cc_state, scope window). Palette TokyoNight Night.
+# de chaque session (@cc_state, scope window). Couleurs : voir cc-colors.sh.
 #
-# État agrégé d'une session = priorité waiting > done > idle, calculé en
-# scannant les @cc_state de ses fenêtres (seule la fenêtre `claude` le porte).
-#   focus   -> bleu           (session courante, texte sombre gras)
-#   waiting -> rouge clignotant (Claude attend une intervention)
-#   done    -> vert           (Claude a fini son tour)
-#   idle    -> bleu-gris doux  (running / rien à signaler)
+# État agrégé d'une session = priorité waiting > done > idle, calculé en scannant
+# les @cc_state de ses fenêtres (seule la fenêtre `claude` le porte).
+#   focus (session courante) 🎯 · waiting 🪇 rouge clignotant · done 🤖 vert · idle gris
 # Nerd Font requise pour les bouts arrondis (MesloLGS NF etc.).
 
-cur="${1:-$(tmux display -p '#S' 2>/dev/null)}"   # session courante (passée par tmux)
-pulse=$(( $(date +%s) % 2 ))   # parité 1s : sert à faire CLIGNOTER le FOND (pas juste le texte)
+source "${0%/*}/cc-colors.sh"
 
-BAR="#16161e"        # fond de la barre (TokyoNight bg_dark) — doit matcher status-style
-LC=""; RC=""       # demi-cercles powerline : bouts de pilule gauche / droite
+cur="${1:-$(tmux display -p '#S' 2>/dev/null)}"   # session courante (passée par tmux)
+pulse=$(( $(date +%s) % 2 ))                       # parité 1s : fait clignoter le FOND
 
 out=""
 while IFS= read -r sess; do
@@ -27,28 +23,14 @@ while IFS= read -r sess; do
         esac
     done < <(tmux list-windows -t "$sess" -F '#{@cc_state}' 2>/dev/null)
 
-    bold=""
-    if [ "$sess" = "$cur" ]; then
-        pbg="#7aa2f7"; pfg="$BAR"; bold=",bold"                 # focus : bleu
-    elif [ "$state" = "waiting" ]; then
-        [ "$pulse" -eq 0 ] && pbg="#f7768e" || pbg="#db4b4b"    # waiting : rouge clignotant
-        pfg="$BAR"
-    elif [ "$state" = "done" ]; then
-        pbg="#9ece6a"; pfg="$BAR"                               # done : vert
-    else
-        pbg="#292e42"; pfg="#a9b1d6"                            # idle : bleu-gris doux
-    fi
+    [ "$sess" = "$cur" ] && focus=1 || focus=0
+    cc_pill_colors "$focus" "$state" "$pulse"
 
-    marker=""; [ "$sess" = "$cur" ] && marker="🎯 "          # session courante
-    bot=""; case "$state" in
-        waiting) bot="🪇 " ;;   # attente : maracas
-        done)    bot="🤖 " ;;   # fini    : robot
-    esac
-    label=" ${marker}${bot}${sess} "
-    # gouttière (fond barre) avant chaque session sauf la 1re, pour aérer
-    [ -n "$out" ] && out="${out}#[default] "
-    # pilule arrondie : demi-cercle gauche (couleur pilule sur fond barre) + corps + demi-cercle droit
-    pill="#[fg=${pbg},bg=${BAR}]${LC}#[bg=${pbg},fg=${pfg}${bold}]${label}#[fg=${pbg},bg=${BAR}]${RC}"
+    marker=""; [ "$focus" = 1 ] && marker="🎯 "
+    label=" ${marker}$(cc_state_emoji "$state")${sess} "
+
+    [ -n "$out" ] && out="${out}#[default] "   # gouttière (fond barre) entre sessions
+    pill="#[fg=${PBG},bg=${BAR}]${LC}#[bg=${PBG},fg=${PFG}${PBOLD}]${label}#[fg=${PBG},bg=${BAR}]${RC}"
     # range=user|NAME : rend la session cliquable. tmux n'a pas de type `session`,
     # on passe par `user` -> #{mouse_status_range} vaut alors le nom de session.
     out="${out}#[range=user|${sess}]${pill}#[norange]#[default]"
