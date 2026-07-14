@@ -1,6 +1,12 @@
 #!/bin/sh
 # Lance le conteneur de dev dans le dossier courant et ouvre un shell fish.
-# Montages (lecture seule, si presents) :
+#
+# Conteneur ephemere (--rm) mais l'etat mutable est persiste via des volumes
+# nommes (auto-remplis depuis l'image au 1er usage) : tide configure, l'historique
+# et l'etat nvim survivent d'une session a l'autre.
+#   NE PAS persister ~/.local/share/nvim : plugins/Mason/parsers y sont bakes.
+#
+# Montages supplementaires (lecture seule, si presents) :
 #   - dossier courant                 -> /work (workspace)
 #   - ~/.gitconfig*                   -> identite, alias, cle de signature
 #   - ~/.config/git/allowed_signers   -> verification des signatures
@@ -9,8 +15,7 @@
 set --
 
 for f in "$HOME"/.gitconfig*; do
-  [ -f "$f" ] || continue
-  set -- "$@" -v "$(readlink -f "$f"):/home/ubuntu/$(basename "$f"):ro"
+  [ -f "$f" ] && set -- "$@" -v "$(readlink -f "$f"):/home/ubuntu/$(basename "$f"):ro"
 done
 
 [ -f "$HOME/.config/git/allowed_signers" ] && \
