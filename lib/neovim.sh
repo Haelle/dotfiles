@@ -36,12 +36,16 @@ install_neovim() {
         fi
     fi
 
-    # Clone kickstart.nvim
+    # Clone kickstart.nvim (https sans clés en mode conteneur, ssh sinon)
+    local nvim_repo="git@github.com:Haelle/kickstart.nvim.git"
+    if [[ -n "${NVIM_CLONE_HTTPS:-}" ]]; then
+        nvim_repo="https://github.com/Haelle/kickstart.nvim.git"
+    fi
     if [[ "$DRY_RUN" == true ]]; then
-        log_dry "git clone git@github.com:Haelle/kickstart.nvim.git $nvim_config"
+        log_dry "git clone $nvim_repo $nvim_config"
     else
         log_info "Clone de kickstart.nvim..."
-        git clone git@github.com:Haelle/kickstart.nvim.git "$nvim_config" && log_success "kickstart.nvim cloné dans $nvim_config" || log_warning "Clone kickstart.nvim échoué"
+        git clone "$nvim_repo" "$nvim_config" && log_success "kickstart.nvim cloné dans $nvim_config" || log_warning "Clone kickstart.nvim échoué"
     fi
 
     # Installation quadlet-lsp (LSP pour fichiers Podman Quadlet)
