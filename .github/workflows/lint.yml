@@ -30,7 +30,7 @@ jobs:
         with:
           token: ${{ github.token }}
           version: latest
-          args: --check nvim-offline/
+          args: --check container/
 
   dry-run:
     name: Install dry-run
