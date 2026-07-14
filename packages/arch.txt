@@ -10,10 +10,12 @@ jq
 gcc
 htop
 make
+openssh
 qemu-full
 ripgrep
 shellcheck
 silversearcher-ag
+tmux
 tree-sitter-cli
 tree
 unzip
