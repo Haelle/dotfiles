@@ -1,0 +1,43 @@
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=en_US.UTF-8
+
+RUN rm -f /etc/apt/apt.conf.d/docker-clean \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
+      sudo ca-certificates curl wget git jq gnupg fontconfig locales tzdata \
+ && locale-gen en_US.UTF-8 fr_FR.UTF-8
+
+RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/ubuntu \
+ && chmod 0440 /etc/sudoers.d/ubuntu
+
+USER ubuntu
+WORKDIR /home/ubuntu/dotfiles
+COPY --chown=ubuntu:ubuntu . /home/ubuntu/dotfiles
+
+RUN NVIM_CLONE_HTTPS=1 ./install fish tmux neovim
+
+RUN sudo apt-get remove -y --purge qemu-system virt-manager \
+ && sudo apt-get autoremove -y --purge \
+ && sudo rm -rf /var/lib/apt/lists/*
+
+ENV PATH=/home/ubuntu/.local/share/nvim/mason/bin:/home/ubuntu/.asdf/shims:/home/ubuntu/.local/bin:/home/ubuntu/.cargo/bin:/usr/local/bin:/usr/bin:/bin
+
+# 1. Plugins
+RUN nvim --headless "+Lazy! sync" "+qa!"
+
+# 2. Serveurs Mason (install par paquet + attente des events install:success/failed, self-terminating)
+RUN nvim --headless \
+      -c "Lazy load nvim-lspconfig" \
+      -c "luafile /home/ubuntu/dotfiles/container/bake-lsp.lua" \
+ && test "$(ls ~/.local/share/nvim/mason/packages 2>/dev/null | wc -l)" -ge 15
+
+# 3. Parsers Treesitter (tree-sitter CLI dispo via le bin Mason dans le PATH ci-dessus)
+RUN nvim --headless \
+      -c "lua require('nvim-treesitter').install({'bash','c','diff','html','lua','luadoc','c_sharp','javascript','json','markdown','markdown_inline','python','query','ruby','svelte','tsx','typescript','vim','vimdoc','yaml'}):wait(900000)" \
+      -c "qa!" \
+ && test "$(ls ~/.local/share/nvim/site/parser/*.so 2>/dev/null | wc -l)" -ge 18
+
+WORKDIR /work
+CMD ["fish"]

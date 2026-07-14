@@ -1,0 +1,30 @@
+#!/bin/sh
+# Lance le conteneur de dev dans le dossier courant et ouvre un shell fish.
+# Montages (lecture seule, si presents) :
+#   - dossier courant                 -> /work (workspace)
+#   - ~/.gitconfig*                   -> identite, alias, cle de signature
+#   - ~/.config/git/allowed_signers   -> verification des signatures
+#   - ~/.ssh                          -> cles pour committer et signer
+
+set --
+
+for f in "$HOME"/.gitconfig*; do
+  [ -f "$f" ] || continue
+  set -- "$@" -v "$(readlink -f "$f"):/home/ubuntu/$(basename "$f"):ro"
+done
+
+[ -f "$HOME/.config/git/allowed_signers" ] && \
+  set -- "$@" -v "$HOME/.config/git/allowed_signers:/home/ubuntu/.config/git/allowed_signers:ro"
+
+[ -d "$HOME/.ssh" ] && \
+  set -- "$@" -v "$HOME/.ssh:/home/ubuntu/.ssh:ro"
+
+exec podman run --rm -it \
+  --userns=keep-id \
+  -v dotfiles-dev-fish-config:/home/ubuntu/.config/fish \
+  -v dotfiles-dev-fish-data:/home/ubuntu/.local/share/fish \
+  -v dotfiles-dev-nvim-state:/home/ubuntu/.local/state/nvim \
+  "$@" \
+  -v "$PWD:/work" \
+  -w /work \
+  dotfiles-dev fish
