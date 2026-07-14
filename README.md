@@ -294,68 +294,31 @@ chsh -s $(which fish)
 
 P.S: les dépendances sont `fish`, `fzf`, `git`, `jq`, `tree` et `direnv`. Elles sont installées si `./install git (et/ou) tmux (et/ou) ssh` ont été installés. La police MesloLGS Nerd Font est nécessaire pour le prompt Tide (icônes) : sur Arch elle vient du paquet `ttf-meslo-nerd`, sur Ubuntu l'export ci-dessus la transfère depuis `~/.local/share/fonts/Meslo`.
 
-### NeoVim offline
+## Conteneur de dev (offline)
 
-Le script `./install-neovim-offline` installe neovim, fzf et ripgrep via apt avec une config simple. Il reprend une partie des options, keymaps et autocommands de kickstart.nvim sans nécessiter internet.
-Il n'est pas aussi simple d'avoir un mode offline comme Fish car il y a trop de dépendances système et Mason & cie auto installe pleins de choses en background.
+Afin de travailler en offline ce conteneur contient tout ce qu'il faut pour que mon environnement de travail soit opérationnel.
 
 ```bash
-./install-neovim-offline
-./install-neovim-offline --dry-run
+podman build -f container/Containerfile -t dotfiles-dev .
+cd /chemin/vers/projet
+~/path/to/dotfiles/container/dev
 ```
 
-La config est symlinquée depuis `nvim-offline/` vers `~/.config/nvim`.
+`container/dev` monte le dossier courant sur `/work` et ouvre `fish` dedans, nvim/tmux/LSP prêts. Il monte aussi automatiquement, en lecture seule et seulement s'ils existent :
 
-#### Options
+| Hôte                                                         | Conteneur           | Usage                             |
+| ------------------------------------------------------------ | ------------------- | --------------------------------- |
+| dossier courant                                              | `/work`             | workspace                         |
+| `~/.gitconfig`, `~/.gitconfig.local`, `~/.gitconfig.*.local` | `/home/ubuntu/…`    | identité, alias, clé de signature |
+| `~/.config/git/allowed_signers`                              | idem                | vérification des signatures SSH   |
+| `~/.ssh`                                                     | `/home/ubuntu/.ssh` | clés pour committer et signer     |
 
-- Leader : `Space`
-- Indentation : 2 espaces (expandtab)
-- Numéros de ligne, cursorline, scrolloff 10
-- Recherche smartcase, highlight search (Esc pour clear)
-- Undo persistant, clipboard système
-- Caractères invisibles affichés (tab, trailing spaces, nbsp)
+### Transport vers une machine hors-ligne
 
-#### Keymaps
-
-- quick save
-
-| Raccourci          | Description                                           |
-| ------------------ | ----------------------------------------------------- |
-| \<Space\>sn        | [S]earch [N]eovim config neovim (vsplit)              |
-| \<Space\>sk        | [S]earch [K]eymaps (fzf)                              |
-| u                  | [U]ndo                                                |
-| \<C-r\>            | [R]edo                                                |
-| \<C-s\>            | quick [S]ave file                                     |
-| \<Space\>sg        | [S]earch with [G]rep (récursif) w/ ripgrep + quickfix |
-| \<Space\>sf        | [S]earch [F]ile by name (rg + fzf)                    |
-| \<C-Space\>        | Autocomplétion (mots du buffer)                       |
-| \<Tab\>/<S-Tab\>   | Naviguer dans le menu de complétion                   |
-| \<Left\>/<Right\>  | Naviguer dans le menu de complétion                   |
-| \<C-y\>            | [Y]es, accept selection in completion mode            |
-| \<Esc\>            | Clear search highlight                                |
-| \<C-w\>Arrows      | Navigation entre splits                               |
-| \<C-w\><S-Arrows\> | Déplacer les splits                                   |
-| \<Esc\><Esc\>      | Quitter le mode terminal                              |
-| gr                 | [G]o to [R]eferences (rg + fzf)                       |
-| gd                 | [G]o to [D]efinition (fichier ouvert)                 |
-| gf                 | [G]o to [F]ile                                        |
-| \<C-o\>            | previous opened file                                  |
-| Tab                | next opened file                                      |
-| \<Space\>st        | [S]earch [T]ODO/FIXME/HACK/NOTE (fzf)                 |
-| gcc                | Toggle comment ligne                                  |
-| gc                 | Toggle comment sélection (visual)                     |
-
-#### Autocommands
-
-- Highlight on yank
-- Restauration de la position du curseur
-
-#### Filetype detection
-
-- `docker-compose.yml/yaml` (et variantes)
-- `.gitlab-ci.yml`
-- `values*.yml/yaml` (Helm)
-- `*.mdx` → markdown
+```bash
+podman save dotfiles-dev -o dotfiles-dev.tar   # machine source
+podman load -i dotfiles-dev.tar                # machine cible
+```
 
 ## Simian Programmer Plugin (SPP)
 
