@@ -1,0 +1,16 @@
+FROM docker/sandbox-templates:claude-code
+
+RUN claude update
+RUN sudo npm install -g ccusage
+
+ENV DISABLE_AUTOUPDATER=1
+
+COPY --chown=agent:agent claude/CLAUDE.md                       /home/agent/.claude/CLAUDE.md
+COPY --chown=agent:agent claude/commands                        /home/agent/.claude/commands
+COPY --chown=agent:agent claude/statusline-command.sh          /home/agent/.claude/statusline-command.sh
+COPY --chown=agent:agent container/claude-sandbox-settings.json /home/agent/.claude-sandbox-settings.json
+COPY --chown=agent:agent container/claude-wrapper.sh           /home/agent/.local/bin/claude-wrapper
+
+RUN mv /home/agent/.local/bin/claude /home/agent/.local/bin/claude.real \
+ && mv /home/agent/.local/bin/claude-wrapper /home/agent/.local/bin/claude \
+ && chmod +x /home/agent/.local/bin/claude /home/agent/.claude/statusline-command.sh

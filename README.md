@@ -239,6 +239,17 @@ git clone https://github.com/Haelle/dotfiles.git ~/.dotfiles && cd ~/.dotfiles &
 - **Settings** — configuration gérée (plugins LSP, statusline, permissions)
 - **Statusline** — script custom affichant modèle, usage quotidien, répertoire et branche git
 
+### Docker sandbox Claude
+
+Une image custom est disponible pour charger ma configuration Claude quand il tourne dans un
+Docker sandbox :
+
+```bash
+docker build -t claude-alxs:latest -f container/Containerfile.claude .
+docker sandbox create --template claude-alxs:latest claude .
+docker sandbox run <sandbox>
+```
+
 ### Sécurité
 
 Les fichiers sensibles sont bloqués en lecture par les settings :
