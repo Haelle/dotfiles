@@ -11,6 +11,9 @@
 #   - ~/.gitconfig*                   -> identite, alias, cle de signature
 #   - ~/.config/git/allowed_signers   -> verification des signatures
 #   - ~/.ssh                          -> cles pour committer et signer
+#   - DEV_HOST_APT=1 ./dev : monte sources + keyrings apt de l'hote (miroir interne,
+#     PC sans acces a archive.ubuntu.com). Masque les sources de l'image ;
+#     suppose hote et conteneur meme release Ubuntu.
 
 set --
 
@@ -25,7 +28,10 @@ done
   set -- "$@" -v "$HOME/.ssh:/home/ubuntu/.ssh:ro"
 
 exec podman run --rm -it \
-  --userns=keep-id \
+  -e SHELL=/usr/bin/fish \
+  --uidmap 0:1:1000 --uidmap 1000:0:1 --uidmap 1001:1001:64535 \
+  --gidmap 0:1:1000 --gidmap 1000:0:1 --gidmap 1001:1001:64535 \
+  -v /etc/apt:/etc/apt:ro \
   -v dotfiles-dev-fish-config:/home/ubuntu/.config/fish \
   -v dotfiles-dev-fish-data:/home/ubuntu/.local/share/fish \
   -v dotfiles-dev-nvim-state:/home/ubuntu/.local/state/nvim \
