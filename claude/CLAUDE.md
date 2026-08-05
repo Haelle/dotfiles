@@ -45,6 +45,12 @@ Soit extrèmement concis.
 - Ne committe jamais de secrets, tokens, ou mots de passe
 - Vérifie les fichiers .env, credentials, clés privées avant tout staging
 
+## Agents (délégation)
+
+- Délègue en arrière-plan les tâches longues et autonomes (exploration large, audit, build/tests longs, migrations répétitives, tâches parallélisables) : je garde la main pendant qu'elles tournent
+- Délègue aussi quand la sortie est volumineuse mais la conclusion courte : seul le résumé revient dans le contexte
+- Ne délègue pas les tâches courtes, ciblées, interactives, ou dont tu as déjà le contexte ; dans le doute, fais-le directement
+
 ## Workflow
 
 - avant d'explorer du code ou de proposer une analyse vérifie la liste des skills disponibles. Si une skill matche la tâche (description ou trigger keywords) invoque là !
