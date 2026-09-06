@@ -14,7 +14,7 @@ openssh
 qemu-full
 ripgrep
 shellcheck
-silversearcher-ag
+the_silver_searcher
 tmux
 tree-sitter-cli
 tree
