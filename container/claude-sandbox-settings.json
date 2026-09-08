@@ -32,17 +32,10 @@
     "fullstack-dev-skills@fullstack-dev-skills": true,
     "github@claude-plugins-official": true,
     "pixel-plugin@pixel-plugin": true,
-    "spp@claude-spp": true,
     "superpowers@claude-plugins-official": true,
     "svelte@svelte": true
   },
   "extraKnownMarketplaces": {
-    "claude-spp": {
-      "source": {
-        "source": "github",
-        "repo": "mlolson/claude-spp"
-      }
-    },
     "dsfr-skill": {
       "source": {
         "source": "github",
