@@ -22,6 +22,19 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 `./install` pose leurs binaires et `shellcheck`, dont le serveur bash a besoin pour ses diagnostics : rien à activer ni à installer par dépôt.
 
+## GitHub
+
+Le plugin `github@claude-plugins-official` est un serveur MCP HTTP vers `api.githubcopilot.com`, actif au niveau utilisateur. Il attend son **propre** token dans `GITHUB_PERSONAL_ACCESS_TOKEN` — il ne lit pas les identifiants de `gh`. Sans cette variable, le header part non substitué et la connexion échoue avec `400 Authorization header is badly formatted`.
+
+Le plus simple est de réutiliser le token de `gh`, qui vit déjà dans le trousseau, sans l'écrire sur disque. Dans `~/.config/fish/local.d/` (non versionné, chargé par `fish/conf.d/load-local.fish`) :
+
+```fish
+# ~/.config/fish/local.d/github.fish
+set -gx GITHUB_PERSONAL_ACCESS_TOKEN (gh auth token)
+```
+
+`gh auth token` est appelé à chaque démarrage de shell et lit le trousseau. Si l'on préfère un token dédié, un PAT à portée restreinte fait l'affaire — mais il faudra alors le stocker quelque part.
+
 ## Installer avant d'activer
 
 Un plugin doit être présent sur la machine pour qu'un dépôt puisse l'activer : il n'y a **pas** de récupération à la demande. Un dépôt qui active un plugin absent échoue sans rien dire d'autre que `plugin-cache-miss` dans le log de debug.
