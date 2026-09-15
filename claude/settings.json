@@ -119,7 +119,7 @@
     "local-skills": {
       "source": {
         "source": "directory",
-        "path": "~/Projects/dotfiles/claude/skills"
+        "path": "~/.claude/local-skills"
       }
     }
   },
