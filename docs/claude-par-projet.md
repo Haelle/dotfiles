@@ -22,6 +22,27 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 `./install` pose leurs binaires et `shellcheck`, dont le serveur bash a besoin pour ses diagnostics : rien à activer ni à installer par dépôt.
 
+## Installer avant d'activer
+
+Un plugin doit être présent sur la machine pour qu'un dépôt puisse l'activer : il n'y a **pas** de récupération à la demande. Un dépôt qui active un plugin absent échoue sans rien dire d'autre que `plugin-cache-miss` dans le log de debug.
+
+Une fois par machine, au moment où on en a besoin :
+
+```bash
+claude plugin install unity@claude-plugins-official
+```
+
+L'installation le met à `true` au niveau utilisateur, donc actif partout. Pour le rendre disponible sans être global, retirer sa clé :
+
+```bash
+S=~/.claude/settings.json
+jq 'del(.enabledPlugins["unity@claude-plugins-official"])' "$S" > "$S.tmp" && mv "$S.tmp" "$S"
+```
+
+Sans clé, le plugin reste installé mais inactif ; un dépôt peut l'activer. `claude plugin disable` fait de même mais laisse une entrée `false` sans effet utile.
+
+L'activation, elle, est automatique : le `.claude/settings.json` versionné du dépôt suffit, il n'y a aucune commande à lancer en y entrant.
+
 ## Marketplace de skills local
 
 `claude/skills/` regroupe par techno une sélection de [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) (MIT) — le plugin complet dépasse 60 skills et ~8 000 tokens.
