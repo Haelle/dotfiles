@@ -22,10 +22,6 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 `./install` pose leurs binaires et `shellcheck`, dont le serveur bash a besoin pour ses diagnostics : rien à activer ni à installer par dépôt.
 
-## GitHub
-
-Pas de serveur MCP : le plugin officiel pointe sur `api.githubcopilot.com` et exige son propre `GITHUB_PERSONAL_ACCESS_TOKEN`, sans lire les identifiants de `gh`. Le CLI `gh` couvre les mêmes besoins avec le token du trousseau, et `./install` le pose (`github-cli` sur Arch, `gh` sur Debian/Ubuntu).
-
 ## Installer avant d'activer
 
 Un plugin doit être présent sur la machine pour qu'un dépôt puisse l'activer : il n'y a **pas** de récupération à la demande. Un dépôt qui active un plugin absent échoue sans rien dire d'autre que `plugin-cache-miss` dans le log de debug.
@@ -141,14 +137,6 @@ Le plugin Unity Technologies apporte 29 skills (~3 350 tokens) : projet Unity un
 
 Le pont MCP vers l'Éditeur est un projet tiers, à déclarer dans un `.mcp.json` à la racine du dépôt.
 
-## YAML
-
-Le serveur est actif partout. Associer un schéma par un commentaire en tête de fichier :
-
-```yaml
-# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-```
-
 ## Lua et Neovim
 
 `.claude/settings.json` du dépôt :
@@ -222,32 +210,3 @@ pipx install ansible-lint
 Puis `.claude/settings.json` du dépôt Ansible : `{"enabledPlugins": {"ansible-language-server@local-lsps": true}}`.
 
 `.yml` ne peut être servi que par un seul LSP : ne pas activer `yaml-language-server` et `ansible-language-server` dans le même dépôt, le premier enregistré gagne.
-
-## Autre technologie
-
-```bash
-claude plugin marketplace list
-claude plugin details <plugin>@<marketplace>   # inventaire + coût en tokens
-```
-
-Catalogue officiel : `clangd-lsp` `csharp-lsp` `gopls-lsp` `jdtls-lsp` `kotlin-lsp` `liquid-lsp` `lua-lsp` `php-lsp` `pyright-lsp` `ruby-lsp` `rust-analyzer-lsp` `swift-lsp` `typescript-lsp`. Le marketplace `claude-code-lsps` ajoute `bash-language-server`, `yaml-language-server`, `terraform-ls`. Ces plugins ne contiennent qu'un LICENSE et un README — la déclaration LSP est intégrée à Claude Code, le binaire reste à fournir (le README dit lequel).
-
-LSP absent du catalogue : suivre la recette Ansible.
-
-Serveur MCP : un `.mcp.json` à la racine du dépôt, avec `command`/`args` ou `type: "http"` et `url`. Les schémas MCP sont déférés derrière `ToolSearch`, donc coût contexte négligeable — le critère est l'usage, pas le coût.
-
-Skill propre au projet : `.claude/skills/<nom>/SKILL.md`, frontmatter `name` + `description`. Quoter la `description` si elle contient un deux-points suivi d'un espace, sinon le YAML casse en silence et tous les champs sont ignorés. Seule la description reste en contexte.
-
-`CLAUDE.md` à la racine : ce qu'une session ne peut pas déduire du code — pièges, conventions non standard, interdits. Pas l'arborescence ni les commandes de build.
-
-## Vérifier
-
-```bash
-claude --debug-file /tmp/claude.log -p "ok"
-grep -E 'Loaded [0-9]+ LSP server|load skills from plugin' /tmp/claude.log
-```
-
-- `Loaded 1 LSP server(s) from plugin: <nom>` — enregistré.
-- `Starting LSP server instance: plugin:<nom>` — réellement démarré.
-- `extension .<ext> already handled by "<plugin>"` — conflit, un autre a gagné.
-- `Skipping orphaned enabledPlugins entry <plugin>` — marketplace non enregistré au niveau utilisateur.
