@@ -123,7 +123,8 @@ Le LSP appelle `svelteserver` via le PATH : un binaire posé par Mason (Neovim) 
   "enabledPlugins": {
     "unity@claude-plugins-official": true,
     "csharp-lsp@claude-plugins-official": true,
-    "unity-skills@local-skills": true
+    "unity-skills@local-skills": true,
+    "pixel-plugin@pixel-plugin": true
   }
 }
 ```
