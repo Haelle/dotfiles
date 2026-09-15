@@ -168,7 +168,7 @@ Pour une config Neovim, un `.luarc.json` à la racine évite les faux positifs s
 }
 ```
 
-## DevOps et Terraform
+## DevOps et Ansible/Terraform
 
 `.claude/settings.json` du dépôt :
 
@@ -184,46 +184,10 @@ Pour une config Neovim, un `.luarc.json` à la racine évite les faux positifs s
 `terraform-ls` n'est pas dans les dépôts officiels d'Arch, il vient de l'AUR :
 
 ```bash
-paru -S terraform-ls               # CachyOS / Arch — AUR
-```
-
-Sur Debian et Ubuntu il n'est dans aucune archive : il faut le dépôt HashiCorp.
-
-```bash
-curl -fsSL https://apt.releases.hashicorp.com/gpg \
-  | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
-  | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install -y terraform-ls
+sudo pacman -S terraform-ls
+npm install -g @ansible/ansible-language-server
+# si besoin
+asdf reshim nodejs
 ```
 
 `devops-engineer` couvre Dockerfile, CI/CD, manifestes Kubernetes, Terraform/Pulumi, GitOps et incidents. `kubernetes-specialist` ferait doublon.
-
-## Ansible
-
-Aucun skill ni plugin LSP au catalogue. Au choix : activer `yaml-language-server` (validation YAML seule), ou monter un plugin LSP maison dans les dotfiles.
-
-`claude/lsp/ansible-language-server/.lsp.json` :
-
-```json
-{
-  "ansible": {
-    "command": "ansible-language-server",
-    "args": ["--stdio"],
-    "extensionToLanguage": { ".yml": "ansible", ".yaml": "ansible" }
-  }
-}
-```
-
-Avec un `plugin.json` du même nom dans le plugin, et `claude/lsp/.claude-plugin/marketplace.json` qui déclare `{"name": "local-lsps", "plugins": [{"name": "ansible-language-server", "source": "./ansible-language-server", "version": "1.0.0"}]}`.
-
-```bash
-npm install -g @ansible/ansible-language-server
-sudo pacman -S python-pipx         # CachyOS / Arch
-sudo apt install pipx              # Debian / Ubuntu
-pipx install ansible-lint
-```
-
-Puis `.claude/settings.json` du dépôt Ansible : `{"enabledPlugins": {"ansible-language-server@local-lsps": true}}`.
-
-`.yml` ne peut être servi que par un seul LSP : ne pas activer `yaml-language-server` et `ansible-language-server` dans le même dépôt, le premier enregistré gagne.
