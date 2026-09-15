@@ -64,10 +64,13 @@ merge_claude_settings() {
     rm -f "$live_tmp"
 }
 
-# Plugins de marketplaces distants qu'un dépôt peut activer via son
-# .claude/settings.json. Ceux d'un marketplace `directory` (local-skills) sont
-# lus directement depuis le dossier source et n'ont pas à figurer ici.
+# Tous les plugins à poser sur la machine : ceux actifs partout et ceux qu'un
+# dépôt peut activer via son .claude/settings.json.
 CLAUDE_PROJECT_PLUGINS=(
+    superpowers@claude-plugins-official
+    linear@claude-plugins-official
+    bash-language-server@claude-code-lsps
+    yaml-language-server@claude-code-lsps
     unity@claude-plugins-official
     svelte@svelte
     csharp-lsp@claude-plugins-official
@@ -86,14 +89,7 @@ install_project_plugins() {
         return
     fi
 
-    # Les plugins actifs globalement viennent aussi de marketplaces distants :
-    # sans installation ils échouent en plugin-cache-miss sur une machine neuve.
-    local plugins=("${CLAUDE_PROJECT_PLUGINS[@]}")
-    while IFS= read -r p; do
-        [[ -n "$p" ]] && plugins+=("$p")
-    done < <(jq -r '.enabledPlugins // {} | to_entries[] | select(.value == true) | .key' "$repo_settings")
-
-    for plugin in $(printf '%s\n' "${plugins[@]}" | sort -u); do
+    for plugin in "${CLAUDE_PROJECT_PLUGINS[@]}"; do
         if [[ "$DRY_RUN" == true ]]; then
             log_dry "claude plugin install $plugin"
             continue
