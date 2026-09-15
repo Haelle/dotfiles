@@ -20,6 +20,8 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 `superpowers` (skills de processus), `linear` (MCP), `bash-language-server`, `yaml-language-server`, `bash-skills`. Tout le reste est en opt-in par dépôt.
 
+`./install` pose leurs binaires et `shellcheck`, dont le serveur bash a besoin pour ses diagnostics : rien à activer ni à installer par dépôt.
+
 ## Marketplace de skills local
 
 `claude/skills/` regroupe par techno une sélection de [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) (MIT) — le plugin complet dépasse 60 skills et ~8 000 tokens.
@@ -48,23 +50,6 @@ Déclaré dans `claude/settings.json` des dotfiles (pas dans un dépôt : voir l
 Le chemin est fixe : `./install` pose `~/.claude/local-skills` en lien vers `claude/skills` du clone, quel que soit son emplacement. En écriture manuelle, le tilde est développé mais `$HOME` et les chemins relatifs **non**.
 
 Ajouter un skill : copier son dossier dans `claude/skills/<lot>/skills/`, relancer une session.
-
-## Bash
-
-`.claude/settings.json` du dépôt :
-
-```json
-{ "enabledPlugins": { "bash-language-server@claude-code-lsps": true } }
-```
-
-```bash
-npm install -g bash-language-server
-sudo pacman -S shellcheck
-```
-
-Sans `shellcheck`, pas de diagnostics — seulement syntaxe et navigation.
-
-`bash-skills` et `bash-language-server` étant actifs au niveau utilisateur, ce bloc ne sert que sur une machine neuve ou pour être explicite : réactiver un plugin déjà actif est sans effet.
 
 ## Python
 
@@ -134,17 +119,7 @@ Le pont MCP vers l'Éditeur est un projet tiers, à déclarer dans un `.mcp.json
 
 ## YAML
 
-`.claude/settings.json` du dépôt :
-
-```json
-{ "enabledPlugins": { "yaml-language-server@claude-code-lsps": true } }
-```
-
-```bash
-npm install -g yaml-language-server
-```
-
-Associer un schéma par un commentaire en tête de fichier :
+Le serveur est actif partout. Associer un schéma par un commentaire en tête de fichier :
 
 ```yaml
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
