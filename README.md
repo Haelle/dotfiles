@@ -255,6 +255,8 @@ docker sandbox create --template claude-alxs:latest claude .
 docker sandbox run <sandbox>
 ```
 
+Copier/coller depuis le TUI plein écran : maintenir `Shift` pendant la sélection à la souris (contourne la capture souris), puis `Ctrl+Shift+C` pour copier et `Ctrl+Shift+V` pour coller.
+
 ### Sécurité
 
 Les fichiers sensibles sont bloqués en lecture par les settings :
