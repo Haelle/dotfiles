@@ -1,16 +1,16 @@
 # Configuration Claude Code par projet
 
-La liste des skills est budgétée à ~1 % du contexte (~2 000 tokens). Au-delà elle est tronquée : les skills en trop perdent leur description et deviennent inatteignables. D'où l'inversion du défaut — le niveau utilisateur garde le strict universel, chaque dépôt active ce dont il a besoin.
+La liste des skills est budgétée à ~1 % du contexte (~2 000 tokens). Au-delà elle est tronquée : les skills en trop perdent leur description et deviennent inatteignables. Niveau utilisateur on charge le strict universel, chaque dépôt active ce dont il a besoin.
 
 ## Règles
 
-| Élément | `~/.claude/settings.json` | `.claude/settings.json` (dépôt) |
-| --- | --- | --- |
-| `extraKnownMarketplaces` | **obligatoire** | **ignoré** |
-| `enabledPlugins` | défauts globaux | spécialisation |
-| `.mcp.json` | — | racine du dépôt |
-| `.claude/skills/` | — | dans le dépôt |
-| `CLAUDE.md` | `~/.claude/CLAUDE.md` | racine du dépôt |
+| Élément                  | `~/.claude/settings.json` | `.claude/settings.json` (dépôt) |
+| ------------------------ | ------------------------- | ------------------------------- |
+| `extraKnownMarketplaces` | **obligatoire**           | **ignoré**                      |
+| `enabledPlugins`         | défauts globaux           | spécialisation                  |
+| `.mcp.json`              | —                         | racine du dépôt                 |
+| `.claude/skills/`        | —                         | dans le dépôt                   |
+| `CLAUDE.md`              | `~/.claude/CLAUDE.md`     | racine du dépôt                 |
 
 Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déclarer son propre marketplace (`Skipping orphaned enabledPlugins entry`).
 
@@ -18,19 +18,18 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 ## Actif au niveau utilisateur
 
-`superpowers` (skills de processus), `linear` (MCP), `bash-language-server`, `yaml-language-server`, `bash-skills`. Tout le reste est en opt-in par dépôt, language servers compris : ils ne coûtent rien en contexte mais démarrent un processus.
+`superpowers` (skills de processus), `linear` (MCP), `bash-language-server`, `yaml-language-server`, `bash-skills`. Tout le reste est en opt-in par dépôt.
 
 ## Marketplace de skills local
 
 `claude/skills/` regroupe par techno une sélection de [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) (MIT) — le plugin complet dépasse 60 skills et ~8 000 tokens.
 
-| Plugin | Skills |
-| --- | --- |
+| Plugin          | Skills                                                                 |
+| --------------- | ---------------------------------------------------------------------- |
 | `python-skills` | `django-expert` `fastapi-expert` `python-pro` `sql-pro` `postgres-pro` |
-| `unity-skills` | `csharp-developer` `game-developer` |
-| `front-skills` | `playwright-expert` `typescript-pro` `javascript-pro` |
-| `devops-skills` | `devops-engineer` `terraform-engineer` |
-| `bash-skills` | `cli-developer` — **actif au niveau utilisateur**, rien à activer par dépôt |
+| `unity-skills`  | `csharp-developer` `game-developer`                                    |
+| `front-skills`  | `playwright-expert` `typescript-pro` `javascript-pro`                  |
+| `devops-skills` | `devops-engineer` `terraform-engineer`                                 |
 
 Déclaré dans `claude/settings.json` des dotfiles (pas dans un dépôt : voir le tableau des règles), Claude le réenregistre seul — le premier lancement amorce, le suivant voit les skills :
 
