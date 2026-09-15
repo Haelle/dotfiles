@@ -232,11 +232,11 @@ git clone https://github.com/Haelle/dotfiles.git ~/.dotfiles && cd ~/.dotfiles &
 ### Ce qui est installé
 
 - **Claude Code** via le script officiel (si pas déjà présent)
-- **asdf + Node.js** (cf. section asdf ci-dessous) — requis pour les LSPs npm et le MCP svelte
+- **asdf + Node.js** (cf. section asdf ci-dessous) — requis pour npm
 - **CLAUDE.md global** — instructions personnalisées (langue, style de code, git, sécurité)
-- **Skills** — collection de skills spécialisés (React, Python, DevOps, SQL, etc.)
+- **Marketplace de skills local** — `claude/skills` (Python, front, DevOps, Unity, CLI), déclaré dans les settings et activé par dépôt
 - **Commands** — commandes custom (`/bugfix`, `/plan`, `/pr-review`, `/fix-latest-build`, etc.)
-- **Settings** — configuration gérée (plugins LSP, statusline, permissions)
+- **Settings** — plugins, statusline, permissions ; le chemin du marketplace local est recalculé sur le clone courant
 - **Statusline** — script custom affichant modèle, usage quotidien, répertoire et branche git
 
 ### Configuration par projet

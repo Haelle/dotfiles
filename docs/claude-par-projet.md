@@ -22,7 +22,7 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 ## Marketplace de skills local
 
-`claude/skills/` regroupe par techno une sélection de [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) (MIT) — le plugin complet pèse 66 skills et ~8 000 tokens.
+`claude/skills/` regroupe par techno une sélection de [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) (MIT) — le plugin complet dépasse 60 skills et ~8 000 tokens.
 
 | Plugin | Skills |
 | --- | --- |
@@ -44,7 +44,7 @@ Déclaré dans `claude/settings.json`, Claude le réenregistre seul — le premi
 }
 ```
 
-Le tilde est développé ; `$HOME` et les chemins relatifs **non**. Seule ligne à adapter si les dotfiles sont clonés ailleurs.
+`./install` recalcule ce chemin sur le clone courant, il n'y a donc rien à adapter. En écriture manuelle, le tilde est développé mais `$HOME` et les chemins relatifs **non**.
 
 Ajouter un skill : copier son dossier dans `claude/skills/<lot>/skills/`, relancer une session.
 
