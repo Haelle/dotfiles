@@ -39,26 +39,33 @@ merge_claude_settings() {
     fi
 
     if [[ "$DRY_RUN" == true ]]; then
-        log_dry "Merge jq: $repo_settings -> $target (nos clés prioritaires)"
+        log_dry "Merge jq: $repo_settings -> $target (nos clés prioritaires, chemin du marketplace réécrit sur $DOTFILES_DIR)"
         return
     fi
 
     [[ -e "$target" ]] && backup_file "$target" "$BACKUP_DIR/claude-settings"
 
     mkdir -p "$(dirname "$target")"
-    local live_tmp merged_tmp
+    local live_tmp merged_tmp repo_tmp
     live_tmp=$(mktemp)
     merged_tmp=$(mktemp)
+    repo_tmp=$(mktemp)
     if [[ -f "$target" ]]; then cp "$target" "$live_tmp"; else echo '{}' > "$live_tmp"; fi
 
-    if jq -s '.[0] * .[1]' "$live_tmp" "$repo_settings" > "$merged_tmp"; then
+    # Le marketplace local est un chemin absolu : le recalculer sur le clone courant
+    jq --arg d "$DOTFILES_DIR" '
+        if .extraKnownMarketplaces["local-skills"]
+        then .extraKnownMarketplaces["local-skills"].source.path = $d + "/claude/skills"
+        else . end' "$repo_settings" > "$repo_tmp"
+
+    if jq -s '.[0] * .[1]' "$live_tmp" "$repo_tmp" > "$merged_tmp"; then
         mv "$merged_tmp" "$target"
         log_success "settings.json fusionné (nos clés prioritaires): $target"
     else
         rm -f "$merged_tmp"
         log_error "Échec du merge jq de settings.json"
     fi
-    rm -f "$live_tmp"
+    rm -f "$live_tmp" "$repo_tmp"
 }
 
 install_claude_conf() {

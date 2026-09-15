@@ -85,7 +85,11 @@
     "yaml-language-server@claude-code-lsps": true,
     "linear@claude-plugins-official": true,
     "unity@claude-plugins-official": false,
-    "bash-skills@local-skills": true
+    "bash-skills@local-skills": true,
+    "code-simplifier@claude-plugins-official": false,
+    "github@claude-plugins-official": false,
+    "terraform@claude-plugins-official": false,
+    "fullstack-dev-skills@fullstack-dev-skills": false
   },
   "extraKnownMarketplaces": {
     "claude-code-lsps": {
