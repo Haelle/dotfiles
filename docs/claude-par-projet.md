@@ -142,6 +142,28 @@ sudo apt install dotnet-sdk-10.0   # Debian / Ubuntu récents
 dotnet tool install --global csharp-ls
 ```
 
+Pour le MCP LDtk `.mcp.json` du dépôt :
+
+```json
+{
+  "mcpServers": {
+    "ldtk": {
+      "type": "stdio",
+      "command": "ldtk-mcp",
+      "args": [],
+      "env": {}
+    }
+  }
+}
+```
+
+```bash
+# Pour le MCP LDtk
+sudo pacman -S --asexplicit rust
+cargo install --git https://github.com/gazure/ldtk-mcp
+claude mcp add ldtk ldtk-mcp -s project
+```
+
 Sur une Ubuntu plus ancienne, `dotnet-sdk-*` n'est pas dans les archives et demande le dépôt Microsoft.
 
 Le plugin Unity Technologies apporte 29 skills (~3 350 tokens) : projet Unity uniquement. Sans `csharp-ls`, `csharp-lsp` s'enregistre mais ne démarre jamais — aucun diagnostic C#. Le SDK .NET n'est pas installé par `./install`, il ne sert qu'ici.
