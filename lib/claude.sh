@@ -61,6 +61,59 @@ merge_claude_settings() {
     rm -f "$live_tmp"
 }
 
+# Plugins disponibles pour activation par dépôt (.claude/settings.json), sans être
+# actifs globalement. Un dépôt ne peut pas activer un plugin absent de la machine :
+# il n'y a pas de récupération à la demande.
+CLAUDE_PROJECT_PLUGINS=(
+    python-skills@local-skills
+    unity-skills@local-skills
+    front-skills@local-skills
+    devops-skills@local-skills
+    unity@claude-plugins-official
+    svelte@svelte
+    csharp-lsp@claude-plugins-official
+    typescript-lsp@claude-plugins-official
+    pyright-lsp@claude-plugins-official
+    lua-lsp@claude-plugins-official
+    terraform-ls@claude-code-lsps
+)
+
+install_project_plugins() {
+    local settings="$HOME/.claude/settings.json"
+
+    if ! command -v claude &>/dev/null || ! command -v jq &>/dev/null; then
+        log_warning "claude ou jq introuvable, skip des plugins par dépôt"
+        return
+    fi
+
+    for plugin in "${CLAUDE_PROJECT_PLUGINS[@]}"; do
+        if [[ "$DRY_RUN" == true ]]; then
+            log_dry "claude plugin install $plugin (puis retrait de la clé globale)"
+            continue
+        fi
+        claude plugin install "$plugin" &>/dev/null \
+            && log_success "$plugin disponible" \
+            || log_warning "Installation de $plugin échouée"
+    done
+
+    [[ "$DRY_RUN" == true ]] && return
+
+    # L'install active le plugin partout : on retire la clé pour le laisser
+    # disponible sans peser sur le budget de skills des autres dépôts.
+    local tmp
+    tmp=$(mktemp)
+    if jq --argjson keep "$(printf '%s\n' "${CLAUDE_PROJECT_PLUGINS[@]}" | jq -R . | jq -s .)" \
+        '.enabledPlugins |= with_entries(select(.key as $k | $keep | index($k) | not))' \
+        "$settings" > "$tmp"; then
+        chmod --reference="$settings" "$tmp"
+        mv "$tmp" "$settings"
+        log_success "Plugins par dépôt retirés du scope utilisateur"
+    else
+        rm -f "$tmp"
+        log_error "Échec du retrait des clés globales"
+    fi
+}
+
 install_claude_conf() {
     log_header "Claude Code (configuration)"
 
@@ -87,6 +140,8 @@ install_claude_conf() {
 
     # Notification desktop (hook Notification -> notify-send)
     create_symlink "$DOTFILES_DIR/claude/cc-notify.sh" "$claude_home/cc-notify.sh" "claude-cc-notify"
+
+    install_project_plugins
 }
 
 install_claude_deps() {

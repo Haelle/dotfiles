@@ -26,15 +26,12 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 Un plugin doit être présent sur la machine pour qu'un dépôt puisse l'activer : il n'y a **pas** de récupération à la demande. Un dépôt qui active un plugin absent échoue sans rien dire d'autre que `plugin-cache-miss` dans le log de debug.
 
-Une fois par machine, au moment où on en a besoin :
+`./install` s'en charge : `CLAUDE_PROJECT_PLUGINS` dans `lib/claude.sh` liste les plugins à poser, les installe, puis retire les clés que l'installation a écrites — chaque machine les a donc disponibles sans qu'aucun ne pèse sur le budget de skills des autres dépôts. Ajouter une techno se fait en une ligne dans ce tableau.
+
+À la main, c'est deux commandes, la seconde parce que `claude plugin install` active le plugin partout :
 
 ```bash
 claude plugin install unity@claude-plugins-official
-```
-
-L'installation le met à `true` au niveau utilisateur, donc actif partout. Pour le rendre disponible sans être global, retirer sa clé :
-
-```bash
 S=~/.claude/settings.json
 jq 'del(.enabledPlugins["unity@claude-plugins-official"])' "$S" > "$S.tmp" && mv "$S.tmp" "$S"
 ```
