@@ -1,0 +1,10 @@
+{
+  "name": "python-skills",
+  "description": "Python skills (Django, FastAPI, SQL) from jeffallan/claude-skills",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Jeff Allan",
+    "url": "https://github.com/jeffallan/claude-skills"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "front-skills",
+  "description": "Front-end skills (TypeScript, JavaScript, Playwright) from jeffallan/claude-skills",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Jeff Allan",
+    "url": "https://github.com/jeffallan/claude-skills"
+  }
+}
