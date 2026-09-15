@@ -113,10 +113,11 @@ Le LSP appelle `svelteserver` via le PATH : un binaire posé par Mason (Neovim) 
 ```
 
 ```bash
+sudo pacman -S dotnet-sdk
 dotnet tool install --global csharp-ls
 ```
 
-Le plugin Unity Technologies apporte 29 skills (~3 350 tokens) : projet Unity uniquement. Sans `csharp-ls` (SDK .NET 6+), `csharp-lsp` s'enregistre mais ne démarre jamais — aucun diagnostic C#.
+Le plugin Unity Technologies apporte 29 skills (~3 350 tokens) : projet Unity uniquement. Sans `csharp-ls`, `csharp-lsp` s'enregistre mais ne démarre jamais — aucun diagnostic C#. Le SDK .NET n'est pas installé par `./install`, il ne sert qu'ici.
 
 Le pont MCP vers l'Éditeur est un projet tiers, à déclarer dans un `.mcp.json` à la racine.
 

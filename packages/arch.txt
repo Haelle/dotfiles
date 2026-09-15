@@ -1,7 +1,6 @@
 btop
 curl
 direnv
-dotnet-sdk
 fd
 fish
 fzf
