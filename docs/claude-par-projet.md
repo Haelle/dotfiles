@@ -26,7 +26,7 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 Un plugin doit être présent sur la machine pour qu'un dépôt puisse l'activer : il n'y a **pas** de récupération à la demande. Un dépôt qui active un plugin absent échoue sans rien dire d'autre que `plugin-cache-miss` dans le log de debug.
 
-`./install` s'en charge : `CLAUDE_PROJECT_PLUGINS` dans `lib/claude.sh` liste les plugins à poser. Ils sont installés avant le merge des settings, et ce merge remplace `enabledPlugins` par la version du dépôt — les clés `true` que l'installation vient d'écrire disparaissent donc du même coup. Ajouter une techno se fait en une ligne dans ce tableau.
+`./install` s'en charge : `CLAUDE_PROJECT_PLUGINS` dans `lib/claude.sh` liste les plugins à poser. Ils sont installés après le merge des settings, qui déclare les marketplaces — sans eux `claude plugin install` échoue. La fonction reprend ensuite `enabledPlugins` du dépôt, ce qui efface les clés `true` que l'installation vient d'écrire. Ajouter une techno se fait en une ligne dans ce tableau.
 
 Conséquence à connaître : `enabledPlugins` est **autoritaire depuis le dépôt**. Un plugin activé à la main au niveau utilisateur sera remis dans son scope au prochain `./install`. Pour le garder actif partout, l'ajouter à `claude/settings.json` des dotfiles.
 
@@ -143,6 +143,34 @@ Le serveur est actif partout. Associer un schéma par un commentaire en tête de
 
 ```yaml
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+```
+
+## Lua et Neovim
+
+`.claude/settings.json` du dépôt :
+
+```json
+{ "enabledPlugins": { "lua-lsp@claude-plugins-official": true } }
+```
+
+Le binaire n'est pas sur npm, il s'installe depuis les releases GitHub :
+
+```bash
+LUALS=$(curl -sL https://api.github.com/repos/LuaLS/lua-language-server/releases/latest | jq -r .tag_name)
+mkdir -p ~/.local/lib/lua-language-server
+curl -sL "https://github.com/LuaLS/lua-language-server/releases/download/$LUALS/lua-language-server-$LUALS-linux-x64.tar.gz" \
+  | tar xz -C ~/.local/lib/lua-language-server
+ln -sf ~/.local/lib/lua-language-server/bin/lua-language-server ~/.local/bin/lua-language-server
+```
+
+Pour une config Neovim, un `.luarc.json` à la racine évite les faux positifs sur les globales de l'éditeur :
+
+```json
+{
+  "runtime": { "version": "LuaJIT" },
+  "diagnostics": { "globals": ["vim"] },
+  "workspace": { "library": ["$VIMRUNTIME/lua"] }
+}
 ```
 
 ## DevOps et Terraform

@@ -82,8 +82,11 @@ CLAUDE_PROJECT_PLUGINS=(
 )
 
 install_project_plugins() {
-    if ! command -v claude &>/dev/null; then
-        log_warning "claude introuvable, skip des plugins par dépôt"
+    local settings="$HOME/.claude/settings.json"
+    local repo_settings="$DOTFILES_DIR/claude/settings.json"
+
+    if ! command -v claude &>/dev/null || ! command -v jq &>/dev/null; then
+        log_warning "claude ou jq introuvable, skip des plugins par dépôt"
         return
     fi
 
@@ -96,6 +99,22 @@ install_project_plugins() {
             && log_success "$plugin disponible" \
             || log_warning "Installation de $plugin échouée"
     done
+
+    [[ "$DRY_RUN" == true ]] && return
+
+    # L'install vient d'activer chaque plugin partout : on reprend enabledPlugins
+    # du dépôt, qui fait autorité.
+    local tmp
+    tmp=$(mktemp)
+    if jq -s '. as [$live, $repo] | $live | .enabledPlugins = $repo.enabledPlugins' \
+        "$settings" "$repo_settings" > "$tmp"; then
+        chmod --reference="$settings" "$tmp"
+        mv "$tmp" "$settings"
+        log_success "Plugins par dépôt remis dans leur scope"
+    else
+        rm -f "$tmp"
+        log_error "Échec de la remise à plat de enabledPlugins"
+    fi
 }
 
 install_claude_conf() {
@@ -117,10 +136,11 @@ install_claude_conf() {
     # au runtime (plugins, marketplaces machine-specific) — un symlink polluait
     # donc le dépôt. On ne track que le strict minimum et on le fusionne dans le
     # live, nos clés étant prioritaires.
-    # Avant le merge : l'install active les plugins partout, le merge les
-    # remet dans leur scope.
-    install_project_plugins
     merge_claude_settings
+
+    # Après le merge, qui déclare les marketplaces : sans eux `claude plugin
+    # install` échoue avec « not found in marketplace ».
+    install_project_plugins
 
     # Statusline
     create_symlink "$DOTFILES_DIR/claude/statusline-command.sh" "$claude_home/statusline-command.sh" "claude-statusline"
