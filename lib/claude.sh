@@ -39,7 +39,7 @@ merge_claude_settings() {
     fi
 
     if [[ "$DRY_RUN" == true ]]; then
-        log_dry "Merge jq: $repo_settings -> $target (nos clés prioritaires)"
+        log_dry "Merge jq: $repo_settings -> $target (nos clés prioritaires, enabledPlugins remplacé)"
         return
     fi
 
@@ -51,7 +51,10 @@ merge_claude_settings() {
     merged_tmp=$(mktemp)
     if [[ -f "$target" ]]; then cp "$target" "$live_tmp"; else echo '{}' > "$live_tmp"; fi
 
-    if jq -s '.[0] * .[1]' "$live_tmp" "$repo_settings" > "$merged_tmp"; then
+    # enabledPlugins est autoritaire depuis le dépôt : `claude plugin install`
+    # active le plugin partout, ce remplacement le remet dans son scope.
+    if jq -s '. as [$live, $repo] | ($live * $repo) | .enabledPlugins = $repo.enabledPlugins' \
+        "$live_tmp" "$repo_settings" > "$merged_tmp"; then
         mv "$merged_tmp" "$target"
         log_success "settings.json fusionné (nos clés prioritaires): $target"
     else
@@ -79,39 +82,20 @@ CLAUDE_PROJECT_PLUGINS=(
 )
 
 install_project_plugins() {
-    local settings="$HOME/.claude/settings.json"
-
-    if ! command -v claude &>/dev/null || ! command -v jq &>/dev/null; then
-        log_warning "claude ou jq introuvable, skip des plugins par dépôt"
+    if ! command -v claude &>/dev/null; then
+        log_warning "claude introuvable, skip des plugins par dépôt"
         return
     fi
 
     for plugin in "${CLAUDE_PROJECT_PLUGINS[@]}"; do
         if [[ "$DRY_RUN" == true ]]; then
-            log_dry "claude plugin install $plugin (puis retrait de la clé globale)"
+            log_dry "claude plugin install $plugin"
             continue
         fi
         claude plugin install "$plugin" &>/dev/null \
             && log_success "$plugin disponible" \
             || log_warning "Installation de $plugin échouée"
     done
-
-    [[ "$DRY_RUN" == true ]] && return
-
-    # L'install active le plugin partout : on retire la clé pour le laisser
-    # disponible sans peser sur le budget de skills des autres dépôts.
-    local tmp
-    tmp=$(mktemp)
-    if jq --argjson keep "$(printf '%s\n' "${CLAUDE_PROJECT_PLUGINS[@]}" | jq -R . | jq -s .)" \
-        '.enabledPlugins |= with_entries(select(.key as $k | $keep | index($k) | not))' \
-        "$settings" > "$tmp"; then
-        chmod --reference="$settings" "$tmp"
-        mv "$tmp" "$settings"
-        log_success "Plugins par dépôt retirés du scope utilisateur"
-    else
-        rm -f "$tmp"
-        log_error "Échec du retrait des clés globales"
-    fi
 }
 
 install_claude_conf() {
@@ -133,6 +117,9 @@ install_claude_conf() {
     # au runtime (plugins, marketplaces machine-specific) — un symlink polluait
     # donc le dépôt. On ne track que le strict minimum et on le fusionne dans le
     # live, nos clés étant prioritaires.
+    # Avant le merge : l'install active les plugins partout, le merge les
+    # remet dans leur scope.
+    install_project_plugins
     merge_claude_settings
 
     # Statusline
@@ -140,8 +127,6 @@ install_claude_conf() {
 
     # Notification desktop (hook Notification -> notify-send)
     create_symlink "$DOTFILES_DIR/claude/cc-notify.sh" "$claude_home/cc-notify.sh" "claude-cc-notify"
-
-    install_project_plugins
 }
 
 install_claude_deps() {
