@@ -129,9 +129,12 @@ Le LSP appelle `svelteserver` via le PATH : un binaire posé par Mason (Neovim) 
 ```
 
 ```bash
-sudo pacman -S dotnet-sdk
+sudo pacman -S dotnet-sdk          # CachyOS / Arch — dépôt extra
+sudo apt install dotnet-sdk-10.0   # Debian / Ubuntu récents
 dotnet tool install --global csharp-ls
 ```
+
+Sur une Ubuntu plus ancienne, `dotnet-sdk-*` n'est pas dans les archives et demande le dépôt Microsoft.
 
 Le plugin Unity Technologies apporte 29 skills (~3 350 tokens) : projet Unity uniquement. Sans `csharp-ls`, `csharp-lsp` s'enregistre mais ne démarre jamais — aucun diagnostic C#. Le SDK .NET n'est pas installé par `./install`, il ne sert qu'ici.
 
@@ -178,8 +181,20 @@ Pour une config Neovim, un `.luarc.json` à la racine évite les faux positifs s
 }
 ```
 
+`terraform-ls` n'est pas dans les dépôts officiels d'Arch, il vient de l'AUR :
+
 ```bash
-sudo pacman -S terraform-ls
+paru -S terraform-ls               # CachyOS / Arch — AUR
+```
+
+Sur Debian et Ubuntu il n'est dans aucune archive : il faut le dépôt HashiCorp.
+
+```bash
+curl -fsSL https://apt.releases.hashicorp.com/gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update && sudo apt install -y terraform-ls
 ```
 
 `devops-engineer` couvre Dockerfile, CI/CD, manifestes Kubernetes, Terraform/Pulumi, GitOps et incidents. `kubernetes-specialist` ferait doublon.
@@ -204,6 +219,8 @@ Avec un `plugin.json` du même nom dans le plugin, et `claude/lsp/.claude-plugin
 
 ```bash
 npm install -g @ansible/ansible-language-server
+sudo pacman -S python-pipx         # CachyOS / Arch
+sudo apt install pipx              # Debian / Ubuntu
 pipx install ansible-lint
 ```
 
