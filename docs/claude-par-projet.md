@@ -30,7 +30,7 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 | `unity-skills` | `csharp-developer` `game-developer` |
 | `front-skills` | `playwright-expert` `typescript-pro` `javascript-pro` |
 | `devops-skills` | `devops-engineer` `terraform-engineer` |
-| `bash-skills` | `cli-developer` |
+| `bash-skills` | `cli-developer` — **actif au niveau utilisateur**, rien à activer par dépôt |
 
 Déclaré dans `claude/settings.json`, Claude le réenregistre seul — le premier lancement amorce, le suivant voit les skills :
 
@@ -60,6 +60,8 @@ sudo pacman -S shellcheck
 ```
 
 Sans `shellcheck`, pas de diagnostics — seulement syntaxe et navigation.
+
+`bash-skills` et `bash-language-server` étant actifs au niveau utilisateur, ce bloc ne sert que sur une machine neuve ou pour être explicite : réactiver un plugin déjà actif est sans effet.
 
 ## Python
 
