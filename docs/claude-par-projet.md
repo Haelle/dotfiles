@@ -24,7 +24,9 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 ## Installer avant d'activer
 
-Un plugin doit être présent sur la machine pour qu'un dépôt puisse l'activer : il n'y a **pas** de récupération à la demande. Un dépôt qui active un plugin absent échoue sans rien dire d'autre que `plugin-cache-miss` dans le log de debug.
+Un plugin d'un marketplace **distant** doit être présent sur la machine pour qu'un dépôt puisse l'activer : il n'y a pas de récupération à la demande, et un dépôt qui en active un absent échoue sans rien dire d'autre que `plugin-cache-miss` dans le log de debug.
+
+Les plugins d'un marketplace `directory` — `local-skills` ici — échappent à ça : Claude les lit directement dans le dossier source via le symlink, sans cache ni installation.
 
 `./install` s'en charge : `CLAUDE_PROJECT_PLUGINS` dans `lib/claude.sh` liste les plugins à poser. Ils sont installés après le merge des settings, qui déclare les marketplaces — sans eux `claude plugin install` échoue. La fonction reprend ensuite `enabledPlugins` du dépôt, ce qui efface les clés `true` que l'installation vient d'écrire. Ajouter une techno se fait en une ligne dans ce tableau.
 
