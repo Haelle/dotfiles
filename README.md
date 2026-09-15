@@ -239,6 +239,11 @@ git clone https://github.com/Haelle/dotfiles.git ~/.dotfiles && cd ~/.dotfiles &
 - **Settings** — configuration gérée (plugins LSP, statusline, permissions)
 - **Statusline** — script custom affichant modèle, usage quotidien, répertoire et branche git
 
+### Configuration par projet
+
+Pour spécialiser Claude dépôt par dépôt (n'activer que les skills, MCP et language servers utiles au projet) :
+[docs/claude-par-projet.md](docs/claude-par-projet.md).
+
 ### Docker sandbox Claude
 
 Une image custom est disponible pour charger ma configuration Claude quand il tourne dans un
