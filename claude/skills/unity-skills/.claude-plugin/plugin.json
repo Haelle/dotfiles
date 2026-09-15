@@ -1,0 +1,10 @@
+{
+  "name": "unity-skills",
+  "description": "Unity and C# skills from jeffallan/claude-skills",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Jeff Allan",
+    "url": "https://github.com/jeffallan/claude-skills"
+  }
+}

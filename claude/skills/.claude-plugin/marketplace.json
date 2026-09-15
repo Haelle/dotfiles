@@ -1,0 +1,43 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "local-skills",
+  "metadata": {
+    "description": "Curated skills from jeffallan/claude-skills (MIT), split per technology",
+    "version": "1.0.0"
+  },
+  "owner": {
+    "name": "Alexis Leclerc"
+  },
+  "plugins": [
+    {
+      "name": "python-skills",
+      "version": "1.0.0",
+      "source": "./python-skills",
+      "description": "Python: Django, FastAPI, python-pro, SQL, PostgreSQL"
+    },
+    {
+      "name": "unity-skills",
+      "version": "1.0.0",
+      "source": "./unity-skills",
+      "description": "Unity: C# developer, game developer"
+    },
+    {
+      "name": "front-skills",
+      "version": "1.0.0",
+      "source": "./front-skills",
+      "description": "Front-end: Playwright, TypeScript, JavaScript"
+    },
+    {
+      "name": "devops-skills",
+      "version": "1.0.0",
+      "source": "./devops-skills",
+      "description": "DevOps: CI/CD, containers, Terraform"
+    },
+    {
+      "name": "bash-skills",
+      "version": "1.0.0",
+      "source": "./bash-skills",
+      "description": "CLI tooling and shell scripting"
+    }
+  ]
+}
