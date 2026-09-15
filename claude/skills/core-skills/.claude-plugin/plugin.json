@@ -1,0 +1,10 @@
+{
+  "name": "core-skills",
+  "description": "Cross-language review, debugging, security and testing skills from jeffallan/claude-skills",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Jeff Allan",
+    "url": "https://github.com/jeffallan/claude-skills"
+  }
+}

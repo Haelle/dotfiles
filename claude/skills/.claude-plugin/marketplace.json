@@ -13,7 +13,7 @@
       "name": "python-skills",
       "version": "1.0.0",
       "source": "./python-skills",
-      "description": "Python: Django, FastAPI, python-pro, SQL, PostgreSQL"
+      "description": "Python: Django, FastAPI, python-pro, SQL, PostgreSQL, API design"
     },
     {
       "name": "unity-skills",
@@ -38,6 +38,12 @@
       "version": "1.0.0",
       "source": "./bash-skills",
       "description": "CLI tooling and shell scripting"
+    },
+    {
+      "name": "core-skills",
+      "version": "1.0.0",
+      "source": "./core-skills",
+      "description": "Cross-language: code review, debugging, security review, testing"
     }
   ]
 }
