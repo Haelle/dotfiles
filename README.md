@@ -234,9 +234,9 @@ git clone https://github.com/Haelle/dotfiles.git ~/.dotfiles && cd ~/.dotfiles &
 - **Claude Code** via le script officiel (si pas déjà présent)
 - **asdf + Node.js** (cf. section asdf ci-dessous) — requis pour npm
 - **CLAUDE.md global** — instructions personnalisées (langue, style de code, git, sécurité)
-- **Marketplace de skills local** — `claude/skills` (Python, front, DevOps, Unity, CLI), déclaré dans les settings et activé par dépôt
+- **Marketplace de skills local** — `claude/skills`, lié en `~/.claude/local-skills` (Python, front, DevOps, Unity, CLI), activé par dépôt
 - **Commands** — commandes custom (`/bugfix`, `/plan`, `/pr-review`, `/fix-latest-build`, etc.)
-- **Settings** — plugins, statusline, permissions ; le chemin du marketplace local est recalculé sur le clone courant
+- **Settings** — plugins, statusline, permissions
 - **Statusline** — script custom affichant modèle, usage quotidien, répertoire et branche git
 
 ### Configuration par projet

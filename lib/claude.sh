@@ -39,33 +39,26 @@ merge_claude_settings() {
     fi
 
     if [[ "$DRY_RUN" == true ]]; then
-        log_dry "Merge jq: $repo_settings -> $target (nos clés prioritaires, chemin du marketplace réécrit sur $DOTFILES_DIR)"
+        log_dry "Merge jq: $repo_settings -> $target (nos clés prioritaires)"
         return
     fi
 
     [[ -e "$target" ]] && backup_file "$target" "$BACKUP_DIR/claude-settings"
 
     mkdir -p "$(dirname "$target")"
-    local live_tmp merged_tmp repo_tmp
+    local live_tmp merged_tmp
     live_tmp=$(mktemp)
     merged_tmp=$(mktemp)
-    repo_tmp=$(mktemp)
     if [[ -f "$target" ]]; then cp "$target" "$live_tmp"; else echo '{}' > "$live_tmp"; fi
 
-    # Le marketplace local est un chemin absolu : le recalculer sur le clone courant
-    jq --arg d "$DOTFILES_DIR" '
-        if .extraKnownMarketplaces["local-skills"]
-        then .extraKnownMarketplaces["local-skills"].source.path = $d + "/claude/skills"
-        else . end' "$repo_settings" > "$repo_tmp"
-
-    if jq -s '.[0] * .[1]' "$live_tmp" "$repo_tmp" > "$merged_tmp"; then
+    if jq -s '.[0] * .[1]' "$live_tmp" "$repo_settings" > "$merged_tmp"; then
         mv "$merged_tmp" "$target"
         log_success "settings.json fusionné (nos clés prioritaires): $target"
     else
         rm -f "$merged_tmp"
         log_error "Échec du merge jq de settings.json"
     fi
-    rm -f "$live_tmp" "$repo_tmp"
+    rm -f "$live_tmp"
 }
 
 install_claude_conf() {
@@ -78,6 +71,10 @@ install_claude_conf() {
 
     # CLAUDE.md global
     create_symlink "$DOTFILES_DIR/claude/CLAUDE.md" "$claude_home/CLAUDE.md" "claude-md"
+
+    # Marketplace de skills local : chemin fixe côté settings, le lien absorbe
+    # l'emplacement réel du clone.
+    create_symlink "$DOTFILES_DIR/claude/skills" "$claude_home/local-skills" "claude-local-skills"
 
     # Settings : merge jq plutôt que symlink. Claude Code réécrit settings.json
     # au runtime (plugins, marketplaces machine-specific) — un symlink polluait

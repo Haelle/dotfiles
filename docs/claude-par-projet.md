@@ -38,13 +38,13 @@ Déclaré dans `claude/settings.json`, Claude le réenregistre seul — le premi
 {
   "extraKnownMarketplaces": {
     "local-skills": {
-      "source": { "source": "directory", "path": "~/Projects/dotfiles/claude/skills" }
+      "source": { "source": "directory", "path": "~/.claude/local-skills" }
     }
   }
 }
 ```
 
-`./install` recalcule ce chemin sur le clone courant, il n'y a donc rien à adapter. En écriture manuelle, le tilde est développé mais `$HOME` et les chemins relatifs **non**.
+Le chemin est fixe : `./install` pose `~/.claude/local-skills` en lien vers `claude/skills` du clone, quel que soit son emplacement. En écriture manuelle, le tilde est développé mais `$HOME` et les chemins relatifs **non**.
 
 Ajouter un skill : copier son dossier dans `claude/skills/<lot>/skills/`, relancer une session.
 
