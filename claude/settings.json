@@ -72,24 +72,10 @@
   },
   "enabledPlugins": {
     "bash-language-server@claude-code-lsps": true,
-    "csharp-lsp@claude-plugins-official": false,
-    "dsfr-skill@dsfr-skill": false,
-    "frontend-design@claude-plugins-official": false,
-    "lua-lsp@claude-plugins-official": false,
-    "pixel-plugin@pixel-plugin": false,
-    "pyright-lsp@claude-plugins-official": false,
     "superpowers@claude-plugins-official": true,
-    "svelte@svelte": false,
-    "terraform-ls@claude-code-lsps": false,
-    "typescript-lsp@claude-plugins-official": false,
     "yaml-language-server@claude-code-lsps": true,
     "linear@claude-plugins-official": true,
-    "unity@claude-plugins-official": false,
-    "bash-skills@local-skills": true,
-    "code-simplifier@claude-plugins-official": false,
-    "github@claude-plugins-official": false,
-    "terraform@claude-plugins-official": false,
-    "fullstack-dev-skills@fullstack-dev-skills": false
+    "bash-skills@local-skills": true
   },
   "extraKnownMarketplaces": {
     "claude-code-lsps": {
