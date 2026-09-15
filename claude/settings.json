@@ -75,7 +75,8 @@
     "superpowers@claude-plugins-official": true,
     "yaml-language-server@claude-code-lsps": true,
     "linear@claude-plugins-official": true,
-    "bash-skills@local-skills": true
+    "bash-skills@local-skills": true,
+    "github@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-code-lsps": {
