@@ -129,11 +129,12 @@ Le LSP appelle `svelteserver` via le PATH : un binaire posé par Mason (Neovim) 
   "enabledPlugins": {
     "unity@claude-plugins-official": true,
     "csharp-lsp@claude-plugins-official": true,
-    "unity-skills@local-skills": true,
-    "pixel-plugin@pixel-plugin": true
+    "unity-skills@local-skills": true
   }
 }
 ```
+
+Pour le plugin PixelLab il faut aller chercher la commande dans son [espace personnel PixelLabs](https://www.pixellab.ai/mcp)
 
 ```bash
 sudo pacman -S dotnet-sdk          # CachyOS / Arch — dépôt extra
@@ -192,9 +193,7 @@ Pour une config Neovim, un `.luarc.json` à la racine évite les faux positifs s
 
 ```bash
 sudo pacman -S terraform-ls
-npm install -g @ansible/ansible-language-server
-# si besoin
-asdf reshim nodejs
+sudo apt-get install terraform-ls
 ```
 
 `devops-engineer` couvre Dockerfile, CI/CD, manifestes Kubernetes, Terraform/Pulumi, GitOps et incidents. `kubernetes-specialist` ferait doublon.
