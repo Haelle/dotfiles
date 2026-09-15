@@ -32,7 +32,9 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 | `devops-skills` | `devops-engineer` `terraform-engineer` |
 | `bash-skills` | `cli-developer` — **actif au niveau utilisateur**, rien à activer par dépôt |
 
-Déclaré dans `claude/settings.json`, Claude le réenregistre seul — le premier lancement amorce, le suivant voit les skills :
+Déclaré dans `claude/settings.json` des dotfiles (pas dans un dépôt : voir le tableau des règles), Claude le réenregistre seul — le premier lancement amorce, le suivant voit les skills :
+
+`claude/settings.json` des dotfiles :
 
 ```json
 {
@@ -50,6 +52,8 @@ Ajouter un skill : copier son dossier dans `claude/skills/<lot>/skills/`, relanc
 
 ## Bash
 
+`.claude/settings.json` du dépôt :
+
 ```json
 { "enabledPlugins": { "bash-language-server@claude-code-lsps": true } }
 ```
@@ -64,6 +68,8 @@ Sans `shellcheck`, pas de diagnostics — seulement syntaxe et navigation.
 `bash-skills` et `bash-language-server` étant actifs au niveau utilisateur, ce bloc ne sert que sur une machine neuve ou pour être explicite : réactiver un plugin déjà actif est sans effet.
 
 ## Python
+
+`.claude/settings.json` du dépôt :
 
 ```json
 {
@@ -81,6 +87,8 @@ npm install -g pyright
 En présence d'un virtualenv, préciser `venvPath` et `venv` dans `pyrightconfig.json` ou `[tool.pyright]`, sinon faux positifs.
 
 ## Svelte
+
+`.claude/settings.json` du dépôt :
 
 ```json
 {
@@ -104,6 +112,8 @@ Le LSP appelle `svelteserver` via le PATH : un binaire posé par Mason (Neovim) 
 
 ## Unity
 
+`.claude/settings.json` du dépôt :
+
 ```json
 {
   "enabledPlugins": {
@@ -121,9 +131,11 @@ dotnet tool install --global csharp-ls
 
 Le plugin Unity Technologies apporte 29 skills (~3 350 tokens) : projet Unity uniquement. Sans `csharp-ls`, `csharp-lsp` s'enregistre mais ne démarre jamais — aucun diagnostic C#. Le SDK .NET n'est pas installé par `./install`, il ne sert qu'ici.
 
-Le pont MCP vers l'Éditeur est un projet tiers, à déclarer dans un `.mcp.json` à la racine.
+Le pont MCP vers l'Éditeur est un projet tiers, à déclarer dans un `.mcp.json` à la racine du dépôt.
 
 ## YAML
+
+`.claude/settings.json` du dépôt :
 
 ```json
 { "enabledPlugins": { "yaml-language-server@claude-code-lsps": true } }
@@ -140,6 +152,8 @@ Associer un schéma par un commentaire en tête de fichier :
 ```
 
 ## DevOps et Terraform
+
+`.claude/settings.json` du dépôt :
 
 ```json
 {
@@ -178,6 +192,8 @@ Avec un `plugin.json` du même nom dans le plugin, et `claude/lsp/.claude-plugin
 npm install -g @ansible/ansible-language-server
 pipx install ansible-lint
 ```
+
+Puis `.claude/settings.json` du dépôt Ansible : `{"enabledPlugins": {"ansible-language-server@local-lsps": true}}`.
 
 `.yml` ne peut être servi que par un seul LSP : ne pas activer `yaml-language-server` et `ansible-language-server` dans le même dépôt, le premier enregistré gagne.
 
