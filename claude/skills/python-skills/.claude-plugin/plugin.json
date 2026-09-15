@@ -1,6 +1,6 @@
 {
   "name": "python-skills",
-  "description": "Python skills (Django, FastAPI, SQL) from jeffallan/claude-skills",
+  "description": "Python skills (Django, FastAPI, SQL, API design) from jeffallan/claude-skills",
   "version": "1.0.0",
   "license": "MIT",
   "author": {

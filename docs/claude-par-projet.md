@@ -18,7 +18,7 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 ## Actif au niveau utilisateur
 
-`superpowers` (skills de processus), `linear` (MCP), `bash-language-server`, `yaml-language-server`, `bash-skills`. Tout le reste est en opt-in par dépôt.
+`superpowers` (skills de processus), `linear` (MCP), `bash-language-server`, `yaml-language-server`, `bash-skills`, `core-skills` (revue, debug, sécurité, tests). Tout le reste est en opt-in par dépôt.
 
 `./install` pose leurs binaires et `shellcheck`, dont le serveur bash a besoin pour ses diagnostics : rien à activer ni à installer par dépôt.
 
@@ -46,12 +46,16 @@ L'activation, elle, est automatique : le `.claude/settings.json` versionné du d
 
 `claude/skills/` regroupe par techno une sélection de [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) (MIT) — le plugin complet dépasse 60 skills et ~8 000 tokens.
 
-| Plugin          | Skills                                                                 |
-| --------------- | ---------------------------------------------------------------------- |
-| `python-skills` | `django-expert` `fastapi-expert` `python-pro` `sql-pro` `postgres-pro` |
-| `unity-skills`  | `csharp-developer` `game-developer`                                    |
-| `front-skills`  | `playwright-expert` `typescript-pro` `javascript-pro`                  |
-| `devops-skills` | `devops-engineer` `terraform-engineer`                                 |
+| Plugin          | Skills                                                                                |
+| --------------- | ------------------------------------------------------------------------------------- |
+| `core-skills`   | `code-reviewer` `debugging-wizard` `security-reviewer` `test-master`                  |
+| `bash-skills`   | `cli-developer`                                                                       |
+| `python-skills` | `django-expert` `fastapi-expert` `python-pro` `sql-pro` `postgres-pro` `api-designer` |
+| `unity-skills`  | `csharp-developer` `game-developer`                                                   |
+| `front-skills`  | `playwright-expert` `typescript-pro` `javascript-pro`                                 |
+| `devops-skills` | `devops-engineer` `terraform-engineer`                                                |
+
+`core-skills` et `bash-skills` sont actifs au niveau utilisateur, les autres s'activent par dépôt.
 
 Déclaré dans `claude/settings.json` des dotfiles (pas dans un dépôt : voir le tableau des règles), Claude le réenregistre seul — le premier lancement amorce, le suivant voit les skills :
 
