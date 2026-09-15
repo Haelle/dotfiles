@@ -6,6 +6,7 @@ fish
 fzf
 git
 jq
+github-cli
 gcc
 htop
 make

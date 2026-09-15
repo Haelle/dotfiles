@@ -31,6 +31,7 @@ Soit extrèmement concis.
 - Ne committe jamais des fichiers que tu n'as ni écrits ni modifiés : c'est peut-être le travail d'un autre agent
 - Titre de commit en anglais, au présent impératif ; le corps doit être assez explicite et détaillé pour comprendre le changement sans contexte (n'hésite pas à l'allonger)
 - Préfère les commits atomiques (un changement logique = un commit)
+- Pour tout ce qui touche GitHub (PR, issues, Actions, API), utilise le CLI `gh` : pas de serveur MCP GitHub configuré
 - Quand tu dois stager une partie d'un fichier, stage les chunks concernés (`git add -p`) plutôt que de retirer le code hors contexte, committer, puis le remettre : au moment du commit le code est validé, le modifier reviendrait à committer du code non testé
 - En rebase, revérifie que tu n'as rien perdu
 

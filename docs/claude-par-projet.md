@@ -24,16 +24,7 @@ Un dépôt peut réactiver un plugin coupé au niveau utilisateur, mais pas déc
 
 ## GitHub
 
-Le plugin `github@claude-plugins-official` est un serveur MCP HTTP vers `api.githubcopilot.com`, actif au niveau utilisateur. Il attend son **propre** token dans `GITHUB_PERSONAL_ACCESS_TOKEN` — il ne lit pas les identifiants de `gh`. Sans cette variable, le header part non substitué et la connexion échoue avec `400 Authorization header is badly formatted`.
-
-Le plus simple est de réutiliser le token de `gh`, qui vit déjà dans le trousseau, sans l'écrire sur disque. Dans `~/.config/fish/local.d/` (non versionné, chargé par `fish/conf.d/load-local.fish`) :
-
-```fish
-# ~/.config/fish/local.d/github.fish
-set -gx GITHUB_PERSONAL_ACCESS_TOKEN (gh auth token)
-```
-
-`gh auth token` est appelé à chaque démarrage de shell et lit le trousseau. Si l'on préfère un token dédié, un PAT à portée restreinte fait l'affaire — mais il faudra alors le stocker quelque part.
+Pas de serveur MCP : le plugin officiel pointe sur `api.githubcopilot.com` et exige son propre `GITHUB_PERSONAL_ACCESS_TOKEN`, sans lire les identifiants de `gh`. Le CLI `gh` couvre les mêmes besoins avec le token du trousseau, et `./install` le pose (`github-cli` sur Arch, `gh` sur Debian/Ubuntu).
 
 ## Installer avant d'activer
 

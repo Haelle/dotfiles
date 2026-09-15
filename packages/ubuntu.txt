@@ -6,6 +6,7 @@ fish
 fzf
 git
 jq
+gh
 gcc
 htop
 make
