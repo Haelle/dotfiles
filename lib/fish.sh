@@ -34,6 +34,9 @@ install_fish() {
         done
     fi
 
+    # Symlink direnv.toml (le hook direnv vient du plugin Fisher plugin-direnv)
+    create_symlink "$fish_source/direnv.toml" "$HOME/.config/direnv/direnv.toml" "direnv/direnv.toml"
+
     # Symlink fish_plugins (liste des plugins Fisher)
     if [[ -f "$fish_source/fish_plugins" ]]; then
         create_symlink "$fish_source/fish_plugins" "$fish_target/fish_plugins" "fish/fish_plugins"

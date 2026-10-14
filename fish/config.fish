@@ -9,11 +9,6 @@ fish_add_path ~/.local/bin
 # asdf version manager
 fish_add_path ~/.asdf/shims
 
-# direnv hook
-if command -q direnv
-    direnv hook fish | source
-end
-
 # fzf key bindings via fzf.fish plugin (installé par Fisher)
 # Ctrl-R : historique avec preview
 # Ctrl-T : fichiers avec preview
