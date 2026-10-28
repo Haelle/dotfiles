@@ -2,6 +2,8 @@
 
 Soit extrèmement concis.
 
+Concis veut dire : un sujet = un paragraphe de deux ou trois phrases. Les décisions que j'ai à prendre sont listées à part, deux phrases chacune au maximum. Pas de sous-sujet que je n'ai pas demandé, pas de tableau récapitulatif, pas de détail de méthode ni de mesure intermédiaire — je les demande si j'en veux.
+
 ## Langue
 
 - Réponds en français sauf si le contexte est clairement anglophone
@@ -58,6 +60,7 @@ Soit extrèmement concis.
 - avant d'explorer du code ou de proposer une analyse vérifie la liste des skills disponibles. Si une skill matche la tâche (description ou trigger keywords) invoque là !
 - vérifie toujours si un LSP est diposnible avant de travailler sur du code, s'il y en a un qui ne fonctionne pas arrête toi et dit le
 - Lis toujours le code existant avant de proposer des modifications
+- Quand ce que tu t'apprêtes à créer fait la même chose qu'un élément existant à une variation près (deux classes, prefabs, entités… pour un seul concept), signale-le et propose la fusion avant de construire ; deux objets distincts doivent être justifiés
 - Quand un code est peu clair ou illogique, lis ses messages de commit pour comprendre le contexte (le titre d'abord, la description ensuite si besoin)
 - Utilise les outils dédiés (Read, Edit, Grep, Glob) plutôt que bash quand possible
 - Teste les changements quand un framework de test est disponible
