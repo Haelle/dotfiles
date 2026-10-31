@@ -37,6 +37,7 @@ Concis veut dire : un sujet = un paragraphe de deux ou trois phrases. Les décis
 - Pour tout ce qui touche GitHub (PR, issues, Actions, API), utilise le CLI `gh` : pas de serveur MCP GitHub configuré
 - Quand tu dois stager une partie d'un fichier, stage les chunks concernés (`git add -p`) plutôt que de retirer le code hors contexte, committer, puis le remettre : au moment du commit le code est validé, le modifier reviendrait à committer du code non testé
 - En rebase, revérifie que tu n'as rien perdu
+- ne signe pas les commits et n'y met pas non plus les liens vers les sessions "Claude-Session: xxx"
 
 ## Tests
 
