@@ -31,7 +31,7 @@ Concis veut dire : un sujet = un paragraphe de deux ou trois phrases. Les décis
 ## Git
 
 - Ne committe jamais sans demande explicite
-- Ne committe jamais des fichiers que tu n'as ni écrits ni modifiés : c'est peut-être le travail d'un autre agent
+- Ne committe jamais des fichiers que tu n'as ni écrits ni modifiés : c'est peut-être le travail d'une autre instance ou agent
 - Titre de commit en anglais, au présent impératif ; le corps doit être assez explicite et détaillé pour comprendre le changement sans contexte (n'hésite pas à l'allonger)
 - Préfère les commits atomiques (un changement logique = un commit)
 - Pour tout ce qui touche GitHub (PR, issues, Actions, API), utilise le CLI `gh` : pas de serveur MCP GitHub configuré
